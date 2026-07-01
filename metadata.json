@@ -1,0 +1,6 @@
+{
+  "name": "Le Ring Bar",
+  "description": "Site web officiel de Le Ring Bar VIP avec système de réservation de salons interactif, commande de boissons et synchronisation Google Sheets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
