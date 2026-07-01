@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net (Pillar 4.1)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions (Pillar 3)
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(email) {
+      return isSignedIn() && request.auth.token.email == email && request.auth.token.email_verified == true;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    match /reservations/{reservationId} {
+      // Allow reading and listing so clients can retrieve booked slots
+      allow read, list: if true;
+
+      // Allow anyone to register a reservation
+      allow create: if isValidId(reservationId) && isValidReservation(request.resource.data);
+
+      // Only the verified owner or administrative staff can update or delete
+      allow update: if isSignedIn() 
+        && isValidReservation(request.resource.data)
+        && (
+          isOwner('filantmael225@gmail.com') ||
+          request.auth.token.email_verified == true
+        );
+
+      allow delete: if isSignedIn() 
+        && (
+          isOwner('filantmael225@gmail.com') ||
+          request.auth.token.email_verified == true
+        );
+    }
+
+    // Validation Blueprint (Pillar 2)
+    function isValidReservation(data) {
+      return data.keys().hasAll(['id', 'salonId', 'salonName', 'clientName', 'clientPhone', 'date', 'time', 'guestsCount', 'totalPrice', 'createdAt', 'status'])
+        && data.id is string && data.id.size() <= 64
+        && data.salonId is int
+        && data.salonName is string && data.salonName.size() <= 128
+        && data.clientName is string && data.clientName.size() <= 128
+        && data.clientPhone is string && data.clientPhone.size() <= 64
+        && data.date is string && data.date.size() <= 32
+        && data.time is string && data.time.size() <= 32
+        && data.guestsCount is int
+        && data.totalPrice is number
+        && data.createdAt is string
+        && data.status is string && (data.status == 'pending' || data.status == 'confirmed' || data.status == 'cancelled');
+    }
+  }
+}

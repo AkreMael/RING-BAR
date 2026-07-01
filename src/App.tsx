@@ -5,7 +5,11 @@ import {
   googleSignIn,
   logout,
   setAccessToken,
-  getAccessToken
+  getAccessToken,
+  saveReservationToFirestore,
+  updateReservationStatusInFirestore,
+  updateReservationSyncStatusInFirestore,
+  subscribeToReservations
 } from './lib/firebase';
 import {
   findOrCreateSpreadsheet,
@@ -55,10 +59,11 @@ export default function App() {
     const unsubscribe = initAuth(
       async (loggedInUser, accessToken) => {
         setUser(loggedInUser);
-        setToken(accessToken);
-        setNeedsAuth(false);
-        // Load Sheet
-        await setupGoogleSheets(accessToken);
+        if (accessToken) {
+          setToken(accessToken);
+          setNeedsAuth(false);
+          await setupGoogleSheets(accessToken);
+        }
       },
       () => {
         setUser(null);
@@ -69,11 +74,44 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // Sync reservations to local storage whenever they change
+  // 2. Real-time Firestore synchronization for all reservations
+  useEffect(() => {
+    const unsubscribe = subscribeToReservations((firestoreBookings) => {
+      setReservations(firestoreBookings);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // 3. Automatic real-time background sync of unsynced Firestore bookings to Google Sheets (when owner is active)
+  useEffect(() => {
+    if (!token || !spreadsheetId || reservations.length === 0) return;
+
+    // Filter reservations that are not marked as synced
+    const unsynced = reservations.filter(r => !r.syncedToSheet);
+    if (unsynced.length === 0) return;
+
+    let isSyncing = false;
+    const autoSync = async () => {
+      if (isSyncing) return;
+      isSyncing = true;
+      for (const res of unsynced) {
+        try {
+          console.log(`Auto-syncing unsynced reservation ${res.id} to Google Sheets...`);
+          await appendReservation(token, spreadsheetId, res);
+          await updateReservationSyncStatusInFirestore(res.id, true);
+        } catch (err) {
+          console.error(`Failed to auto-sync reservation ${res.id}:`, err);
+        }
+      }
+      isSyncing = false;
+    };
+
+    autoSync();
+  }, [reservations, token, spreadsheetId]);
+
+  // Sync reservations to local storage and count pending
   useEffect(() => {
     localStorage.setItem('ring_bar_reservations', JSON.stringify(reservations));
-    
-    // Count pending messages
     const pending = reservations.filter(r => r.status === 'pending').length;
     setUnreadCount(pending);
   }, [reservations]);
@@ -85,12 +123,6 @@ export default function App() {
       const sheetId = await findOrCreateSpreadsheet(accessToken);
       setSpreadsheetId(sheetId);
       localStorage.setItem('ring_bar_spreadsheet_id', sheetId);
-
-      // Load existing bookings from the sheet and merge with local state
-      const sheetBookings = await fetchReservationsFromSheet(accessToken, sheetId);
-      if (sheetBookings && sheetBookings.length > 0) {
-        setReservations(sheetBookings);
-      }
     } catch (err) {
       console.error('Erreur lors du paramétrage Google Sheets:', err);
     } finally {
@@ -126,23 +158,40 @@ export default function App() {
     }
   };
 
-  // Synchronize/Reload from Sheet manually
-  const handleRefreshFromSheet = async () => {
+  // Dedicated full sync of all Firestore bookings to Google Sheets
+  const syncAllToGoogleSheets = async () => {
     if (!token || !spreadsheetId) return;
     setIsLoadingSheet(true);
     try {
       const sheetBookings = await fetchReservationsFromSheet(token, spreadsheetId);
-      if (sheetBookings) {
-        setReservations(sheetBookings);
+      const sheetIds = new Set(sheetBookings.map(b => b.id));
+
+      for (const res of reservations) {
+        if (!sheetIds.has(res.id)) {
+          await appendReservation(token, spreadsheetId, res);
+        } else {
+          const sheetRes = sheetBookings.find(b => b.id === res.id);
+          if (sheetRes && sheetRes.status !== res.status) {
+            await updateReservationStatusInSheet(token, spreadsheetId, res.id, res.status);
+          }
+        }
       }
+      alert('Synchronisation avec Google Sheets réussie !');
     } catch (err) {
-      console.error('Erreur de rafraîchissement:', err);
+      console.error('Erreur lors de la synchronisation complète:', err);
+      alert('Échec de la synchronisation avec Google Sheets.');
     } finally {
       setIsLoadingSheet(false);
     }
   };
 
-  // Submit Reservation
+  // Synchronize/Reload from Sheet manually (Trigger full reconciliation sync)
+  const handleRefreshFromSheet = async () => {
+    if (!token || !spreadsheetId) return;
+    await syncAllToGoogleSheets();
+  };
+
+  // Submit Reservation to central Firestore and Google Sheets if logged in
   const handleConfirmReservation = async (
     bookingData: Omit<Reservation, 'id' | 'createdAt' | 'status'>
   ) => {
@@ -153,45 +202,51 @@ export default function App() {
       id: newId,
       createdAt: new Date().toISOString(),
       status: 'pending',
+      syncedToSheet: false,
     };
 
     try {
-      // 1. Add to local list immediately for instant feedback
-      const updatedList = [newBooking, ...reservations];
-      setReservations(updatedList);
+      // 1. Save to central real-time Firestore database
+      await saveReservationToFirestore(newBooking);
 
-      // 2. Write to connected Google Sheet if logged in
+      // 2. Sync to owner's connected Google Sheet if logged in
       if (token && spreadsheetId) {
-        await appendReservation(token, spreadsheetId, newBooking);
-      } else {
-        console.warn('Google Sheets non connecté. La réservation est sauvegardée localement.');
+        try {
+          await appendReservation(token, spreadsheetId, newBooking);
+          // Mark as successfully synced in Firestore
+          await updateReservationSyncStatusInFirestore(newId, true);
+        } catch (sheetErr) {
+          console.error('Erreur écriture Google Sheets:', sheetErr);
+        }
       }
     } catch (err) {
-      console.error('Erreur enregistrement Google Sheets:', err);
-      alert('Réservation enregistrée localement (Échec de la synchronisation Google Sheets en arrière-plan).');
+      console.error('Erreur enregistrement:', err);
+      alert('Erreur lors de la réservation. Veuillez réessayer.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Update Booking Status
+  // Update Booking Status in Firestore & Google Sheets
   const handleUpdateStatus = async (
     bookingId: string,
     newStatus: 'pending' | 'confirmed' | 'cancelled'
   ) => {
-    // Update local state
-    setReservations((prev) =>
-      prev.map((r) => (r.id === bookingId ? { ...r, status: newStatus } : r))
-    );
+    try {
+      // 1. Update status in central Firestore database
+      await updateReservationStatusInFirestore(bookingId, newStatus);
 
-    // Sync status back to Google Sheets
-    if (token && spreadsheetId) {
-      try {
-        await updateReservationStatusInSheet(token, spreadsheetId, bookingId, newStatus);
-      } catch (err) {
-        console.error('Erreur mise à jour statut Google Sheets:', err);
-        alert('Statut mis à jour localement, mais échec de synchronisation Google Sheets.');
+      // 2. Sync updated status back to Google Sheets
+      if (token && spreadsheetId) {
+        try {
+          await updateReservationStatusInSheet(token, spreadsheetId, bookingId, newStatus);
+        } catch (sheetErr) {
+          console.error('Erreur mise à jour statut Google Sheets:', sheetErr);
+        }
       }
+    } catch (err) {
+      console.error('Erreur mise à jour statut:', err);
+      alert('Échec de mise à jour du statut.');
     }
   };
 
@@ -212,79 +267,73 @@ export default function App() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-gradient-to-b from-red-600/10 via-red-950/5 to-transparent blur-3xl pointer-events-none" />
 
       {/* --- TOP HEADER --- */}
-      <header className="sticky top-0 z-30 bg-black/95 border-b border-neutral-900 backdrop-blur-md px-4 md:px-8 py-5 flex justify-between items-center">
+      <header className="sticky top-0 z-30 bg-black/95 border-b border-neutral-900 backdrop-blur-md px-3 sm:px-6 md:px-8 py-4 sm:py-5 flex justify-between items-center gap-2">
         
         {/* Left Side: GALERIE DU RING */}
         <button
           onClick={() => setIsGalleryOpen(true)}
-          className="px-4 py-2 text-[11px] font-black tracking-widest text-white uppercase border border-neutral-800 rounded-xl bg-neutral-900/40 hover:bg-white hover:text-black hover:border-white transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.02)] select-none cursor-pointer"
+          className="px-2.5 sm:px-4 py-1.5 sm:py-2 text-[9px] sm:text-[11px] font-black tracking-widest text-white uppercase border border-neutral-800 rounded-xl bg-neutral-900/40 hover:bg-white hover:text-black hover:border-white transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.02)] select-none cursor-pointer whitespace-nowrap"
         >
-          GALERIE DU RING
+          <span className="sm:inline hidden">GALERIE DU RING</span>
+          <span className="inline sm:hidden">GALERIE</span>
         </button>
 
         {/* Center Logo: LE RING BAR VIP */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center font-black text-xl italic tracking-tighter text-white select-none">
+        <div className="flex items-center gap-2 sm:gap-3 select-none">
+          <div
+            onDoubleClick={handleLogin}
+            title="Action administrateur (double-clic)"
+            className="w-8 h-8 sm:w-10 sm:h-10 bg-red-600 rounded-full flex items-center justify-center font-black text-base sm:text-xl italic tracking-tighter text-white select-none cursor-pointer transition-transform hover:scale-105 active:scale-95"
+          >
             LRB
           </div>
           <div className="text-left">
-            <h1 className="text-xl md:text-2xl font-black uppercase tracking-wider italic text-white flex items-center gap-2 leading-none">
-              Le Ring Bar <span className="text-xs not-italic font-bold tracking-widest px-1.5 py-0.5 rounded bg-red-600 text-white font-sans">VIP</span>
+            <h1 className="text-xs sm:text-sm md:text-2xl font-black uppercase tracking-wider italic text-white flex items-center gap-1 sm:gap-2 leading-none">
+              Le Ring Bar <span className="text-[8px] sm:text-xs not-italic font-bold tracking-widest px-1 sm:px-1.5 py-0.5 rounded bg-red-600 text-white font-sans">VIP</span>
             </h1>
-            <p className="text-[9px] text-neutral-500 font-medium tracking-[0.2em] uppercase mt-0.5">RÉSERVATION DE SALON PREMIUM</p>
+            <p className="hidden sm:block text-[8px] md:text-[9px] text-neutral-500 font-medium tracking-[0.2em] uppercase mt-0.5">RÉSERVATION DE SALON PREMIUM</p>
           </div>
         </div>
 
         {/* Right Side: AUTHENTICATION / INBOX */}
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-4">
           
-          {/* Owner Messaging icon */}
-          {reservations.length > 0 && (
-            <button
-              onClick={() => setIsMessagerieOpen(true)}
-              className="relative p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-red-500 hover:bg-red-600 hover:text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(220,38,38,0.1)] flex items-center gap-1.5"
-              title="Messagerie Propriétaire"
-            >
-              <Inbox className="w-5 h-5" />
-              {unreadCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-600 text-white font-mono font-bold text-[10px] flex items-center justify-center animate-pulse">
-                  {unreadCount}
-                </span>
-              )}
-              <span className="hidden md:inline text-xs font-bold uppercase tracking-wider pl-0.5">Messagerie</span>
-            </button>
-          )}
+          {/* Historique des réservations */}
+          <button
+            onClick={() => setIsMessagerieOpen(true)}
+            className="relative p-1.5 sm:p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-red-500 hover:bg-red-600 hover:text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(220,38,38,0.1)] flex items-center gap-1"
+            title="Historique des réservations"
+          >
+            <Inbox className="w-4 h-4 sm:w-5 sm:h-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 sm:-top-1.5 sm:-right-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-red-600 text-white font-mono font-bold text-[9px] sm:text-[10px] flex items-center justify-center animate-pulse">
+                {unreadCount}
+              </span>
+            )}
+            <span className="hidden lg:inline text-xs font-bold uppercase tracking-wider pl-0.5">Historique des réservations</span>
+          </button>
 
-          {/* User profile / LogIn button */}
-          {user ? (
-            <div className="flex items-center gap-2">
-              <div className="hidden lg:flex flex-col items-end">
-                <span className="text-xs font-bold text-white max-w-[120px] truncate">{user.displayName}</span>
-                <span className="text-[10px] text-neutral-500 max-w-[120px] truncate">{user.email}</span>
+          {/* User profile (only visible if logged in - "Se connecter" button is removed completely) */}
+          {user && (
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="hidden xl:flex flex-col items-end">
+                <span className="text-xs font-bold text-white max-w-[100px] truncate">{user.displayName}</span>
+                <span className="text-[9px] text-neutral-500 max-w-[100px] truncate">{user.email}</span>
               </div>
               <img
                 src={user.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100'}
                 alt={user.displayName || 'Google Profile'}
-                className="w-8 h-8 rounded-full border border-red-600/40 object-cover"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-red-600/40 object-cover"
                 referrerPolicy="no-referrer"
               />
               <button
                 onClick={handleLogout}
                 title="Se déconnecter"
-                className="p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-800 transition-all cursor-pointer"
+                className="p-1.5 sm:p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-800 transition-all cursor-pointer"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             </div>
-          ) : (
-            <button
-              onClick={handleLogin}
-              disabled={isLoggingIn}
-              className="px-4 py-2 rounded-full text-xs font-black tracking-wider uppercase bg-red-600 hover:bg-red-500 text-white shadow-[0_4px_15px_rgba(220,38,38,0.3)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.5)] transition-all duration-300 flex items-center gap-1.5 cursor-pointer select-none"
-            >
-              <LogIn className="w-4 h-4" />
-              {isLoggingIn ? 'Connexion...' : 'Se connecter'}
-            </button>
           )}
         </div>
       </header>
@@ -385,39 +434,55 @@ export default function App() {
       </section>
 
       {/* --- GOOGLE SHEETS SYNC STATUS --- */}
-      <section className="max-w-5xl mx-auto w-full px-4 mt-6">
-        <div className="p-4 bg-neutral-900/40 border border-neutral-800 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
-          
-          <div className="flex items-center gap-2.5">
-            <FileSpreadsheet className={`w-5 h-5 ${token ? 'text-red-500 animate-pulse' : 'text-neutral-500'}`} />
-            <div>
-              <p className="font-bold text-neutral-200">
-                {token ? '✓ Connecté à Google Sheets' : 'ℹ Google Sheets non connecté'}
-              </p>
-              <p className="text-neutral-500 text-[11px] mt-0.5">
-                {token
-                  ? 'Vos réservations sont écrites en temps réel dans votre propre feuille Google Sheets.'
-                  : 'Connectez-vous avec Google pour que vos réservations soient écrites sur votre compte.'}
-              </p>
+      {user && (
+        <section className="max-w-5xl mx-auto w-full px-4 mt-6">
+          <div className="p-4 bg-neutral-900/40 border border-neutral-800 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
+            
+            <div className="flex items-center gap-2.5">
+              <FileSpreadsheet className={`w-5 h-5 ${token ? 'text-red-500 animate-pulse' : 'text-neutral-500'}`} />
+              <div>
+                <p className="font-bold text-neutral-200">
+                  {token ? '✓ Connecté à Google Sheets' : 'ℹ Google Sheets non connecté'}
+                </p>
+                <p className="text-neutral-500 text-[11px] mt-0.5">
+                  {token
+                    ? 'Vos réservations sont écrites en temps réel dans votre propre feuille Google Sheets.'
+                    : 'Connectez-vous avec Google pour que vos réservations soient écrites sur votre compte.'}
+                </p>
+              </div>
             </div>
+
+            {!token && (
+              <button
+                onClick={handleLogin}
+                className="px-4 py-2 rounded-xl bg-neutral-800 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white transition-all font-semibold font-mono text-[11px]"
+              >
+                Connecter Sheets
+              </button>
+            )}
+
+            {token && spreadsheetId && (
+              <div className="flex flex-col sm:flex-row items-center gap-3">
+                <a
+                  href={`https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 font-mono text-[11px] bg-emerald-600/15 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl hover:bg-emerald-600/25 transition-all font-bold"
+                >
+                  Ouvrir la feuille Google Sheets ↗
+                </a>
+                <button
+                  onClick={syncAllToGoogleSheets}
+                  disabled={isLoadingSheet}
+                  className="px-3 py-1.5 rounded-xl bg-red-600/10 border border-red-600/20 text-red-500 hover:bg-red-600/20 transition-all font-mono text-[11px] uppercase tracking-wider font-bold cursor-pointer"
+                >
+                  {isLoadingSheet ? 'Synchronisation...' : 'Synchroniser les réservations'}
+                </button>
+              </div>
+            )}
           </div>
-
-          {!token && (
-            <button
-              onClick={handleLogin}
-              className="px-4 py-2 rounded-xl bg-neutral-800 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white transition-all font-semibold font-mono text-[11px]"
-            >
-              Connecter Sheets
-            </button>
-          )}
-
-          {token && spreadsheetId && (
-            <div className="flex items-center gap-2 font-mono text-[11px] bg-red-600/10 text-red-500 border border-red-600/20 px-3 py-1 rounded-xl">
-              SHEET ID : {spreadsheetId.slice(0, 8)}...
-            </div>
-          )}
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* --- VISUAL PRESENTATION BENTO PHOTO GRID --- */}
       <section className="max-w-5xl mx-auto w-full px-4 py-12 flex-grow">
@@ -510,7 +575,13 @@ export default function App() {
 
       {/* --- FOOTER --- */}
       <footer className="mt-auto bg-black border-t border-neutral-900 px-6 py-8 text-center text-[10px] text-neutral-500 space-y-2 uppercase tracking-widest font-mono">
-        <p className="font-black text-white">LE RING BAR VIP</p>
+        <p
+          onDoubleClick={handleLogin}
+          title="Action administrateur (double-clic)"
+          className="font-black text-white cursor-pointer select-none transition-transform active:scale-95 inline-block"
+        >
+          LE RING BAR VIP
+        </p>
         <p>L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
         <p>© 2026 Le Ring Bar • Tous droits réservés.</p>
       </footer>

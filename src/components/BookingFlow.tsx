@@ -122,16 +122,16 @@ export default function BookingFlow({
     if (step === 6) return null; // Success step doesn't need the tracker
     const stepTitles = ['Date/Heure', 'Salon', 'Boissons', 'Infos', 'Validation'];
     return (
-      <div id="booking-stepper-tracker" className="p-4 border-b border-neutral-900 bg-neutral-950 flex justify-between items-center overflow-x-auto gap-4">
+      <div id="booking-stepper-tracker" className="p-3 sm:p-4 border-b border-neutral-900 bg-neutral-950 flex justify-start md:justify-between items-center overflow-x-auto gap-3 sm:gap-4 scrollbar-none">
         {stepTitles.map((title, index) => {
           const stepNum = index + 1;
           const isActive = step === stepNum;
           const isCompleted = step > stepNum;
 
           return (
-            <div key={title} className="flex items-center gap-2 flex-shrink-0">
+            <div key={title} className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
               <span
-                className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black transition-all ${
+                className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-black transition-all ${
                   isCompleted
                     ? 'bg-neutral-800 text-red-500 border border-neutral-700'
                     : isActive
@@ -139,9 +139,9 @@ export default function BookingFlow({
                     : 'bg-neutral-900 text-neutral-600'
                 }`}
               >
-                {isCompleted ? <Check className="w-3.5 h-3.5" /> : stepNum}
+                {isCompleted ? <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : stepNum}
               </span>
-              <span className={`text-xs uppercase tracking-wider font-bold ${isActive ? 'text-red-500' : isCompleted ? 'text-neutral-400' : 'text-neutral-600'}`}>
+              <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-bold ${isActive ? 'text-red-500' : isCompleted ? 'text-neutral-400' : 'text-neutral-600'}`}>
                 {title}
               </span>
               {index < stepTitles.length - 1 && (
@@ -304,7 +304,7 @@ export default function BookingFlow({
                 </div>
 
                 {/* Beverage Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[450px] overflow-y-auto pr-1">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-none md:max-h-[450px] overflow-y-visible md:overflow-y-auto pr-1">
                   {DRINKS.map((drink) => {
                     const qty = currentDrinkQty(drink.id);
                     return (

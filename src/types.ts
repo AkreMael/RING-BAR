@@ -36,6 +36,7 @@ export interface Reservation {
   comment?: string;
   createdAt: string;
   status: 'pending' | 'confirmed' | 'cancelled';
+  syncedToSheet?: boolean;
 }
 
 export interface Message {

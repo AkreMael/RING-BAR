@@ -1,0 +1,31 @@
+{
+  "entities": {
+    "Reservation": {
+      "title": "Reservation",
+      "description": "Une réservation de salon VIP au Ring Bar",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "L'identifiant unique de la réservation" },
+        "salonId": { "type": "integer", "description": "L'identifiant du salon" },
+        "salonName": { "type": "string", "description": "Le nom du salon" },
+        "clientName": { "type": "string", "description": "Le nom du client" },
+        "clientPhone": { "type": "string", "description": "Le numéro de téléphone du client" },
+        "date": { "type": "string", "description": "La date de la réservation (YYYY-MM-DD)" },
+        "time": { "type": "string", "description": "L'heure d'arrivée" },
+        "guestsCount": { "type": "integer", "description": "Le nombre d'invités" },
+        "drinks": { "type": "array", "description": "La liste des boissons commandées" },
+        "totalPrice": { "type": "number", "description": "Le montant total de la réservation" },
+        "comment": { "type": "string", "description": "Commentaire ou demande spéciale du client" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "La date de création de l'enregistrement" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "cancelled"], "description": "Le statut actuel de la réservation" }
+      },
+      "required": ["id", "salonId", "salonName", "clientName", "clientPhone", "date", "time", "guestsCount", "totalPrice", "createdAt", "status"]
+    }
+  },
+  "firestore": {
+    "/reservations/{reservationId}": {
+      "schema": "Reservation",
+      "description": "Collection globale des réservations de salons"
+    }
+  }
+}

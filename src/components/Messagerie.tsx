@@ -21,6 +21,7 @@ export default function Messagerie({
 }: MessagerieProps) {
   const [filter, setFilter] = useState<'all' | 'pending' | 'confirmed' | 'cancelled'>('all');
   const [selectedMessageId, setSelectedMessageId] = useState<string | null>(null);
+  const [mobileView, setMobileView] = useState<'list' | 'details'>('list');
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [localMessages, setLocalMessages] = useState<Message[]>([]);
   const [confirmDialog, setConfirmDialog] = useState<{ id: string; targetStatus: 'pending' | 'confirmed' | 'cancelled'; label: string } | null>(null);
@@ -135,7 +136,7 @@ export default function Messagerie({
             </div>
             <div>
               <h3 className="text-base font-black text-white tracking-wider uppercase italic flex items-center gap-2">
-                Messagerie Réservations
+                Historique des réservations
                 {isOwnerMode && (
                   <span className="text-[9px] bg-red-600/10 text-red-500 border border-red-600/20 px-2 py-0.5 rounded-full font-sans uppercase font-black">
                     Propriétaire Connecté
@@ -143,7 +144,7 @@ export default function Messagerie({
                 )}
               </h3>
               <p className="text-xs text-neutral-400 uppercase tracking-widest mt-1">
-                Consultez et validez les demandes de réservation reçues en temps réel.
+                Suivez en temps réel l'état de vos demandes de réservation (En attente, Validée ou Annulée).
               </p>
             </div>
           </div>
@@ -188,7 +189,7 @@ export default function Messagerie({
         <div className="flex-grow flex overflow-hidden relative">
           
           {/* Left Panel: Message List (40% width) */}
-          <div className="w-full md:w-[380px] border-r border-neutral-900 bg-black flex flex-col overflow-hidden">
+          <div className={`w-full md:w-[380px] border-r border-neutral-900 bg-black flex flex-col overflow-hidden ${mobileView === 'details' ? 'hidden md:flex' : 'flex'}`}>
             
             {/* Status tabs */}
             <div className="p-3 border-b border-neutral-900 flex gap-1.5 bg-neutral-950">
@@ -222,35 +223,51 @@ export default function Messagerie({
                     : dateObj.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
 
                   return (
-                    <button
+                    <div
                       key={msg.id}
-                      onClick={() => setSelectedMessageId(msg.id)}
-                      className={`w-full p-4 text-left transition-all hover:bg-neutral-900/30 flex flex-col gap-1.5 relative cursor-pointer ${
-                        isSelected ? 'bg-neutral-900/50 border-l-2 border-red-600' : ''
+                      className={`w-full p-4 text-left transition-all hover:bg-neutral-900/20 flex flex-col gap-1.5 relative ${
+                        isSelected ? 'bg-neutral-900/40 border-l-2 border-red-600' : ''
                       }`}
                     >
                       <div className="flex justify-between items-center gap-2">
-                        <span className="text-[10px] font-mono text-neutral-500">
-                          {msg.reservation.id}
+                        <span className="text-[9px] font-mono text-neutral-500 uppercase tracking-wider bg-neutral-950 px-1.5 py-0.5 rounded border border-neutral-900">
+                          RÉF : {msg.reservation.id}
                         </span>
-                        <span className="text-[10px] text-neutral-500">{formattedTime}</span>
+                        <span className="text-[10px] text-neutral-500 font-mono">{formattedTime}</span>
                       </div>
 
                       <h4 className={`text-sm font-black uppercase italic text-white tracking-wide ${isSelected ? 'text-red-500' : ''}`}>
                         {msg.reservation.clientName}
                       </h4>
 
-                      <p className="text-xs text-neutral-400">
+                      <p className="text-xs text-neutral-400 font-medium">
                         Salon {msg.reservation.salonId} • {msg.reservation.date} à {msg.reservation.time}
                       </p>
 
-                      <div className="flex justify-between items-center mt-1">
-                        <span className="text-xs font-mono font-bold text-red-500">
-                          {msg.reservation.totalPrice} €
-                        </span>
+                      <div className="flex flex-wrap items-center gap-1.5 my-0.5">
+                        <span className="text-[10px] uppercase font-bold text-neutral-500 font-mono">Statut :</span>
                         {getStatusBadge(msg.reservation.status)}
                       </div>
-                    </button>
+
+                      <div className="flex justify-between items-center mt-2 pt-2 border-t border-neutral-950">
+                        <span className="text-xs font-mono font-black text-red-500">
+                          {msg.reservation.totalPrice} €
+                        </span>
+                        <button
+                          onClick={() => {
+                            setSelectedMessageId(msg.id);
+                            setMobileView('details');
+                          }}
+                          className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all duration-300 cursor-pointer ${
+                            isSelected 
+                              ? 'bg-red-600 text-white shadow-[0_2px_8px_rgba(220,38,38,0.3)]' 
+                              : 'bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white hover:bg-neutral-800 hover:border-neutral-700'
+                          }`}
+                        >
+                          Consulter les détails ➔
+                        </button>
+                      </div>
+                    </div>
                   );
                 })
               )}
@@ -258,24 +275,33 @@ export default function Messagerie({
           </div>
 
           {/* Right Panel: Message Details View (60% width) */}
-          <div className="hidden md:flex flex-grow bg-black flex-col overflow-hidden">
+          <div className={`w-full md:flex flex-grow bg-black flex-col overflow-hidden ${mobileView === 'list' ? 'hidden md:flex' : 'flex'}`}>
             {activeMessage ? (
               <div className="flex-grow flex flex-col overflow-hidden">
                 {/* Header detail */}
-                <div className="p-6 border-b border-neutral-900 bg-neutral-950 flex justify-between items-start">
-                  <div>
-                    <span className="text-[9px] font-mono text-neutral-500 uppercase tracking-widest block">
-                      RÉSERVATION RÉF : {activeMessage.reservation.id}
-                    </span>
-                    <h2 className="text-xl font-black uppercase italic text-white mt-1 tracking-wide">
-                      {activeMessage.reservation.clientName}
-                    </h2>
-                    <p className="text-[10px] uppercase tracking-wider text-neutral-400 mt-1 flex items-center gap-1">
-                      Enregistré le : {new Date(activeMessage.reservation.createdAt).toLocaleString('fr-FR')}
-                    </p>
+                <div className="p-4 sm:p-6 border-b border-neutral-900 bg-neutral-950 flex justify-between items-start gap-4">
+                  <div className="flex items-start gap-3">
+                    <button
+                      onClick={() => setMobileView('list')}
+                      className="md:hidden p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white transition-all"
+                      title="Retour à la liste"
+                    >
+                      <Inbox className="w-4 h-4" />
+                    </button>
+                    <div>
+                      <span className="text-[9px] font-mono text-neutral-500 uppercase tracking-widest block">
+                        RÉSERVATION RÉF : {activeMessage.reservation.id}
+                      </span>
+                      <h2 className="text-lg sm:text-xl font-black uppercase italic text-white mt-1 tracking-wide">
+                        {activeMessage.reservation.clientName}
+                      </h2>
+                      <p className="text-[10px] uppercase tracking-wider text-neutral-400 mt-1 flex items-center gap-1">
+                        Enregistré le : {new Date(activeMessage.reservation.createdAt).toLocaleString('fr-FR')}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex flex-col items-end gap-1.5">
+                  <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                     <span className="text-[9px] uppercase tracking-widest text-neutral-500">Statut actuel</span>
                     {getStatusBadge(activeMessage.reservation.status)}
                   </div>
@@ -464,7 +490,13 @@ export default function Messagerie({
             ) : (
               <div className="flex-grow flex flex-col items-center justify-center p-8 text-neutral-500">
                 <Mail className="w-12 h-12 mb-4 text-neutral-700 animate-pulse" />
-                <p className="text-xs uppercase tracking-widest font-mono">Sélectionnez une réservation à gauche.</p>
+                <p className="text-xs uppercase tracking-widest font-mono mb-4 text-center">Sélectionnez une réservation à gauche.</p>
+                <button
+                  onClick={() => setMobileView('list')}
+                  className="md:hidden px-4 py-2 rounded-xl bg-neutral-900 border border-neutral-800 text-[10px] font-black uppercase tracking-widest text-neutral-300 transition-all hover:bg-neutral-800"
+                >
+                  Retourner à la liste
+                </button>
               </div>
             )}
           </div>
