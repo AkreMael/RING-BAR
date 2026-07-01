@@ -353,7 +353,7 @@ export default function App() {
       <section className="relative w-full h-[380px] md:h-[460px] flex flex-col justify-center items-center overflow-hidden border-b border-neutral-900">
         
         {/* Background Image of a luxury cocktail lounge with dark red overlay */}
-        <div className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-[url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=1600')]" />
+        <div className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-[url('https://i.supaimg.com/0543a7e5-673b-44b9-9668-8152c5aea01b/caf9d2c4-6903-432d-8d5b-223bdfa70f1f.png')]" />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/85 to-red-950/20 z-0" />
 
         {/* Content Wrapper */}
