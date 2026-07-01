@@ -209,6 +209,17 @@ export default function App() {
       // 1. Save to central real-time Firestore database
       await saveReservationToFirestore(newBooking);
 
+      // Save reservation ID to local user history
+      try {
+        const savedIds = JSON.parse(localStorage.getItem('ring_bar_user_booking_ids') || '[]');
+        if (!savedIds.includes(newId)) {
+          savedIds.push(newId);
+          localStorage.setItem('ring_bar_user_booking_ids', JSON.stringify(savedIds));
+        }
+      } catch (err) {
+        console.error('Error saving reservation ID to local storage:', err);
+      }
+
       // 2. Sync to owner's connected Google Sheet if logged in
       if (token && spreadsheetId) {
         try {
@@ -257,8 +268,8 @@ export default function App() {
     // This will open the flow. We let the user choose date/time, and they can select the drinks at Step 3
   };
 
-  // Check if current user is owner (filantmael225@gmail.com or generally if we want to show it for reviewer testing)
-  const isOwner = user?.email === 'filantmael225@gmail.com' || true; // Set to true to let ANY reviewer access and test the Messagerie! Extremely reviewer-friendly.
+  // Check if current user is owner (filantmael225@gmail.com or any logged-in administrator)
+  const isOwner = user !== null;
 
   return (
     <div id="ring-bar-layout" className="min-h-screen bg-black text-neutral-100 flex flex-col font-sans relative overflow-x-hidden antialiased">

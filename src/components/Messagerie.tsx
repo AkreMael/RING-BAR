@@ -60,7 +60,17 @@ export default function Messagerie({
 
   // Convert reservations into messages
   useEffect(() => {
-    const messages: Message[] = reservations.map((res) => ({
+    let listToConvert = reservations;
+    if (!isOwnerMode) {
+      try {
+        const savedIds = JSON.parse(localStorage.getItem('ring_bar_user_booking_ids') || '[]');
+        listToConvert = reservations.filter((res) => savedIds.includes(res.id));
+      } catch (e) {
+        console.error('Failed to load user booking ids:', e);
+      }
+    }
+
+    const messages: Message[] = listToConvert.map((res) => ({
       id: `msg-${res.id}`,
       title: `Nouvelle réservation - ${res.clientName}`,
       content: `Réservation du Salon ${res.salonId} pour le ${res.date} à ${res.time}.`,
@@ -78,7 +88,7 @@ export default function Messagerie({
     }
     
     setLocalMessages(messages);
-  }, [reservations]);
+  }, [reservations, isOwnerMode]);
 
   const filteredMessages = localMessages.filter((msg) => {
     if (filter === 'all') return true;
@@ -90,13 +100,13 @@ export default function Messagerie({
       case 'confirmed':
         return (
           <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[9px] px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider">
-            Confirmé
+            Validée
           </span>
         );
       case 'cancelled':
         return (
           <span className="bg-red-500/10 text-red-400 border border-red-500/30 text-[9px] px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider">
-            Annulé
+            Annulée
           </span>
         );
       default:
@@ -183,7 +193,7 @@ export default function Messagerie({
                       : 'text-neutral-500 hover:text-white bg-neutral-900/50 border border-neutral-800/30'
                   }`}
                 >
-                  {s === 'all' ? 'Tous' : s === 'pending' ? 'En Attente' : s === 'confirmed' ? 'Confirmé' : 'Annulé'}
+                  {s === 'all' ? 'Tous' : s === 'pending' ? 'En attente' : s === 'confirmed' ? 'Validée' : 'Annulée'}
                 </button>
               ))}
             </div>
@@ -201,10 +211,46 @@ export default function Messagerie({
                 <p className="text-xs uppercase tracking-widest font-mono">Aucune réservation trouvée.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+              <div className={`grid grid-cols-1 ${isOwnerMode ? 'md:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'} gap-4 max-w-5xl mx-auto`}>
                 {filteredMessages.map((msg) => {
                   const dateObj = new Date(msg.createdAt);
 
+                  if (!isOwnerMode) {
+                    // Highly compact card for client view (no private details or admin actions)
+                    return (
+                      <div
+                        key={msg.id}
+                        className="p-4 rounded-xl bg-neutral-900/40 border border-neutral-800/80 flex flex-col justify-between gap-3 shadow-md hover:border-neutral-700 transition-colors"
+                      >
+                        <div className="flex justify-between items-center gap-2">
+                          <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider bg-neutral-950 px-2 py-0.5 rounded border border-neutral-800">
+                            RÉF : {msg.reservation.id}
+                          </span>
+                          {getStatusBadge(msg.reservation.status)}
+                        </div>
+
+                        <div className="flex items-center gap-2 text-white">
+                          <Coffee className="w-4 h-4 text-red-500 shrink-0" />
+                          <span className="text-sm font-bold uppercase italic tracking-wide">
+                            {msg.reservation.salonName || `Salon ${msg.reservation.salonId}`}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 text-xs border-t border-neutral-900/60 pt-2 text-neutral-400">
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <Calendar className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
+                            <span className="truncate">{msg.reservation.date} à {msg.reservation.time}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 min-w-0">
+                            <Users className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
+                            <span className="truncate">{msg.reservation.guestsCount} pers.</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  // Full detailed card for administrator / owner mode
                   return (
                     <div
                       key={msg.id}
