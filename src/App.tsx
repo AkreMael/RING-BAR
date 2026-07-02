@@ -272,18 +272,18 @@ export default function App() {
   const isOwner = user !== null;
 
   return (
-    <div id="ring-bar-layout" className="min-h-screen bg-black text-neutral-100 flex flex-col font-sans relative overflow-x-hidden antialiased">
+    <div id="ring-bar-layout" className="min-h-screen bg-white text-neutral-900 flex flex-col font-sans relative overflow-x-hidden antialiased">
       
       {/* Dynamic Glowing Red Background Accent */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-gradient-to-b from-red-600/10 via-red-950/5 to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-gradient-to-b from-red-600/5 via-red-50/2 to-transparent blur-3xl pointer-events-none" />
 
       {/* --- TOP HEADER --- */}
-      <header className="sticky top-0 z-30 bg-black/95 border-b border-neutral-900 backdrop-blur-md px-3 sm:px-6 md:px-8 py-4 sm:py-5 flex justify-between items-center gap-2">
+      <header className="sticky top-0 z-30 bg-white/95 border-b border-neutral-100 backdrop-blur-md px-3 sm:px-6 md:px-8 py-4 sm:py-5 flex justify-between items-center gap-2 shadow-sm">
         
         {/* Left Side: GALERIE DU RING */}
         <button
           onClick={() => setIsGalleryOpen(true)}
-          className="px-2.5 sm:px-4 py-1.5 sm:py-2 text-[9px] sm:text-[11px] font-black tracking-widest text-white uppercase border border-neutral-800 rounded-xl bg-neutral-900/40 hover:bg-white hover:text-black hover:border-white transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.02)] select-none cursor-pointer whitespace-nowrap"
+          className="px-2.5 sm:px-4 py-1.5 sm:py-2 text-[9px] sm:text-[11px] font-black tracking-widest text-neutral-900 uppercase border border-neutral-200 rounded-xl bg-neutral-50 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all duration-300 shadow-[0_0_15px_rgba(0,0,0,0.02)] select-none cursor-pointer whitespace-nowrap"
         >
           <span className="sm:inline hidden">GALERIE DU RING</span>
           <span className="inline sm:hidden">GALERIE</span>
@@ -299,7 +299,7 @@ export default function App() {
             LRB
           </div>
           <div className="text-left">
-            <h1 className="text-xs sm:text-sm md:text-2xl font-black uppercase tracking-wider italic text-white flex items-center gap-1 sm:gap-2 leading-none">
+            <h1 className="text-xs sm:text-sm md:text-2xl font-black uppercase tracking-wider italic text-neutral-900 flex items-center gap-1 sm:gap-2 leading-none">
               Le Ring Bar <span className="text-[8px] sm:text-xs not-italic font-bold tracking-widest px-1 sm:px-1.5 py-0.5 rounded bg-red-600 text-white font-sans">VIP</span>
             </h1>
             <p className="hidden sm:block text-[8px] md:text-[9px] text-neutral-500 font-medium tracking-[0.2em] uppercase mt-0.5">RÉSERVATION DE SALON PREMIUM</p>
@@ -312,7 +312,7 @@ export default function App() {
           {/* Historique des réservations */}
           <button
             onClick={() => setIsMessagerieOpen(true)}
-            className="relative p-1.5 sm:p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-red-500 hover:bg-red-600 hover:text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(220,38,38,0.1)] flex items-center gap-1"
+            className="relative p-1.5 sm:p-2 rounded-xl bg-red-50 border border-red-100 text-red-600 hover:bg-red-600 hover:text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(220,38,38,0.1)] flex items-center gap-1"
             title="Historique des réservations"
           >
             <Inbox className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -328,8 +328,8 @@ export default function App() {
           {user && (
             <div className="flex items-center gap-1.5 sm:gap-2">
               <div className="hidden xl:flex flex-col items-end">
-                <span className="text-xs font-bold text-white max-w-[100px] truncate">{user.displayName}</span>
-                <span className="text-[9px] text-neutral-500 max-w-[100px] truncate">{user.email}</span>
+                <span className="text-xs font-bold text-neutral-900 max-w-[100px] truncate">{user.displayName}</span>
+                <span className="text-[9px] text-neutral-600 max-w-[100px] truncate">{user.email}</span>
               </div>
               <img
                 src={user.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100'}
@@ -340,7 +340,7 @@ export default function App() {
               <button
                 onClick={handleLogout}
                 title="Se déconnecter"
-                className="p-1.5 sm:p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-800 transition-all cursor-pointer"
+                className="p-1.5 sm:p-2 rounded-xl bg-neutral-100 border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 transition-all cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
@@ -350,15 +350,15 @@ export default function App() {
       </header>
 
       {/* --- HERO BANNER & BACKGROUND --- */}
-      <section className="relative w-full h-[380px] md:h-[460px] flex flex-col justify-center items-center overflow-hidden border-b border-neutral-900">
+      <section className="relative w-full h-[380px] md:h-[460px] flex flex-col justify-center items-center overflow-hidden border-b border-neutral-100">
         
         {/* Background Image of a luxury cocktail lounge with dark red overlay */}
         <div className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-[url('https://i.supaimg.com/0543a7e5-673b-44b9-9668-8152c5aea01b/caf9d2c4-6903-432d-8d5b-223bdfa70f1f.png')]" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/85 to-red-950/20 z-0" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-0" />
 
         {/* Content Wrapper */}
         <div className="relative z-10 text-center space-y-6 px-4 max-w-4xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-bold uppercase tracking-widest animate-pulse">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-bold uppercase tracking-widest animate-pulse bg-black/30 backdrop-blur-sm">
             <Sparkles className="w-3.5 h-3.5" /> Club Privé & Bar à Cocktails
           </div>
 
@@ -367,7 +367,7 @@ export default function App() {
             <span className="text-red-600">D'EXCEPTION.</span>
           </h2>
           
-          <p className="text-xs md:text-sm text-neutral-400 max-w-xl mx-auto leading-relaxed drop-shadow-[0_1px_5px_rgba(0,0,0,0.6)]">
+          <p className="text-xs md:text-sm text-neutral-200 max-w-xl mx-auto leading-relaxed drop-shadow-[0_1px_5px_rgba(0,0,0,0.6)] font-medium">
             Bienvenue au Ring Bar VIP. Sélectionnez votre salon numéroté, précommandez vos boissons prestigieuses et vivez une expérience mémorable avec un service personnalisé de premier ordre.
           </p>
 
@@ -377,7 +377,7 @@ export default function App() {
               href="https://maps.app.goo.gl/YFN6d7YkKjfGpcB56"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-200 hover:text-white hover:border-neutral-700 transition-all hover:scale-105 duration-300 text-xs font-bold tracking-widest uppercase shadow-lg"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-neutral-200 text-neutral-900 hover:text-black hover:border-neutral-400 hover:bg-neutral-50 transition-all hover:scale-105 duration-300 text-xs font-bold tracking-widest uppercase shadow-lg"
             >
               <MapPin className="w-4 h-4 text-red-600" />
               LOCALISATION DU RING BAR
@@ -388,39 +388,39 @@ export default function App() {
 
       {/* --- BENTO NAVIGATION GRID (Theme: Red-accented Bento) --- */}
       <section className="relative z-20 max-w-5xl mx-auto w-full px-4 -mt-10 md:-mt-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 bg-neutral-950 border border-neutral-800 p-6 rounded-3xl shadow-2xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 bg-white border border-neutral-200 p-6 rounded-3xl shadow-2xl">
           
           {/* Bento Box 1: Réservation ✅ */}
           <button
             onClick={() => setIsBookingOpen(true)}
-            className="w-full text-left p-6 rounded-2xl bg-neutral-900/60 border border-neutral-800 hover:border-red-600 transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[140px]"
+            className="w-full text-left p-6 rounded-2xl bg-neutral-50 border border-neutral-200 hover:border-red-600 hover:bg-white transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[140px]"
           >
             <div className="flex justify-between items-start w-full">
-              <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest">Étape 1 . l'Arène</span>
+              <span className="text-[10px] font-bold text-red-600 uppercase tracking-widest">Étape 1 . l'Arène</span>
               <span className="px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[9px] font-bold uppercase tracking-wider">Actif</span>
             </div>
             <div>
-              <h3 className="text-xl font-black uppercase tracking-wide italic text-white group-hover:text-red-500 transition-colors">
+              <h3 className="text-xl font-black uppercase tracking-wide italic text-neutral-900 group-hover:text-red-600 transition-colors">
                 RÉSERVATION <span className="text-red-600">.</span>
               </h3>
-              <p className="text-[11px] text-neutral-400 mt-1">Choisissez votre salon numéroté en temps réel.</p>
+              <p className="text-[11px] text-neutral-600 mt-1 font-medium">Choisissez votre salon numéroté en temps réel.</p>
             </div>
           </button>
 
           {/* Bento Box 2: Le prix des boissons 🥂 */}
           <button
             onClick={() => setIsDrinksOpen(true)}
-            className="w-full text-left p-6 rounded-2xl bg-neutral-900/60 border border-neutral-800 hover:border-white transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[140px]"
+            className="w-full text-left p-6 rounded-2xl bg-neutral-50 border border-neutral-200 hover:border-neutral-900 hover:bg-white transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[140px]"
           >
             <div className="flex justify-between items-start w-full">
-              <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Étape 2 . Le Menu</span>
-              <span className="px-2.5 py-0.5 rounded-full bg-neutral-800 text-neutral-400 text-[9px] font-bold uppercase tracking-wider">Consulter</span>
+              <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Étape 2 . Le Menu</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-neutral-200 text-neutral-600 text-[9px] font-bold uppercase tracking-wider">Consulter</span>
             </div>
             <div>
-              <h3 className="text-xl font-black uppercase tracking-wide italic text-white group-hover:text-red-500 transition-colors">
+              <h3 className="text-xl font-black uppercase tracking-wide italic text-neutral-900 group-hover:text-red-600 transition-colors">
                 TARIF DES BOISSONS 🥂
               </h3>
-              <p className="text-[11px] text-neutral-400 mt-1">Parcourez nos bouteilles prestigieuses et cocktails signatures.</p>
+              <p className="text-[11px] text-neutral-600 mt-1 font-medium">Parcourez nos bouteilles prestigieuses et cocktails signatures.</p>
             </div>
           </button>
 
@@ -447,15 +447,15 @@ export default function App() {
       {/* --- GOOGLE SHEETS SYNC STATUS --- */}
       {user && (
         <section className="max-w-5xl mx-auto w-full px-4 mt-6">
-          <div className="p-4 bg-neutral-900/40 border border-neutral-800 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
+          <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
             
             <div className="flex items-center gap-2.5">
               <FileSpreadsheet className={`w-5 h-5 ${token ? 'text-red-500 animate-pulse' : 'text-neutral-500'}`} />
               <div>
-                <p className="font-bold text-neutral-200">
+                <p className="font-bold text-neutral-900">
                   {token ? '✓ Connecté à Google Sheets' : 'ℹ Google Sheets non connecté'}
                 </p>
-                <p className="text-neutral-500 text-[11px] mt-0.5">
+                <p className="text-neutral-600 text-[11px] mt-0.5 font-medium">
                   {token
                     ? 'Vos réservations sont écrites en temps réel dans votre propre feuille Google Sheets.'
                     : 'Connectez-vous avec Google pour que vos réservations soient écrites sur votre compte.'}
@@ -466,7 +466,7 @@ export default function App() {
             {!token && (
               <button
                 onClick={handleLogin}
-                className="px-4 py-2 rounded-xl bg-neutral-800 border border-neutral-700 hover:border-neutral-500 text-neutral-300 hover:text-white transition-all font-semibold font-mono text-[11px]"
+                className="px-4 py-2 rounded-xl bg-neutral-100 border border-neutral-200 text-neutral-700 hover:text-neutral-950 transition-all font-semibold font-mono text-[11px]"
               >
                 Connecter Sheets
               </button>
@@ -478,7 +478,7 @@ export default function App() {
                   href={`https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 font-mono text-[11px] bg-emerald-600/15 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl hover:bg-emerald-600/25 transition-all font-bold"
+                  className="flex items-center gap-1.5 font-mono text-[11px] bg-emerald-600/10 text-emerald-600 border border-emerald-500/20 px-3 py-1.5 rounded-xl hover:bg-emerald-600/20 transition-all font-bold"
                 >
                   Ouvrir la feuille Google Sheets ↗
                 </a>
@@ -499,14 +499,14 @@ export default function App() {
       <section className="max-w-5xl mx-auto w-full px-4 py-12 flex-grow">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h3 className="text-xl font-bold text-white tracking-wide uppercase italic">
+            <h3 className="text-xl font-bold text-neutral-900 tracking-wide uppercase italic">
               L'Univers Du Ring Bar <span className="text-red-600">.</span>
             </h3>
             <p className="text-xs text-neutral-500 mt-0.5 uppercase tracking-wider">Vivez l'expérience ultime de notre club lounge d'exception.</p>
           </div>
           <button
             onClick={() => setIsGalleryOpen(true)}
-            className="text-xs text-red-500 font-bold hover:text-red-400 transition-colors uppercase tracking-widest"
+            className="text-xs text-red-600 font-bold hover:text-red-500 transition-colors uppercase tracking-widest"
           >
             Voir tout →
           </button>
@@ -516,7 +516,7 @@ export default function App() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* Card 1: Experience & Connect */}
-          <div className="bg-neutral-900/50 border border-neutral-800 rounded-3xl overflow-hidden group hover:border-red-600/40 transition-all duration-300 flex flex-col">
+          <div className="bg-neutral-50 border border-neutral-200 rounded-3xl overflow-hidden group hover:border-red-600 transition-all duration-300 flex flex-col shadow-sm">
             <div className="h-56 overflow-hidden relative">
               <img
                 src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&q=80&w=600"
@@ -524,13 +524,13 @@ export default function App() {
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
             </div>
-            <div className="p-6 space-y-2 flex-grow flex flex-col justify-between">
+            <div className="p-6 space-y-2 flex-grow flex flex-col justify-between bg-white">
               <div>
                 <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest block mb-1">Le Salon VIP</span>
-                <h4 className="text-lg font-bold text-white uppercase italic">Ambiance Salon Miroir</h4>
-                <p className="text-xs text-neutral-400 leading-relaxed mt-2">
+                <h4 className="text-lg font-bold text-neutral-900 uppercase italic">Ambiance Salon Miroir</h4>
+                <p className="text-xs text-neutral-600 leading-relaxed mt-2 font-medium">
                   Notre Salon 4 - VIP se dresse en face du miroir avec un cadre feutré exclusif, d'immenses canapés et un service personnalisé de luxe.
                 </p>
               </div>
@@ -538,7 +538,7 @@ export default function App() {
           </div>
 
           {/* Card 2: Luxury Champagnes */}
-          <div className="bg-neutral-900/50 border border-neutral-800 rounded-3xl overflow-hidden group hover:border-red-600/40 transition-all duration-300 flex flex-col">
+          <div className="bg-neutral-50 border border-neutral-200 rounded-3xl overflow-hidden group hover:border-red-600 transition-all duration-300 flex flex-col shadow-sm">
             <div className="h-56 overflow-hidden relative">
               <img
                 src="https://images.unsplash.com/photo-1594460528456-a3dec7245072?auto=format&fit=crop&q=80&w=600"
@@ -546,13 +546,13 @@ export default function App() {
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
             </div>
-            <div className="p-6 space-y-2 flex-grow flex flex-col justify-between">
+            <div className="p-6 space-y-2 flex-grow flex flex-col justify-between bg-white">
               <div>
-                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest block mb-1">Célébrations</span>
-                <h4 className="text-lg font-bold text-white uppercase italic font-sans">Bouteilles Prestiges</h4>
-                <p className="text-xs text-neutral-400 leading-relaxed mt-2">
+                <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest block mb-1">Célébrations</span>
+                <h4 className="text-lg font-bold text-neutral-900 uppercase italic font-sans">Bouteilles Prestiges</h4>
+                <p className="text-xs text-neutral-600 leading-relaxed mt-2 font-medium">
                   Savourez notre sélection de champagnes d'exception. De Dom Pérignon Luminous à Ruinart Blanc de Blancs, illuminez votre table de salon.
                 </p>
               </div>
@@ -560,7 +560,7 @@ export default function App() {
           </div>
 
           {/* Card 3: DJ & Dancefloor */}
-          <div className="bg-neutral-900/50 border border-neutral-800 rounded-3xl overflow-hidden group hover:border-red-600/40 transition-all duration-300 flex flex-col">
+          <div className="bg-neutral-50 border border-neutral-200 rounded-3xl overflow-hidden group hover:border-red-600 transition-all duration-300 flex flex-col shadow-sm">
             <div className="h-56 overflow-hidden relative">
               <img
                 src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=600"
@@ -568,13 +568,13 @@ export default function App() {
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
             </div>
-            <div className="p-6 space-y-2 flex-grow flex flex-col justify-between">
+            <div className="p-6 space-y-2 flex-grow flex flex-col justify-between bg-white">
               <div>
                 <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest block mb-1">DJ Set Live</span>
-                <h4 className="text-lg font-bold text-white uppercase italic">Vibrations & Rythmes</h4>
-                <p className="text-xs text-neutral-400 leading-relaxed mt-2">
+                <h4 className="text-lg font-bold text-neutral-900 uppercase italic">Vibrations & Rythmes</h4>
+                <p className="text-xs text-neutral-600 leading-relaxed mt-2 font-medium">
                   Le Salon 2 se dresse à proximité directe de la cabine DJ pour vibrer toute la soirée sous le son de nos artistes et résidents internationaux.
                 </p>
               </div>
@@ -585,11 +585,11 @@ export default function App() {
       </section>
 
       {/* --- FOOTER --- */}
-      <footer className="mt-auto bg-black border-t border-neutral-900 px-6 py-8 text-center text-[10px] text-neutral-500 space-y-2 uppercase tracking-widest font-mono">
+      <footer className="mt-auto bg-neutral-50 border-t border-neutral-100 px-6 py-8 text-center text-[10px] text-neutral-500 space-y-2 uppercase tracking-widest font-mono">
         <p
           onDoubleClick={handleLogin}
           title="Action administrateur (double-clic)"
-          className="font-black text-white cursor-pointer select-none transition-transform active:scale-95 inline-block"
+          className="font-black text-neutral-900 cursor-pointer select-none transition-transform active:scale-95 inline-block"
         >
           LE RING BAR VIP
         </p>

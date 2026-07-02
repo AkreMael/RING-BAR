@@ -122,7 +122,7 @@ export default function BookingFlow({
     if (step === 6) return null; // Success step doesn't need the tracker
     const stepTitles = ['Date/Heure', 'Salon', 'Boissons', 'Infos', 'Validation'];
     return (
-      <div id="booking-stepper-tracker" className="p-3 sm:p-4 border-b border-neutral-900 bg-neutral-950 flex justify-start md:justify-between items-center overflow-x-auto gap-3 sm:gap-4 scrollbar-none">
+      <div id="booking-stepper-tracker" className="p-3 sm:p-4 border-b border-neutral-100 bg-neutral-50 flex justify-start md:justify-between items-center overflow-x-auto gap-3 sm:gap-4 scrollbar-none">
         {stepTitles.map((title, index) => {
           const stepNum = index + 1;
           const isActive = step === stepNum;
@@ -133,19 +133,19 @@ export default function BookingFlow({
               <span
                 className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-black transition-all ${
                   isCompleted
-                    ? 'bg-neutral-800 text-red-500 border border-neutral-700'
+                    ? 'bg-neutral-100 text-red-600 border border-neutral-200'
                     : isActive
                     ? 'bg-red-600 text-white shadow-[0_2px_10px_rgba(220,38,38,0.4)]'
-                    : 'bg-neutral-900 text-neutral-600'
+                    : 'bg-neutral-200 text-neutral-550'
                 }`}
               >
                 {isCompleted ? <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : stepNum}
               </span>
-              <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-bold ${isActive ? 'text-red-500' : isCompleted ? 'text-neutral-400' : 'text-neutral-600'}`}>
+              <span className={`text-[10px] sm:text-xs uppercase tracking-wider font-bold ${isActive ? 'text-red-500' : isCompleted ? 'text-neutral-600' : 'text-neutral-400'}`}>
                 {title}
               </span>
               {index < stepTitles.length - 1 && (
-                <div className="hidden md:block w-8 h-[1px] bg-neutral-950" />
+                <div className="hidden md:block w-8 h-[1px] bg-neutral-200" />
               )}
             </div>
           );
@@ -155,22 +155,22 @@ export default function BookingFlow({
   };
 
   return (
-    <div className="fixed inset-0 z-40 overflow-y-auto bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-40 overflow-y-auto bg-black/50 backdrop-blur-md flex items-center justify-center p-4">
       {/* Central Booking Card */}
-      <div className="relative w-full max-w-5xl bg-black border border-neutral-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="relative w-full max-w-5xl bg-white border border-neutral-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         
         {/* Title Header */}
-        <div className="p-5 border-b border-neutral-900 bg-neutral-950 flex justify-between items-center">
+        <div className="p-5 border-b border-neutral-100 bg-neutral-50 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-red-600" />
-            <h3 className="text-base font-black text-white tracking-wider uppercase italic font-sans">
+            <h3 className="text-base font-black text-neutral-900 tracking-wider uppercase italic font-sans">
               Réservation de Salon VIP <span className="text-red-600">—</span> Le Ring Bar
             </h3>
           </div>
           {step !== 6 && (
             <button
               onClick={onClose}
-              className="px-4 py-1.5 rounded-xl bg-neutral-900 border border-neutral-800 text-xs font-bold uppercase tracking-widest text-neutral-400 hover:text-white hover:border-neutral-700 transition-colors cursor-pointer"
+              className="px-4 py-1.5 rounded-xl bg-neutral-100 border border-neutral-200 text-xs font-bold uppercase tracking-widest text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 transition-colors cursor-pointer"
             >
               Annuler
             </button>
@@ -181,24 +181,24 @@ export default function BookingFlow({
         {renderStepsHeader()}
 
         {/* Main Body Scrollable Area */}
-        <div className="flex-grow p-6 overflow-y-auto bg-black">
+        <div className="flex-grow p-6 overflow-y-auto bg-white">
           
           {/* STEP 1: Date, Time & Guest count */}
           {step === 1 && (
             <div id="step-datetime-container" className="max-w-xl mx-auto space-y-6 py-4">
               <div className="text-center space-y-2">
-                <h4 className="text-xl font-bold text-white tracking-wide uppercase italic">Quand souhaitez-vous venir ?</h4>
-                <p className="text-xs text-neutral-400 uppercase tracking-widest">
+                <h4 className="text-xl font-bold text-neutral-900 tracking-wide uppercase italic">Quand souhaitez-vous venir ?</h4>
+                <p className="text-xs text-neutral-600 uppercase tracking-widest">
                   Veuillez spécifier la date, l'heure et le nombre de convives pour votre salon.
                 </p>
               </div>
 
-              <div className="space-y-4 bg-neutral-900/40 border border-neutral-800/80 p-6 rounded-2xl">
+              <div className="space-y-4 bg-neutral-50 border border-neutral-200 p-6 rounded-2xl">
                 {/* Date Picker */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">Date de Réservation</label>
+                  <label className="text-xs font-bold text-neutral-600 uppercase tracking-widest block">Date de Réservation</label>
                   <div className="relative">
-                    <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+                    <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                     <input
                       type="date"
                       value={selectedDate}
@@ -207,23 +207,23 @@ export default function BookingFlow({
                         setSelectedDate(e.target.value);
                         setSelectedSalonId(null); // Reset salon selection as availability changes
                       }}
-                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-red-600"
+                      className="w-full bg-white border border-neutral-200 rounded-xl pl-10 pr-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-red-600"
                     />
                   </div>
                 </div>
 
                 {/* Time Selection */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">Heure d'arrivée</label>
+                  <label className="text-xs font-bold text-neutral-600 uppercase tracking-widest block">Heure d'arrivée</label>
                   <div className="relative">
-                    <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+                    <Clock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                     <select
                       value={selectedTime}
                       onChange={(e) => {
                         setSelectedTime(e.target.value);
                         setSelectedSalonId(null); // Reset salon
                       }}
-                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 appearance-none"
+                      className="w-full bg-white border border-neutral-200 rounded-xl pl-10 pr-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-red-600 appearance-none"
                     >
                       <option value="21:00">21:00</option>
                       <option value="21:30">21:30</option>
@@ -240,13 +240,13 @@ export default function BookingFlow({
 
                 {/* Guest counter */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">Nombre d'invités</label>
+                  <label className="text-xs font-bold text-neutral-600 uppercase tracking-widest block">Nombre d'invités</label>
                   <div className="relative">
-                    <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+                    <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                     <select
                       value={guestsCount}
                       onChange={(e) => setGuestsCount(parseInt(e.target.value, 10))}
-                      className="w-full bg-neutral-900 border border-neutral-800 rounded-xl pl-10 pr-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 appearance-none"
+                      className="w-full bg-white border border-neutral-200 rounded-xl pl-10 pr-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-red-600 appearance-none"
                     >
                       <option value="2">2 Personnes</option>
                       <option value="4">4 Personnes</option>
@@ -257,7 +257,7 @@ export default function BookingFlow({
                       <option value="15">15 Personnes (Groupe VIP)</option>
                     </select>
                   </div>
-                  <p className="text-[10px] text-neutral-500 uppercase tracking-wider mt-2 block">
+                  <p className="text-[10px] text-neutral-500 uppercase tracking-wider mt-2 block font-medium">
                     Pour les groupes de plus de 15 personnes, veuillez nous contacter directement ou réserver plusieurs salons.
                   </p>
                 </div>
@@ -269,8 +269,8 @@ export default function BookingFlow({
           {step === 2 && (
             <div id="step-salon-container" className="space-y-4 py-2">
               <div className="text-center space-y-2 max-w-md mx-auto mb-6">
-                <h4 className="text-xl font-bold text-white tracking-wide uppercase italic">Choisissez votre Salon</h4>
-                <p className="text-xs text-neutral-400 uppercase tracking-widest">
+                <h4 className="text-xl font-bold text-neutral-900 tracking-wide uppercase italic">Choisissez votre Salon</h4>
+                <p className="text-xs text-neutral-600 uppercase tracking-widest">
                   Consultez la carte ci-dessous et sélectionnez l'emplacement désiré pour votre soirée.
                 </p>
               </div>
@@ -290,16 +290,16 @@ export default function BookingFlow({
             <div id="step-drinks-container" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start py-2">
               {/* Product selector list (8 cols) */}
               <div className="lg:col-span-8 space-y-6">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 pb-4 border-b border-neutral-900">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 pb-4 border-b border-neutral-100">
                   <div>
-                    <h4 className="text-lg font-bold text-white tracking-wide uppercase italic">Choix des boissons</h4>
-                    <p className="text-xs text-neutral-400 uppercase tracking-widest mt-1">
+                    <h4 className="text-lg font-bold text-neutral-900 tracking-wide uppercase italic">Choix des boissons</h4>
+                    <p className="text-xs text-neutral-600 uppercase tracking-widest mt-1">
                       Sélectionnez à l'avance les bouteilles et softs pour votre table.
                     </p>
                   </div>
 
-                  <span className="text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-xl bg-red-600/10 text-red-500 border border-red-500/20 font-bold">
-                    Salon choisi : <strong className="text-white">{selectedSalon.name}</strong>
+                  <span className="text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-xl bg-red-50 text-red-600 border border-red-100 font-bold">
+                    Salon choisi : <strong className="text-neutral-900">{selectedSalon.name}</strong>
                   </span>
                 </div>
 
@@ -310,21 +310,21 @@ export default function BookingFlow({
                     return (
                       <div
                         key={drink.id}
-                        className="p-3 bg-neutral-900/40 border border-neutral-800 rounded-2xl flex gap-3 hover:border-neutral-700 transition-colors"
+                        className="p-3 bg-neutral-50 border border-neutral-200 rounded-2xl flex gap-3 hover:border-neutral-300 hover:bg-white transition-all duration-300"
                       >
                         <img
                           src={drink.image}
                           alt={drink.name}
                           referrerPolicy="no-referrer"
-                          className="w-16 h-16 rounded-xl object-cover bg-neutral-950 border border-neutral-800 flex-shrink-0"
+                          className="w-16 h-16 rounded-xl object-cover bg-white border border-neutral-200 flex-shrink-0"
                         />
                         <div className="flex flex-col justify-between flex-grow">
                           <div>
                             <div className="flex justify-between items-start gap-1">
-                              <h5 className="text-sm font-bold text-white tracking-wide uppercase italic line-clamp-1">{drink.name}</h5>
-                              <span className="text-sm font-mono font-bold text-red-500 flex-shrink-0">{drink.price}€</span>
+                              <h5 className="text-sm font-bold text-neutral-900 tracking-wide uppercase italic line-clamp-1">{drink.name}</h5>
+                              <span className="text-sm font-mono font-bold text-red-600 flex-shrink-0">{drink.price}€</span>
                             </div>
-                            <p className="text-[11px] text-neutral-400 line-clamp-1 leading-relaxed">{drink.description}</p>
+                            <p className="text-[11px] text-neutral-600 line-clamp-1 leading-relaxed">{drink.description}</p>
                           </div>
 
                           {/* Qty selector */}
@@ -333,11 +333,11 @@ export default function BookingFlow({
                             <div className="flex items-center gap-2">
                               <button
                                 onClick={() => handleUpdateDrinkQuantity(drink, qty - 1)}
-                                className="w-6 h-6 rounded bg-neutral-800 text-neutral-300 hover:bg-neutral-700 hover:text-white flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
+                                className="w-6 h-6 rounded bg-neutral-200 text-neutral-600 hover:bg-neutral-300 hover:text-neutral-900 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
                               >
                                 -
                               </button>
-                              <span className="w-6 text-center text-xs font-mono font-bold text-white">{qty}</span>
+                              <span className="w-6 text-center text-xs font-mono font-bold text-neutral-900">{qty}</span>
                               <button
                                 onClick={() => handleUpdateDrinkQuantity(drink, qty + 1)}
                                 className="w-6 h-6 rounded bg-red-600 text-white hover:bg-red-500 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
@@ -354,9 +354,9 @@ export default function BookingFlow({
               </div>
 
               {/* Booking receipt & constraints card (4 cols) */}
-              <div className="lg:col-span-4 bg-neutral-900/40 border border-neutral-800 rounded-3xl p-5 space-y-5 shadow-xl">
-                <h4 className="text-white font-bold text-xs uppercase tracking-widest pb-3 border-b border-neutral-800 flex items-center gap-2">
-                  <ShoppingCart className="w-4 h-4 text-red-500" /> Récapitulatif Table
+              <div className="lg:col-span-4 bg-neutral-50 border border-neutral-200 rounded-3xl p-5 space-y-5 shadow-lg">
+                <h4 className="text-neutral-900 font-bold text-xs uppercase tracking-widest pb-3 border-b border-neutral-200 flex items-center gap-2">
+                  <ShoppingCart className="w-4 h-4 text-red-600" /> Récapitulatif Table
                 </h4>
 
                 <div className="space-y-3 max-h-48 overflow-y-auto pr-1">
@@ -368,40 +368,40 @@ export default function BookingFlow({
                     selectedDrinks.map((item) => (
                       <div key={item.drink.id} className="flex justify-between items-center text-xs">
                         <div className="flex gap-1.5 items-center">
-                          <span className="text-red-500 font-bold font-mono">{item.quantity}x</span>
-                          <span className="text-neutral-300 line-clamp-1">{item.drink.name}</span>
+                          <span className="text-red-600 font-bold font-mono">{item.quantity}x</span>
+                          <span className="text-neutral-700 line-clamp-1">{item.drink.name}</span>
                         </div>
-                        <span className="text-white font-mono font-semibold">{item.drink.price * item.quantity} €</span>
+                        <span className="text-neutral-900 font-mono font-semibold">{item.drink.price * item.quantity} €</span>
                       </div>
                     ))
                   )}
                 </div>
 
-                <div className="pt-3 border-t border-neutral-900 space-y-2">
+                <div className="pt-3 border-t border-neutral-200 space-y-2">
                   {/* Minimum spend details */}
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-neutral-400">Consommation min. requise :</span>
-                    <span className="font-semibold text-white font-mono">{selectedSalon.priceMin} €</span>
+                    <span className="text-neutral-500 font-medium">Consommation min. requise :</span>
+                    <span className="font-semibold text-neutral-900 font-mono">{selectedSalon.priceMin} €</span>
                   </div>
 
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-neutral-400">Total boissons actuel :</span>
-                    <span className="font-semibold text-white font-mono">{drinksTotal} €</span>
+                    <span className="text-neutral-500 font-medium">Total boissons actuel :</span>
+                    <span className="font-semibold text-neutral-900 font-mono">{drinksTotal} €</span>
                   </div>
 
                   {/* Warning if minimum spend is not satisfied */}
                   {!isMinSpendSatisfied && (
-                    <div className="mt-3 p-3 rounded-xl bg-red-950/20 border border-red-900/30 text-[10px] text-red-400 leading-relaxed flex gap-2">
-                      <AlertTriangle className="w-4 h-4 text-red-500 flex-shrink-0" />
+                    <div className="mt-3 p-3 rounded-xl bg-red-50 border border-red-100 text-[10px] text-red-600 leading-relaxed flex gap-2 font-medium">
+                      <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0" />
                       <div>
-                        Note : Il vous reste <strong className="text-white font-bold">{differenceToMinSpend} €</strong> de boissons à commander pour atteindre le minimum requis. La différence sera facturée sur place.
+                        Note : Il vous reste <strong className="text-neutral-900 font-bold">{differenceToMinSpend} €</strong> de boissons à commander pour atteindre le minimum requis. La différence sera facturée sur place.
                       </div>
                     </div>
                   )}
 
-                  <div className="pt-3 border-t border-neutral-900 flex justify-between items-center">
-                    <span className="text-xs font-bold text-neutral-300">Sous-total Réservation :</span>
-                    <span className="text-lg font-black font-mono text-red-500">{finalTotalPrice} €</span>
+                  <div className="pt-3 border-t border-neutral-200 flex justify-between items-center">
+                    <span className="text-xs font-bold text-neutral-700">Sous-total Réservation :</span>
+                    <span className="text-lg font-black font-mono text-red-600">{finalTotalPrice} €</span>
                   </div>
                 </div>
               </div>
@@ -412,48 +412,48 @@ export default function BookingFlow({
           {step === 4 && (
             <div id="step-client-container" className="max-w-xl mx-auto space-y-6 py-4">
               <div className="text-center space-y-2">
-                <h4 className="text-xl font-bold text-white tracking-wide uppercase italic">Fiche de contact</h4>
-                <p className="text-xs text-neutral-400 uppercase tracking-widest">
+                <h4 className="text-xl font-bold text-neutral-900 tracking-wide uppercase italic">Fiche de contact</h4>
+                <p className="text-xs text-neutral-600 uppercase tracking-widest">
                   Renseignez vos coordonnées afin de valider et lier votre réservation.
                 </p>
               </div>
 
-              <div className="space-y-4 bg-neutral-900/40 border border-neutral-800 p-6 rounded-2xl">
+              <div className="space-y-4 bg-neutral-50 border border-neutral-200 p-6 rounded-2xl">
                 {/* Name */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">Nom et Prénom</label>
+                  <label className="text-xs font-bold text-neutral-600 uppercase tracking-widest block">Nom et Prénom</label>
                   <input
                     type="text"
                     required
                     value={clientName}
                     onChange={(e) => setClientName(e.target.value)}
                     placeholder="Ex: Jean Dupont"
-                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600"
+                    className="w-full bg-white border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-red-600 font-medium"
                   />
                 </div>
 
                 {/* Phone */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">Numéro de Téléphone</label>
+                  <label className="text-xs font-bold text-neutral-600 uppercase tracking-widest block">Numéro de Téléphone</label>
                   <input
                     type="tel"
                     required
                     value={clientPhone}
                     onChange={(e) => setClientPhone(e.target.value)}
                     placeholder="Ex: +33 6 12 34 56 78"
-                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600"
+                    className="w-full bg-white border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-red-600 font-medium"
                   />
                 </div>
 
                 {/* Comment (Optional) */}
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-neutral-400 uppercase tracking-widest block">Demande Spéciale (facultatif)</label>
+                  <label className="text-xs font-bold text-neutral-600 uppercase tracking-widest block">Demande Spéciale (facultatif)</label>
                   <textarea
                     rows={3}
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                     placeholder="Ex: Anniversaire, préférences d'emplacement de table, etc."
-                    className="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 resize-none font-sans"
+                    className="w-full bg-white border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-red-600 resize-none font-sans font-medium"
                   />
                 </div>
               </div>
@@ -464,29 +464,29 @@ export default function BookingFlow({
           {step === 5 && selectedSalon && (
             <div id="step-review-container" className="max-w-2xl mx-auto space-y-6 py-2">
               <div className="text-center space-y-2 mb-4">
-                <h4 className="text-xl font-bold text-white tracking-wide uppercase italic">Vérifiez vos informations</h4>
-                <p className="text-xs text-neutral-400 uppercase tracking-widest">
+                <h4 className="text-xl font-bold text-neutral-900 tracking-wide uppercase italic">Vérifiez vos informations</h4>
+                <p className="text-xs text-neutral-600 uppercase tracking-widest">
                   Relisez votre récapitulatif de réservation avant de confirmer.
                 </p>
               </div>
 
               {/* Receipt Body */}
-              <div className="bg-neutral-900/40 border border-neutral-800 rounded-3xl divide-y divide-neutral-900 overflow-hidden shadow-2xl">
+              <div className="bg-neutral-50 border border-neutral-200 rounded-3xl divide-y divide-neutral-200 overflow-hidden shadow-xl">
                 
                 {/* Section 1: Date & Time */}
                 <div className="p-4 md:p-5 flex justify-between items-center gap-4">
                   <div className="flex gap-3 items-center">
-                    <Calendar className="w-5 h-5 text-red-500" />
+                    <Calendar className="w-5 h-5 text-red-600" />
                     <div>
                       <span className="text-[10px] text-neutral-500 uppercase tracking-widest block">Date & Heure</span>
-                      <p className="text-sm font-bold text-white">
+                      <p className="text-sm font-bold text-neutral-900">
                         Le {selectedDate} à {selectedTime} • {guestsCount} personnes
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={() => setStep(1)}
-                    className="p-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700 transition-all flex items-center gap-1 text-[10px] font-black uppercase tracking-widest cursor-pointer"
+                    className="p-1.5 rounded-lg bg-neutral-100 border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 transition-all flex items-center gap-1 text-[10px] font-black uppercase tracking-widest cursor-pointer"
                   >
                     <Pencil className="w-3.5 h-3.5" /> Modifier
                   </button>
@@ -495,17 +495,17 @@ export default function BookingFlow({
                 {/* Section 2: Salon */}
                 <div className="p-4 md:p-5 flex justify-between items-center gap-4">
                   <div className="flex gap-3 items-center">
-                    <Check className="w-5 h-5 text-red-500" />
+                    <Check className="w-5 h-5 text-red-600" />
                     <div>
                       <span className="text-[10px] text-neutral-500 uppercase tracking-widest block">Salon</span>
-                      <p className="text-sm font-bold text-white uppercase italic">
+                      <p className="text-sm font-bold text-neutral-900 uppercase italic">
                         {selectedSalon.name} • {selectedSalon.location}
                       </p>
                     </div>
                   </div>
                   <button
                     onClick={() => setStep(2)}
-                    className="p-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700 transition-all flex items-center gap-1 text-[10px] font-black uppercase tracking-widest cursor-pointer"
+                    className="p-1.5 rounded-lg bg-neutral-100 border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 transition-all flex items-center gap-1 text-[10px] font-black uppercase tracking-widest cursor-pointer"
                   >
                     <Pencil className="w-3.5 h-3.5" /> Modifier
                   </button>
@@ -515,17 +515,17 @@ export default function BookingFlow({
                 <div className="p-4 md:p-5 space-y-3">
                   <div className="flex justify-between items-center">
                     <div className="flex gap-3 items-center">
-                      <ShoppingBag className="w-5 h-5 text-red-500" />
+                      <ShoppingBag className="w-5 h-5 text-red-600" />
                       <div>
                         <span className="text-[10px] text-neutral-500 uppercase tracking-widest block">Boissons commandées</span>
-                        <p className="text-xs text-neutral-400">
+                        <p className="text-xs text-neutral-600 font-medium">
                           {selectedDrinks.length} article(s) sélectionné(s)
                         </p>
                       </div>
                     </div>
                     <button
                       onClick={() => setStep(3)}
-                      className="p-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700 transition-all flex items-center gap-1 text-[10px] font-black uppercase tracking-widest cursor-pointer"
+                      className="p-1.5 rounded-lg bg-neutral-100 border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 transition-all flex items-center gap-1 text-[10px] font-black uppercase tracking-widest cursor-pointer"
                     >
                       <Pencil className="w-3.5 h-3.5" /> Modifier
                     </button>
@@ -535,10 +535,10 @@ export default function BookingFlow({
                     <div className="pl-8 pt-1 space-y-1.5 max-h-36 overflow-y-auto">
                       {selectedDrinks.map((item) => (
                         <div key={item.drink.id} className="flex justify-between items-center text-xs">
-                          <span className="text-neutral-300">
-                            <strong className="text-red-500 font-mono">{item.quantity}x</strong> {item.drink.name}
+                          <span className="text-neutral-700 font-medium">
+                            <strong className="text-red-600 font-mono">{item.quantity}x</strong> {item.drink.name}
                           </span>
-                          <span className="text-neutral-400 font-mono">{item.drink.price * item.quantity} €</span>
+                          <span className="text-neutral-600 font-mono">{item.drink.price * item.quantity} €</span>
                         </div>
                       ))}
                     </div>
@@ -548,43 +548,43 @@ export default function BookingFlow({
                 {/* Section 4: Customer Details */}
                 <div className="p-4 md:p-5 flex justify-between items-center gap-4">
                   <div className="flex gap-3 items-center">
-                    <Users className="w-5 h-5 text-red-500" />
+                    <Users className="w-5 h-5 text-red-600" />
                     <div>
                       <span className="text-[10px] text-neutral-500 uppercase tracking-widest block">Client</span>
-                      <p className="text-sm font-bold text-white">
-                        {clientName} • <span className="font-mono text-red-500">{clientPhone}</span>
+                      <p className="text-sm font-bold text-neutral-900">
+                        {clientName} • <span className="font-mono text-red-600">{clientPhone}</span>
                       </p>
                       {comment && <p className="text-xs text-neutral-500 italic mt-1 font-sans line-clamp-1">"{comment}"</p>}
                     </div>
                   </div>
                   <button
                     onClick={() => setStep(4)}
-                    className="p-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700 transition-all flex items-center gap-1 text-[10px] font-black uppercase tracking-widest cursor-pointer"
+                    className="p-1.5 rounded-lg bg-neutral-100 border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 transition-all flex items-center gap-1 text-[10px] font-black uppercase tracking-widest cursor-pointer"
                   >
                     <Pencil className="w-3.5 h-3.5" /> Modifier
                   </button>
                 </div>
 
                 {/* Section 5: Receipts totals */}
-                <div className="p-5 bg-neutral-950 space-y-3">
+                <div className="p-5 bg-neutral-100 space-y-3">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-neutral-400">Consommation minimum salon :</span>
-                    <span className="font-semibold text-white font-mono">{selectedSalon.priceMin} €</span>
+                    <span className="text-neutral-500 font-medium">Consommation minimum salon :</span>
+                    <span className="font-semibold text-neutral-900 font-mono">{selectedSalon.priceMin} €</span>
                   </div>
                   <div className="flex justify-between items-center text-xs">
-                    <span className="text-neutral-400">Total consommations :</span>
-                    <span className="font-semibold text-white font-mono">{drinksTotal} €</span>
+                    <span className="text-neutral-500 font-medium">Total consommations :</span>
+                    <span className="font-semibold text-neutral-900 font-mono">{drinksTotal} €</span>
                   </div>
                   
                   {!isMinSpendSatisfied && (
-                    <div className="p-2.5 rounded-lg bg-red-950/20 border border-red-900/10 text-[10px] text-red-400">
+                    <div className="p-2.5 rounded-lg bg-red-50 border border-red-100 text-[10px] text-red-600 font-semibold">
                       Rappel : Le minimum de {selectedSalon.priceMin} € n'est pas atteint. La différence de {differenceToMinSpend} € sera régularisée sur place.
                     </div>
                   )}
 
-                  <div className="pt-3 border-t border-neutral-800 flex justify-between items-center">
-                    <span className="text-xs font-bold text-white uppercase tracking-widest">Montant Total :</span>
-                    <span className="text-xl font-black font-mono text-red-500">
+                  <div className="pt-3 border-t border-neutral-200 flex justify-between items-center">
+                    <span className="text-xs font-bold text-neutral-900 uppercase tracking-widest">Montant Total :</span>
+                    <span className="text-xl font-black font-mono text-red-600">
                       {finalTotalPrice} €
                     </span>
                   </div>
@@ -596,37 +596,37 @@ export default function BookingFlow({
           {/* STEP 6: Success Confirmation */}
           {step === 6 && selectedSalon && (
             <div id="step-success-container" className="max-w-md mx-auto text-center space-y-6 py-10">
-              <div className="w-16 h-16 rounded-full bg-red-600/15 border border-red-600/30 text-red-500 flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(220,38,38,0.25)] animate-bounce">
+              <div className="w-16 h-16 rounded-full bg-red-50 border border-red-100 text-red-600 flex items-center justify-center mx-auto shadow-[0_4px_15px_rgba(220,38,38,0.2)] animate-bounce">
                 <Check className="w-8 h-8" />
               </div>
 
               <div className="space-y-2">
-                <h4 className="text-2xl font-black text-white tracking-wide uppercase italic">Demande Reçue !</h4>
-                <p className="text-sm text-neutral-300">
+                <h4 className="text-2xl font-black text-neutral-900 tracking-wide uppercase italic">Demande Reçue !</h4>
+                <p className="text-sm text-neutral-600 font-medium">
                   Félicitations, votre demande de réservation a été envoyée automatiquement à la messagerie de l'établissement !
                 </p>
               </div>
 
-              <div className="bg-neutral-900/40 border border-neutral-800 p-5 rounded-2xl text-left text-xs space-y-2.5">
-                <div className="flex justify-between border-b border-neutral-800 pb-2">
-                  <span className="text-neutral-400">Salon :</span>
-                  <span className="font-bold text-white uppercase italic">{selectedSalon.name}</span>
+              <div className="bg-neutral-50 border border-neutral-200 p-5 rounded-2xl text-left text-xs space-y-2.5">
+                <div className="flex justify-between border-b border-neutral-200 pb-2">
+                  <span className="text-neutral-500">Salon :</span>
+                  <span className="font-bold text-neutral-900 uppercase italic">{selectedSalon.name}</span>
                 </div>
-                <div className="flex justify-between border-b border-neutral-800 pb-2">
-                  <span className="text-neutral-400">Date & Heure :</span>
-                  <span className="font-bold text-white">Le {selectedDate} à {selectedTime}</span>
+                <div className="flex justify-between border-b border-neutral-200 pb-2">
+                  <span className="text-neutral-500">Date & Heure :</span>
+                  <span className="font-bold text-neutral-900">Le {selectedDate} à {selectedTime}</span>
                 </div>
-                <div className="flex justify-between border-b border-neutral-800 pb-2">
-                  <span className="text-neutral-400">Nom client :</span>
-                  <span className="font-bold text-white">{clientName}</span>
+                <div className="flex justify-between border-b border-neutral-200 pb-2">
+                  <span className="text-neutral-500">Nom client :</span>
+                  <span className="font-bold text-neutral-900">{clientName}</span>
                 </div>
                 <div className="flex justify-between pb-1">
-                  <span className="text-neutral-400">Montant :</span>
-                  <span className="font-bold font-mono text-red-500">{finalTotalPrice} €</span>
+                  <span className="text-neutral-500">Montant :</span>
+                  <span className="font-bold font-mono text-red-600">{finalTotalPrice} €</span>
                 </div>
               </div>
 
-              <p className="text-[11px] text-neutral-500 uppercase tracking-wider leading-relaxed">
+              <p className="text-[11px] text-neutral-500 uppercase tracking-wider leading-relaxed font-semibold">
                 Le propriétaire de Le Ring Bar VIP a été notifié de votre réservation sur sa messagerie et consultera votre demande sous peu.
               </p>
 
@@ -643,12 +643,12 @@ export default function BookingFlow({
 
         {/* Bottom controls panel */}
         {step !== 6 && (
-          <div className="p-4 border-t border-neutral-900 bg-neutral-950 flex justify-between items-center">
+          <div className="p-4 border-t border-neutral-100 bg-neutral-50 flex justify-between items-center">
             {/* Back Button */}
             <button
               onClick={handlePrevStep}
               disabled={step === 1 || isSubmitting}
-              className="px-4 py-2.5 rounded-xl border border-neutral-800 bg-neutral-900 text-neutral-400 hover:text-white hover:border-neutral-700 disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest cursor-pointer"
+              className="px-4 py-2.5 rounded-xl border border-neutral-200 bg-neutral-100 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" /> Précédent
             </button>

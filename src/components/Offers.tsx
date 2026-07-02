@@ -20,8 +20,8 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
         'Salon réservé (Salon 1, 5 ou 6)',
         'Accès pour 4 à 6 personnes'
       ],
-      color: 'border-neutral-800 hover:border-neutral-600 bg-neutral-950/40',
-      badgeColor: 'bg-neutral-800 text-neutral-400'
+      color: 'border-neutral-200 hover:border-neutral-400 bg-neutral-50',
+      badgeColor: 'bg-neutral-100 text-neutral-600'
     },
     {
       name: 'PACK CHAMPION',
@@ -36,7 +36,7 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
         'Salon premium (Salon 2 ou 3)',
         'Accès pour 6 à 8 personnes'
       ],
-      color: 'border-red-600 bg-neutral-950 shadow-[0_4px_25px_rgba(220,38,38,0.15)] hover:border-red-500',
+      color: 'border-red-600 bg-white shadow-[0_4px_25px_rgba(220,38,38,0.1)] hover:border-red-500',
       badgeColor: 'bg-red-600 text-white',
       popular: true
     },
@@ -53,35 +53,35 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
         'Salon 4 VIP exclusif (en face du miroir)',
         'Accès pour 8 à 10 personnes'
       ],
-      color: 'border-neutral-800 hover:border-neutral-600 bg-neutral-950/40',
-      badgeColor: 'bg-neutral-800 text-neutral-400'
+      color: 'border-neutral-200 hover:border-neutral-400 bg-neutral-50',
+      badgeColor: 'bg-neutral-100 text-neutral-600'
     }
   ];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-md flex items-center justify-center p-4">
       {/* Container */}
-      <div className="relative w-full max-w-5xl bg-black border border-neutral-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-5xl bg-white border border-neutral-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Header */}
-        <div className="p-6 border-b border-neutral-900 flex justify-between items-center bg-neutral-950">
+        <div className="p-6 border-b border-neutral-100 flex justify-between items-center bg-neutral-55">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-red-600 animate-pulse" />
-            <h3 className="text-lg font-black text-white tracking-wider uppercase italic font-sans">
+            <h3 className="text-lg font-black text-neutral-900 tracking-wider uppercase italic font-sans">
               Formules & Packs VIP <span className="text-red-600">—</span> Le Ring Bar
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full bg-neutral-900 text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer"
+            className="p-1.5 rounded-full bg-neutral-100 text-neutral-500 hover:text-neutral-900 hover:bg-neutral-200 transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto bg-black">
-          <p className="text-xs text-neutral-400 max-w-2xl mx-auto text-center mb-8 uppercase tracking-widest leading-relaxed">
+        <div className="p-6 overflow-y-auto bg-white">
+          <p className="text-xs text-neutral-600 max-w-2xl mx-auto text-center mb-8 uppercase tracking-widest leading-relaxed">
             Profitez de nos offres VIP clé en main. Réservez un salon avec boissons incluses à un tarif privilégié pour une soirée mémorable.
           </p>
 
@@ -102,20 +102,20 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
                     {pack.icon}
                   </div>
 
-                  <h4 className="text-lg font-black text-white tracking-wide uppercase italic">{pack.name}</h4>
+                  <h4 className="text-lg font-black text-neutral-900 tracking-wide uppercase italic">{pack.name}</h4>
                   
                   <div className="flex items-baseline gap-1 mt-3">
-                    <span className="text-3xl font-mono font-black text-white">{pack.price}</span>
+                    <span className="text-3xl font-mono font-black text-neutral-900">{pack.price}</span>
                     <span className="text-lg font-bold text-red-500">€</span>
                   </div>
 
-                  <p className="text-xs text-neutral-400 mt-2 leading-relaxed">
+                  <p className="text-xs text-neutral-600 mt-2 leading-relaxed">
                     {pack.description}
                   </p>
 
                   <div className="mt-5 space-y-2.5">
                     {pack.features.map((feat, i) => (
-                      <div key={i} className="flex items-start gap-2 text-xs text-neutral-300">
+                      <div key={i} className="flex items-start gap-2 text-xs text-neutral-700">
                         <span className="text-red-500 mt-0.5">•</span>
                         <span>{feat}</span>
                       </div>
@@ -129,7 +129,7 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
                     className={`w-full py-2.5 rounded-xl font-black text-[10px] tracking-widest uppercase mt-6 transition-all cursor-pointer ${
                       pack.popular
                         ? 'bg-red-600 hover:bg-red-500 text-white shadow-[0_4px_15px_rgba(220,38,38,0.3)]'
-                        : 'bg-neutral-900 border border-neutral-800 text-neutral-300 hover:bg-neutral-800 hover:text-white'
+                        : 'bg-neutral-100 border border-neutral-200 text-neutral-700 hover:bg-neutral-200 hover:text-neutral-900'
                     }`}
                   >
                     Choisir ce pack
@@ -141,7 +141,7 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
         </div>
 
         {/* Footer */}
-        <div className="p-4 bg-neutral-950 border-t border-neutral-900 text-center text-xs text-neutral-500 uppercase tracking-widest font-mono">
+        <div className="p-4 bg-neutral-50 border-t border-neutral-100 text-center text-xs text-neutral-600 uppercase tracking-widest font-mono">
           Les réservations de packs incluent la gratuité des entrées pour l'ensemble des invités du salon.
         </div>
       </div>

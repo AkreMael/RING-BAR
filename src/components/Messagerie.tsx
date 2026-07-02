@@ -125,26 +125,26 @@ export default function Messagerie({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md flex items-center justify-center p-4">
       {/* Box */}
-      <div className="relative w-full max-w-6xl h-[85vh] bg-black border border-neutral-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-fade-in">
+      <div className="relative w-full max-w-6xl h-[85vh] bg-white border border-neutral-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-fade-in">
         
         {/* Top Header */}
-        <div className="p-4 md:p-6 border-b border-neutral-900 flex justify-between items-center bg-neutral-950">
+        <div className="p-4 md:p-6 border-b border-neutral-100 flex justify-between items-center bg-neutral-50">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-red-600/10 border border-red-600/20 rounded-xl">
-              <Inbox className="w-5 h-5 text-red-500" />
+              <Inbox className="w-5 h-5 text-red-600" />
             </div>
             <div>
-              <h3 className="text-base font-black text-white tracking-wider uppercase italic flex items-center gap-2">
+              <h3 className="text-base font-black text-neutral-900 tracking-wider uppercase italic flex items-center gap-2">
                 Historique des réservations
                 {isOwnerMode && (
-                  <span className="text-[9px] bg-red-600/10 text-red-500 border border-red-600/20 px-2 py-0.5 rounded-full font-sans uppercase font-black">
+                  <span className="text-[9px] bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded-full font-sans uppercase font-black">
                     Propriétaire Connecté
                   </span>
                 )}
               </h3>
-              <p className="text-xs text-neutral-400 uppercase tracking-widest mt-1">
+              <p className="text-xs text-neutral-600 uppercase tracking-widest mt-1 font-medium">
                 Suivez en temps réel l'état de vos demandes de réservation (En attente, Validée ou Annulée).
               </p>
             </div>
@@ -160,8 +160,8 @@ export default function Messagerie({
               title={soundEnabled ? 'Désactiver le son de notification' : 'Activer le son de notification'}
               className={`p-2 rounded-xl border transition-colors cursor-pointer ${
                 soundEnabled
-                  ? 'bg-red-600/10 border-red-600/20 text-red-500'
-                  : 'bg-neutral-900 border-neutral-800 text-neutral-500 hover:text-white'
+                  ? 'bg-red-50 border-red-100 text-red-600'
+                  : 'bg-neutral-100 border-neutral-200 text-neutral-500 hover:text-neutral-900'
               }`}
             >
               {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
@@ -178,10 +178,10 @@ export default function Messagerie({
         </div>
 
         {/* Unified Body */}
-        <div className="flex-grow flex flex-col overflow-hidden bg-black relative">
+        <div className="flex-grow flex flex-col overflow-hidden bg-white relative">
           
           {/* Status filter tabs */}
-          <div className="p-4 border-b border-neutral-900 flex gap-2 bg-neutral-950 items-center justify-between">
+          <div className="p-4 border-b border-neutral-100 flex gap-2 bg-neutral-50 items-center justify-between">
             <div className="flex gap-1.5 overflow-x-auto pb-1 sm:pb-0">
               {(['all', 'pending', 'confirmed', 'cancelled'] as const).map((s) => (
                 <button
@@ -190,7 +190,7 @@ export default function Messagerie({
                   className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer whitespace-nowrap ${
                     filter === s
                       ? 'bg-red-600 text-white shadow-[0_2px_8px_rgba(220,38,38,0.3)]'
-                      : 'text-neutral-500 hover:text-white bg-neutral-900/50 border border-neutral-800/30'
+                      : 'text-neutral-600 hover:text-neutral-900 bg-neutral-100 border border-neutral-200'
                   }`}
                 >
                   {s === 'all' ? 'Tous' : s === 'pending' ? 'En attente' : s === 'confirmed' ? 'Validée' : 'Annulée'}
@@ -198,16 +198,16 @@ export default function Messagerie({
               ))}
             </div>
             
-            <div className="text-[10px] text-neutral-400 uppercase tracking-wider font-mono hidden sm:block">
+            <div className="text-[10px] text-neutral-600 uppercase tracking-wider font-mono hidden sm:block">
               {filteredMessages.length} réservation{filteredMessages.length > 1 ? 's' : ''}
             </div>
           </div>
 
           {/* Scrollable grid of complete reservation cards */}
-          <div className="flex-grow overflow-y-auto p-4 md:p-6 bg-black">
+          <div className="flex-grow overflow-y-auto p-4 md:p-6 bg-white">
             {filteredMessages.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center p-8 text-neutral-500 text-center">
-                <Inbox className="w-12 h-12 mb-4 text-neutral-800 animate-pulse" />
+                <Inbox className="w-12 h-12 mb-4 text-neutral-300 animate-pulse" />
                 <p className="text-xs uppercase tracking-widest font-mono">Aucune réservation trouvée.</p>
               </div>
             ) : (
@@ -220,23 +220,23 @@ export default function Messagerie({
                     return (
                       <div
                         key={msg.id}
-                        className="p-4 rounded-xl bg-neutral-900/40 border border-neutral-800/80 flex flex-col justify-between gap-3 shadow-md hover:border-neutral-700 transition-colors"
+                        className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 flex flex-col justify-between gap-3 shadow-md hover:border-neutral-300 hover:bg-white transition-all duration-300"
                       >
                         <div className="flex justify-between items-center gap-2">
-                          <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider bg-neutral-950 px-2 py-0.5 rounded border border-neutral-800">
+                          <span className="text-[10px] font-mono text-neutral-600 uppercase tracking-wider bg-neutral-100 px-2 py-0.5 rounded border border-neutral-200">
                             RÉF : {msg.reservation.id}
                           </span>
                           {getStatusBadge(msg.reservation.status)}
                         </div>
 
-                        <div className="flex items-center gap-2 text-white">
-                          <Coffee className="w-4 h-4 text-red-500 shrink-0" />
+                        <div className="flex items-center gap-2 text-neutral-900">
+                          <Coffee className="w-4 h-4 text-red-600 shrink-0" />
                           <span className="text-sm font-bold uppercase italic tracking-wide">
                             {msg.reservation.salonName || `Salon ${msg.reservation.salonId}`}
                           </span>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2 text-xs border-t border-neutral-900/60 pt-2 text-neutral-400">
+                        <div className="grid grid-cols-2 gap-2 text-xs border-t border-neutral-200/60 pt-2 text-neutral-600">
                           <div className="flex items-center gap-1.5 min-w-0">
                             <Calendar className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
                             <span className="truncate">{msg.reservation.date} à {msg.reservation.time}</span>
@@ -254,13 +254,13 @@ export default function Messagerie({
                   return (
                     <div
                       key={msg.id}
-                      className="p-5 rounded-2xl bg-neutral-900/40 border border-neutral-800 hover:border-neutral-700 transition-all duration-300 flex flex-col justify-between gap-4 relative shadow-md"
+                      className="p-5 rounded-2xl bg-neutral-50 border border-neutral-200 hover:border-neutral-300 hover:bg-white transition-all duration-300 flex flex-col justify-between gap-4 relative shadow-md"
                     >
                       {/* Card Content */}
                       <div className="space-y-3">
                         {/* Ref and recorded date */}
                         <div className="flex justify-between items-start gap-2">
-                          <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider bg-neutral-950 px-2 py-0.5 rounded border border-neutral-800">
+                          <span className="text-[9px] font-mono text-neutral-600 uppercase tracking-wider bg-neutral-100 px-2 py-0.5 rounded border border-neutral-200">
                             RÉF : {msg.reservation.id}
                           </span>
                           <span className="text-[9px] text-neutral-500 font-mono">
@@ -270,43 +270,43 @@ export default function Messagerie({
 
                         {/* Client Name */}
                         <div>
-                          <h4 className="text-base font-black uppercase italic text-white tracking-wide">
+                          <h4 className="text-base font-black uppercase italic text-neutral-900 tracking-wide">
                             {msg.reservation.clientName}
                           </h4>
                         </div>
 
                         {/* Booking specifics */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-xs border-t border-neutral-900/80 pt-3">
-                          <div className="flex items-center gap-2 text-neutral-400">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-xs border-t border-neutral-200 pt-3">
+                          <div className="flex items-center gap-2 text-neutral-600">
                             <Phone className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
-                            <span className="truncate">Tél : <strong className="text-neutral-200 font-mono select-all">{msg.reservation.clientPhone}</strong></span>
+                            <span className="truncate">Tél : <strong className="text-neutral-900 font-mono select-all">{msg.reservation.clientPhone}</strong></span>
                           </div>
-                          <div className="flex items-center gap-2 text-neutral-400">
+                          <div className="flex items-center gap-2 text-neutral-600">
                             <Coffee className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
-                            <span className="truncate">Salon : <strong className="text-neutral-200">{msg.reservation.salonName || `Salon ${msg.reservation.salonId}`}</strong></span>
+                            <span className="truncate">Salon : <strong className="text-neutral-900">{msg.reservation.salonName || `Salon ${msg.reservation.salonId}`}</strong></span>
                           </div>
-                          <div className="flex items-center gap-2 text-neutral-400">
+                          <div className="flex items-center gap-2 text-neutral-600">
                             <Calendar className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
-                            <span className="truncate">Le : <strong className="text-neutral-200">{msg.reservation.date} à {msg.reservation.time}</strong></span>
+                            <span className="truncate">Le : <strong className="text-neutral-900">{msg.reservation.date} à {msg.reservation.time}</strong></span>
                           </div>
-                          <div className="flex items-center gap-2 text-neutral-400">
+                          <div className="flex items-center gap-2 text-neutral-600">
                             <Users className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
-                            <span>Invités : <strong className="text-neutral-200">{msg.reservation.guestsCount} pers.</strong></span>
+                            <span>Invités : <strong className="text-neutral-900">{msg.reservation.guestsCount} pers.</strong></span>
                           </div>
                         </div>
 
                         {/* Selected drinks */}
                         {msg.reservation.drinks && msg.reservation.drinks.length > 0 && (
-                          <div className="p-3 rounded-xl bg-neutral-950/80 border border-neutral-900">
+                          <div className="p-3 rounded-xl bg-white border border-neutral-200 shadow-sm">
                             <span className="text-[9px] font-black text-neutral-500 uppercase tracking-widest block mb-2">Boissons commandées :</span>
                             <div className="space-y-1.5">
                               {msg.reservation.drinks.map((item, idx) => (
                                 <div key={idx} className="flex justify-between items-center text-[11px]">
-                                  <span className="text-neutral-300 font-medium">
-                                    <strong className="text-red-500 font-mono mr-1.5">{item.quantity}x</strong> 
+                                  <span className="text-neutral-700 font-medium">
+                                    <strong className="text-red-600 font-mono mr-1.5">{item.quantity}x</strong> 
                                     {item.drink.name}
                                   </span>
-                                  <span className="text-neutral-400 font-mono">
+                                  <span className="text-neutral-600 font-mono">
                                     {item.drink.price * item.quantity} €
                                   </span>
                                 </div>
@@ -317,11 +317,11 @@ export default function Messagerie({
 
                         {/* Comment */}
                         {msg.reservation.comment && (
-                          <div className="p-3 rounded-xl bg-red-600/5 border border-red-600/10">
-                            <span className="text-[9px] font-black text-red-500 uppercase tracking-widest block mb-1 flex items-center gap-1.5">
+                          <div className="p-3 rounded-xl bg-red-50 border border-red-100">
+                            <span className="text-[9px] font-black text-red-600 uppercase tracking-widest block mb-1 flex items-center gap-1.5">
                               <MessageSquare className="w-3 h-3" /> Commentaire :
                             </span>
-                            <p className="text-[11px] text-neutral-300 italic leading-relaxed">
+                            <p className="text-[11px] text-neutral-700 italic leading-relaxed">
                               "{msg.reservation.comment}"
                             </p>
                           </div>
@@ -329,14 +329,14 @@ export default function Messagerie({
                       </div>
 
                       {/* Footer: Price, Status, and Actions */}
-                      <div className="border-t border-neutral-900 pt-3 mt-1 space-y-3">
+                      <div className="border-t border-neutral-200 pt-3 mt-1 space-y-3">
                         <div className="flex justify-between items-center">
                           <div className="flex items-center gap-2">
                             <span className="text-[10px] uppercase font-bold text-neutral-500 font-mono">Statut :</span>
                             {getStatusBadge(msg.reservation.status)}
                           </div>
                           <div className="text-right">
-                            <span className="text-xs font-mono font-black text-red-500 bg-red-600/10 px-3 py-1 border border-red-500/20 rounded-xl">
+                            <span className="text-xs font-mono font-black text-red-600 bg-red-50 px-3 py-1 border border-red-100 rounded-xl">
                               {msg.reservation.totalPrice} €
                             </span>
                           </div>
@@ -344,7 +344,7 @@ export default function Messagerie({
 
                         {/* Owner Admin Actions */}
                         {isOwnerMode && (
-                          <div className="flex justify-end gap-2 pt-2 border-t border-neutral-900/60">
+                          <div className="flex justify-end gap-2 pt-2 border-t border-neutral-200">
                             {msg.reservation.status === 'pending' && (
                               <>
                                 <button
@@ -355,7 +355,7 @@ export default function Messagerie({
                                       label: 'Voulez-vous annuler cette réservation ? Cette action sera synchronisée.'
                                     });
                                   }}
-                                  className="flex-1 py-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 transition-all text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 cursor-pointer"
+                                  className="flex-1 py-2 rounded-xl bg-red-50 border border-red-100 text-red-600 hover:bg-red-100 transition-all text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 cursor-pointer"
                                 >
                                   <X className="w-3.5 h-3.5" /> Annuler
                                 </button>
@@ -383,7 +383,7 @@ export default function Messagerie({
                                     label: 'Remettre cette réservation en attente ?'
                                   });
                                 }}
-                                className="w-full py-2 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700 transition-all text-[9px] font-black uppercase tracking-widest cursor-pointer"
+                                className="w-full py-2 rounded-xl bg-neutral-100 border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 transition-all text-[9px] font-black uppercase tracking-widest cursor-pointer"
                               >
                                 Remettre en attente
                               </button>
@@ -398,7 +398,7 @@ export default function Messagerie({
                                     label: 'Réhabiliter cette demande de réservation ?'
                                   });
                                 }}
-                                className="w-full py-2 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700 transition-all text-[9px] font-black uppercase tracking-widest cursor-pointer"
+                                className="w-full py-2 rounded-xl bg-neutral-100 border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 transition-all text-[9px] font-black uppercase tracking-widest cursor-pointer"
                               >
                                 Réhabiliter la demande
                               </button>
@@ -418,17 +418,17 @@ export default function Messagerie({
 
         {/* CUSTOM STATE DIALOG OVERLAY (Replaces window.confirm) */}
         {confirmDialog && (
-          <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 z-[110] animate-fade-in">
-            <div className="bg-neutral-900 border border-neutral-800 p-8 rounded-3xl max-w-sm text-center space-y-6 shadow-2xl">
-              <ShieldAlert className="w-12 h-12 text-red-500 mx-auto animate-bounce" />
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 z-[110] animate-fade-in">
+            <div className="bg-white border border-neutral-200 p-8 rounded-3xl max-w-sm text-center space-y-6 shadow-2xl">
+              <ShieldAlert className="w-12 h-12 text-red-600 mx-auto animate-bounce" />
               <div className="space-y-2">
-                <h4 className="text-lg font-black text-white uppercase italic">Confirmation</h4>
-                <p className="text-xs text-neutral-400 leading-relaxed uppercase tracking-wider">{confirmDialog.label}</p>
+                <h4 className="text-lg font-black text-neutral-900 uppercase italic">Confirmation</h4>
+                <p className="text-xs text-neutral-600 leading-relaxed uppercase tracking-wider font-semibold">{confirmDialog.label}</p>
               </div>
               <div className="flex gap-4">
                 <button
                   onClick={() => setConfirmDialog(null)}
-                  className="flex-1 py-2.5 rounded-xl border border-neutral-800 bg-neutral-950 text-neutral-400 hover:text-white transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer"
+                  className="flex-1 py-2.5 rounded-xl border border-neutral-200 bg-neutral-100 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer"
                 >
                   Annuler
                 </button>

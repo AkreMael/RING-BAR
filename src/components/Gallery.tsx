@@ -77,7 +77,7 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
   const content = (
     <div className="space-y-6">
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-[120] bg-neutral-900 border border-neutral-800 text-white text-xs font-black uppercase tracking-widest px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 animate-fade-in">
+        <div className="fixed bottom-6 right-6 z-[120] bg-white border border-neutral-200 text-neutral-900 text-xs font-black uppercase tracking-widest px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 animate-fade-in">
           <Check className="w-4 h-4 text-red-500" />
           {toastMessage}
         </div>
@@ -86,7 +86,7 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
       {!isModal && (
         <div className="flex items-center gap-2 mb-2">
           <Sparkles className="w-5 h-5 text-red-600" />
-          <h3 className="text-base font-black text-white tracking-wider uppercase italic font-sans">
+          <h3 className="text-base font-black text-neutral-900 tracking-wider uppercase italic font-sans">
             Galerie Le Ring Bar VIP
           </h3>
         </div>
@@ -98,7 +98,7 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
           <div
             key={index}
             onClick={() => setActiveImageIndex(index)}
-            className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-neutral-950 border border-neutral-800 cursor-pointer transition-all duration-300 hover:border-red-600/40 hover:shadow-[0_4px_25px_rgba(220,38,38,0.1)]"
+            className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-white border border-neutral-200 cursor-pointer transition-all duration-300 hover:border-red-600/40 hover:shadow-[0_4px_25px_rgba(220,38,38,0.1)]"
           >
             {/* Image */}
             <img
@@ -108,28 +108,28 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
 
-            {/* Dark gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-300" />
+            {/* Light gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/50 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Hover details */}
             <div className="absolute inset-0 p-5 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <div className="flex justify-between items-center">
-                <span className="text-[9px] font-black tracking-widest text-red-500 bg-red-600/10 border border-red-500/20 px-2.5 py-1 rounded-full uppercase">
+                <span className="text-[9px] font-black tracking-widest text-red-600 bg-red-50 border border-red-100 px-2.5 py-1 rounded-full uppercase">
                   {item.category}
                 </span>
 
                 <div className="flex gap-2">
                   <button
                     onClick={(e) => handleLike(index, e)}
-                    className={`p-1.5 rounded-full backdrop-blur-md transition-colors cursor-pointer ${
-                      likedImages[index] ? 'bg-red-600/20 text-red-500' : 'bg-black/60 text-neutral-400 hover:text-white'
+                    className={`p-1.5 rounded-full backdrop-blur-sm transition-colors cursor-pointer ${
+                      likedImages[index] ? 'bg-red-50 text-red-500 border border-red-100' : 'bg-white/80 text-neutral-500 hover:text-neutral-900'
                     }`}
                   >
                     <Heart className="w-3.5 h-3.5" fill={likedImages[index] ? 'currentColor' : 'none'} />
                   </button>
                   <button
                     onClick={(e) => handleShare(item, e)}
-                    className="p-1.5 rounded-full bg-black/60 text-neutral-400 hover:text-white backdrop-blur-md transition-colors cursor-pointer"
+                    className="p-1.5 rounded-full bg-white/80 text-neutral-500 hover:text-neutral-900 backdrop-blur-sm transition-colors cursor-pointer"
                   >
                     <Share2 className="w-3.5 h-3.5" />
                   </button>
@@ -137,13 +137,13 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
               </div>
 
               <div>
-                <h4 className="text-sm font-black text-white tracking-wide uppercase italic flex items-center gap-1.5">
+                <h4 className="text-sm font-black text-neutral-900 tracking-wide uppercase italic flex items-center gap-1.5">
                   {item.title}
                 </h4>
-                <p className="text-[11px] text-neutral-300 mt-1 line-clamp-2 leading-relaxed">
+                <p className="text-[11px] text-neutral-700 mt-1 line-clamp-2 leading-relaxed font-medium">
                   {item.description}
                 </p>
-                <span className="text-[10px] text-red-500 font-black tracking-widest uppercase mt-3 inline-flex items-center gap-1">
+                <span className="text-[10px] text-red-600 font-black tracking-widest uppercase mt-3 inline-flex items-center gap-1">
                   <ZoomIn className="w-3.5 h-3.5" /> Agrandir
                 </span>
               </div>
@@ -151,8 +151,8 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
 
             {/* Non-hover tiny titles */}
             <div className="absolute bottom-5 left-5 right-5 flex justify-between items-center group-hover:opacity-0 transition-opacity duration-300">
-              <h4 className="text-sm font-black text-white uppercase italic tracking-wide">{item.title}</h4>
-              <span className="text-[9px] font-black tracking-widest uppercase text-neutral-400">{item.category}</span>
+              <h4 className="text-sm font-black text-neutral-900 uppercase italic tracking-wide">{item.title}</h4>
+              <span className="text-[9px] font-black tracking-widest uppercase text-neutral-500">{item.category}</span>
             </div>
           </div>
         ))}
@@ -160,17 +160,17 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
 
       {/* Lightbox Modal */}
       {activeImageIndex !== null && (
-        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-lg flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[100] bg-white/95 backdrop-blur-lg flex items-center justify-center p-4">
           <button
             onClick={() => setActiveImageIndex(null)}
-            className="absolute top-6 right-6 p-2 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-800 transition-all z-10 cursor-pointer"
+            className="absolute top-6 right-6 p-2 rounded-full bg-neutral-100 border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 transition-all z-10 cursor-pointer"
           >
             <X className="w-6 h-6" />
           </button>
 
           <div className="w-full max-w-4xl max-h-[85vh] flex flex-col items-center justify-center">
             {/* Image display */}
-            <div className="relative max-h-[60vh] rounded-3xl overflow-hidden border border-neutral-800 shadow-2xl">
+            <div className="relative max-h-[60vh] rounded-3xl overflow-hidden border border-neutral-200 shadow-xl">
               <img
                 src={galleryItems[activeImageIndex].url}
                 alt={galleryItems[activeImageIndex].title}
@@ -181,13 +181,13 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
 
             {/* Image text detail */}
             <div className="w-full max-w-2xl text-center mt-6 space-y-2 px-4">
-              <span className="text-[9px] font-black tracking-widest text-red-500 bg-red-600/10 border border-red-500/20 px-3 py-1.5 rounded-full uppercase">
+              <span className="text-[9px] font-black tracking-widest text-red-600 bg-red-50 border border-red-100 px-3 py-1.5 rounded-full uppercase">
                 {galleryItems[activeImageIndex].category}
               </span>
-              <h3 className="text-lg font-black text-white uppercase italic mt-2">
+              <h3 className="text-lg font-black text-neutral-900 uppercase italic mt-2">
                 {galleryItems[activeImageIndex].title}
               </h3>
-              <p className="text-xs text-neutral-400 max-w-lg mx-auto leading-relaxed">
+              <p className="text-xs text-neutral-600 max-w-lg mx-auto leading-relaxed font-medium">
                 {galleryItems[activeImageIndex].description}
               </p>
             </div>
@@ -197,14 +197,14 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
               <button
                 disabled={activeImageIndex === 0}
                 onClick={() => setActiveImageIndex(activeImageIndex - 1)}
-                className="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-800 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                className="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-xl bg-neutral-100 border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
               >
                 Précédent
               </button>
               <button
                 disabled={activeImageIndex === galleryItems.length - 1}
                 onClick={() => setActiveImageIndex(activeImageIndex + 1)}
-                className="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-800 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                className="px-4 py-2 text-xs font-bold uppercase tracking-widest rounded-xl bg-neutral-100 border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
               >
                 Suivant
               </button>
@@ -217,28 +217,28 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
 
   if (isModal) {
     return (
-      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-md flex items-center justify-center p-4">
         {/* Container */}
-        <div className="relative w-full max-w-5xl bg-black border border-neutral-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div className="relative w-full max-w-5xl bg-white border border-neutral-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
           {/* Header */}
-          <div className="p-6 border-b border-neutral-900 flex justify-between items-center bg-neutral-950">
+          <div className="p-6 border-b border-neutral-100 flex justify-between items-center bg-neutral-55">
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-red-600 animate-pulse" />
-              <h3 className="text-lg font-black text-white tracking-wider uppercase italic font-sans">
+              <h3 className="text-lg font-black text-neutral-900 tracking-wider uppercase italic font-sans">
                 Galerie Du Ring
               </h3>
             </div>
             {onClose && (
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-full bg-neutral-900 text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors cursor-pointer"
+                className="p-1.5 rounded-full bg-neutral-100 text-neutral-500 hover:text-neutral-900 hover:bg-neutral-200 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
             )}
           </div>
 
-          <div className="p-6 overflow-y-auto bg-black">
+          <div className="p-6 overflow-y-auto bg-white">
             {content}
           </div>
         </div>
