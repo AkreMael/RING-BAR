@@ -157,9 +157,9 @@ export default function BookingFlow({
   };
 
   return (
-    <div className="fixed inset-0 z-40 bg-neutral-50 flex flex-col overflow-y-auto min-h-screen">
+    <div className="fixed inset-0 z-40 bg-neutral-50 flex flex-col items-center justify-center p-0 md:p-6 h-screen overflow-hidden">
       {/* Central Booking Container (styled as a standalone elegant page) */}
-      <div className="w-full max-w-6xl mx-auto flex-grow flex flex-col bg-white md:my-8 md:rounded-3xl md:shadow-2xl md:border md:border-neutral-200 overflow-hidden relative">
+      <div className="w-full max-w-6xl h-full md:h-[90vh] md:max-h-[850px] flex flex-col bg-white md:rounded-3xl md:shadow-2xl md:border md:border-neutral-200 overflow-hidden relative">
         
         {/* Title Header */}
         <div className="px-6 py-5 border-b border-neutral-100 bg-neutral-50/50 flex justify-between items-center">
@@ -355,23 +355,23 @@ export default function BookingFlow({
                 </div>
 
                 {/* Beverage Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto pr-1">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {DRINKS.map((drink) => {
                     const qty = currentDrinkQty(drink.id);
                     return (
                       <div
                         key={drink.id}
-                        className="bg-neutral-50/60 border border-neutral-200 rounded-2xl overflow-hidden hover:border-red-600/30 transition-all duration-300 flex flex-col h-full group"
+                        className="bg-neutral-50/60 border border-neutral-200 rounded-2xl overflow-hidden hover:border-red-600/30 transition-all duration-300 flex flex-col justify-between h-full group"
                       >
                         {/* Image at top */}
-                        <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-100 relative border-b border-neutral-100">
+                        <div className="aspect-[16/11] w-full overflow-hidden bg-neutral-100 relative border-b border-neutral-100">
                           <img
                             src={drink.image}
                             alt={drink.name}
                             referrerPolicy="no-referrer"
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
-                          <div className="absolute top-2 right-2 px-2 py-0.5 rounded bg-white/90 text-[8px] text-red-600 border border-red-100 font-mono font-bold uppercase tracking-wider shadow-sm">
+                          <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-white/90 text-[8px] text-red-600 border border-red-100 font-mono font-bold uppercase tracking-wider shadow-sm">
                             {drink.category}
                           </div>
                         </div>
@@ -379,21 +379,18 @@ export default function BookingFlow({
                         {/* Details and quantity directly under image */}
                         <div className="p-3 flex flex-col justify-between flex-grow">
                           <div>
-                            <h5 className="text-[11px] font-black text-neutral-900 tracking-wide uppercase italic line-clamp-2 min-h-[2.2rem] flex items-center">
+                            <h5 className="text-[11px] font-black text-neutral-900 tracking-wide uppercase italic line-clamp-1">
                               {drink.name}
                             </h5>
                             <div className="mt-1">
-                              <span className="text-xs font-mono font-black text-red-600">
+                              <span className="text-[11px] font-mono font-black text-red-600">
                                 {drink.price.toLocaleString('fr-FR')} F CFA
                               </span>
                             </div>
-                            <p className="text-[10px] text-neutral-500 mt-2 line-clamp-2 min-h-[2.25rem] leading-normal">
-                              {drink.description}
-                            </p>
                           </div>
 
                           {/* Qty selector */}
-                          <div className="flex justify-between items-center mt-3 pt-3 border-t border-neutral-200">
+                          <div className="flex justify-between items-center mt-2 pt-2.5 border-t border-neutral-200">
                             <span className="text-[8px] text-neutral-400 font-mono uppercase tracking-wider font-semibold">Qté</span>
                             <div className="flex items-center gap-1.5">
                               <button
