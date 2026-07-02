@@ -3,6 +3,7 @@ import { Reservation, Salon, Drink, SelectedDrink } from '../types';
 import { SALONS, DRINKS } from '../data';
 import InteractiveMap from './InteractiveMap';
 import { Calendar, Clock, Users, ArrowRight, ArrowLeft, Check, AlertTriangle, Sparkles, Pencil, ShoppingBag, ShoppingCart } from 'lucide-react';
+import { motion } from 'motion/react';
 
 interface BookingFlowProps {
   onClose: () => void;
@@ -28,6 +29,7 @@ export default function BookingFlow({
   });
   const [selectedTime, setSelectedTime] = useState<string>('21:00');
   const [guestsCount, setGuestsCount] = useState<number>(4);
+  const [isCustomGuests, setIsCustomGuests] = useState<boolean>(false);
   const [selectedSalonId, setSelectedSalonId] = useState<number | null>(null);
   
   // Selected drinks list
@@ -122,7 +124,7 @@ export default function BookingFlow({
     if (step === 6) return null; // Success step doesn't need the tracker
     const stepTitles = ['Date/Heure', 'Salon', 'Boissons', 'Infos', 'Validation'];
     return (
-      <div id="booking-stepper-tracker" className="p-3 sm:p-4 border-b border-neutral-100 bg-neutral-50 flex justify-start md:justify-between items-center overflow-x-auto gap-3 sm:gap-4 scrollbar-none">
+      <div id="booking-stepper-tracker" className="p-4 sm:p-5 border-b border-neutral-100 bg-neutral-50/20 flex justify-start md:justify-center md:gap-12 items-center overflow-x-auto gap-4 scrollbar-none">
         {stepTitles.map((title, index) => {
           const stepNum = index + 1;
           const isActive = step === stepNum;
@@ -155,24 +157,29 @@ export default function BookingFlow({
   };
 
   return (
-    <div className="fixed inset-0 z-40 overflow-y-auto bg-black/50 backdrop-blur-md flex items-center justify-center p-4">
-      {/* Central Booking Card */}
-      <div className="relative w-full max-w-5xl bg-white border border-neutral-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-40 bg-neutral-50 flex flex-col overflow-y-auto min-h-screen">
+      {/* Central Booking Container (styled as a standalone elegant page) */}
+      <div className="w-full max-w-6xl mx-auto flex-grow flex flex-col bg-white md:my-8 md:rounded-3xl md:shadow-2xl md:border md:border-neutral-200 overflow-hidden relative">
         
         {/* Title Header */}
-        <div className="p-5 border-b border-neutral-100 bg-neutral-50 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-red-600" />
-            <h3 className="text-base font-black text-neutral-900 tracking-wider uppercase italic font-sans">
-              Réservation de Salon VIP <span className="text-red-600">—</span> Le Ring Bar
+        <div className="px-6 py-5 border-b border-neutral-100 bg-neutral-50/50 flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 cursor-pointer select-none">
+              <span className="bg-red-600 text-white font-black px-2 py-1 text-[11px] rounded-lg uppercase tracking-wider font-mono italic">LRB</span>
+              <span className="text-xs uppercase tracking-widest font-black text-neutral-900 font-sans italic hidden sm:inline-block">Le Ring Bar <span className="text-red-600 bg-red-50 text-[8px] font-black font-sans px-1.5 py-0.5 rounded-full border border-red-200 ml-1">VIP</span></span>
+            </div>
+            <div className="h-4 w-[1px] bg-neutral-300 hidden sm:block" />
+            <h3 className="text-xs sm:text-sm font-black text-neutral-900 tracking-wider uppercase italic font-sans flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 text-red-600" />
+              Réservation de Salon VIP
             </h3>
           </div>
           {step !== 6 && (
             <button
               onClick={onClose}
-              className="px-4 py-1.5 rounded-xl bg-neutral-100 border border-neutral-200 text-xs font-bold uppercase tracking-widest text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-xl bg-neutral-100 border border-neutral-200 text-[10px] font-black uppercase tracking-widest text-neutral-600 hover:text-neutral-900 hover:bg-neutral-200 hover:border-neutral-300 transition-all flex items-center gap-1 cursor-pointer shadow-sm active:scale-95"
             >
-              Annuler
+              <ArrowLeft className="w-3.5 h-3.5" /> Quitter
             </button>
           )}
         </div>
@@ -185,7 +192,13 @@ export default function BookingFlow({
           
           {/* STEP 1: Date, Time & Guest count */}
           {step === 1 && (
-            <div id="step-datetime-container" className="max-w-xl mx-auto space-y-6 py-4">
+            <motion.div
+              id="step-datetime-container"
+              className="max-w-xl mx-auto space-y-6 py-4"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+            >
               <div className="text-center space-y-2">
                 <h4 className="text-xl font-bold text-neutral-900 tracking-wide uppercase italic">Quand souhaitez-vous venir ?</h4>
                 <p className="text-xs text-neutral-600 uppercase tracking-widest">
@@ -244,8 +257,17 @@ export default function BookingFlow({
                   <div className="relative">
                     <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
                     <select
-                      value={guestsCount}
-                      onChange={(e) => setGuestsCount(parseInt(e.target.value, 10))}
+                      value={isCustomGuests ? 'custom' : guestsCount}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === 'custom') {
+                          setIsCustomGuests(true);
+                          setGuestsCount(5); // Default to 5 when switching to custom
+                        } else {
+                          setIsCustomGuests(false);
+                          setGuestsCount(parseInt(val, 10));
+                        }
+                      }}
                       className="w-full bg-white border border-neutral-200 rounded-xl pl-10 pr-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-red-600 appearance-none"
                     >
                       <option value="2">2 Personnes</option>
@@ -255,23 +277,46 @@ export default function BookingFlow({
                       <option value="10">10 Personnes (Salon VIP conseillé)</option>
                       <option value="12">12 Personnes (Grande Table)</option>
                       <option value="15">15 Personnes (Groupe VIP)</option>
+                      <option value="custom">Autre nombre personnalisé...</option>
                     </select>
                   </div>
+
+                  {isCustomGuests && (
+                    <div className="mt-3 space-y-2 animate-fade-in">
+                      <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest block">Indiquez le nombre de personnes</label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="100"
+                        value={guestsCount}
+                        onChange={(e) => setGuestsCount(Math.max(1, parseInt(e.target.value, 10) || 1))}
+                        className="w-full bg-white border border-neutral-200 rounded-xl px-4 py-3 text-sm text-neutral-900 focus:outline-none focus:border-red-600 font-bold font-mono"
+                        placeholder="Nombre personnalisé..."
+                      />
+                    </div>
+                  )}
+
                   <p className="text-[10px] text-neutral-500 uppercase tracking-wider mt-2 block font-medium">
                     Pour les groupes de plus de 15 personnes, veuillez nous contacter directement ou réserver plusieurs salons.
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* STEP 2: Salon selection */}
           {step === 2 && (
-            <div id="step-salon-container" className="space-y-4 py-2">
+            <motion.div
+              id="step-salon-container"
+              className="space-y-4 py-2"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+            >
               <div className="text-center space-y-2 max-w-md mx-auto mb-6">
                 <h4 className="text-xl font-bold text-neutral-900 tracking-wide uppercase italic">Choisissez votre Salon</h4>
                 <p className="text-xs text-neutral-600 uppercase tracking-widest">
-                  Consultez la carte ci-dessous et sélectionnez l'emplacement désiré pour votre soirée.
+                  Consultez la carte ci-dessous et sélectionnez l'emplacement désirée pour votre soirée.
                 </p>
               </div>
 
@@ -282,12 +327,18 @@ export default function BookingFlow({
                 selectedDate={selectedDate}
                 selectedTime={selectedTime}
               />
-            </div>
+            </motion.div>
           )}
 
           {/* STEP 3: Drink selection */}
           {step === 3 && selectedSalon && (
-            <div id="step-drinks-container" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start py-2">
+            <motion.div
+              id="step-drinks-container"
+              className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start py-2"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+            >
               {/* Product selector list (8 cols) */}
               <div className="lg:col-span-8 space-y-6">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 pb-4 border-b border-neutral-100">
@@ -419,12 +470,18 @@ export default function BookingFlow({
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* STEP 4: Client information */}
           {step === 4 && (
-            <div id="step-client-container" className="max-w-xl mx-auto space-y-6 py-4">
+            <motion.div
+              id="step-client-container"
+              className="max-w-xl mx-auto space-y-6 py-4"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+            >
               <div className="text-center space-y-2">
                 <h4 className="text-xl font-bold text-neutral-900 tracking-wide uppercase italic">Fiche de contact</h4>
                 <p className="text-xs text-neutral-600 uppercase tracking-widest">
@@ -471,12 +528,18 @@ export default function BookingFlow({
                   />
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* STEP 5: Summary, editing and final validation */}
           {step === 5 && selectedSalon && (
-            <div id="step-review-container" className="max-w-2xl mx-auto space-y-6 py-2">
+            <motion.div
+              id="step-review-container"
+              className="max-w-2xl mx-auto space-y-6 py-2"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+            >
               <div className="text-center space-y-2 mb-4">
                 <h4 className="text-xl font-bold text-neutral-900 tracking-wide uppercase italic">Vérifiez vos informations</h4>
                 <p className="text-xs text-neutral-600 uppercase tracking-widest">
@@ -604,12 +667,18 @@ export default function BookingFlow({
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* STEP 6: Success Confirmation */}
           {step === 6 && selectedSalon && (
-            <div id="step-success-container" className="max-w-md mx-auto text-center space-y-6 py-10">
+            <motion.div
+              id="step-success-container"
+              className="max-w-md mx-auto text-center space-y-6 py-10"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+            >
               <div className="w-16 h-16 rounded-full bg-red-50 border border-red-100 text-red-600 flex items-center justify-center mx-auto shadow-[0_4px_15px_rgba(220,38,38,0.2)] animate-bounce">
                 <Check className="w-8 h-8" />
               </div>
@@ -650,7 +719,7 @@ export default function BookingFlow({
               >
                 Retour au site web
               </button>
-            </div>
+            </motion.div>
           )}
 
         </div>
