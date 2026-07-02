@@ -12,7 +12,7 @@ export default function DrinksMenu({ onClose, onSelectDrinkDirectly }: DrinksMen
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const categories = ['All', 'Champagne', 'Whisky', 'Cognac', 'Cocktail', 'Soft'];
+  const categories = ['All', 'Champagne', 'Whisky', 'Cognac', 'Vin', 'Liqueur'];
 
   const filteredDrinks = DRINKS.filter((drink) => {
     const matchesSearch = drink.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -24,7 +24,7 @@ export default function DrinksMenu({ onClose, onSelectDrinkDirectly }: DrinksMen
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-md flex items-center justify-center p-4">
       {/* Container */}
-      <div className="relative w-full max-w-4xl bg-white border border-neutral-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="relative w-full max-w-5xl bg-white border border-neutral-200 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Header */}
         <div className="p-6 border-b border-neutral-100 flex justify-between items-center bg-neutral-55">
@@ -81,37 +81,37 @@ export default function DrinksMenu({ onClose, onSelectDrinkDirectly }: DrinksMen
               Aucune boisson ne correspond à votre recherche.
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredDrinks.map((drink) => (
                 <div
                   key={drink.id}
-                  className="bg-neutral-50/50 border border-neutral-200 rounded-2xl p-4 flex gap-4 hover:border-red-600/30 transition-all duration-300 group"
+                  className="bg-neutral-50/55 border border-neutral-200 rounded-2xl overflow-hidden hover:border-red-600/30 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 group flex flex-col h-full"
                 >
                   {/* Drink Image */}
-                  <div className="w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 bg-neutral-100 border border-neutral-200 relative">
+                  <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-100 relative border-b border-neutral-100">
                     <img
                       src={drink.image}
                       alt={drink.name}
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute top-1.5 right-1.5 px-2 py-0.5 rounded bg-white/90 text-[8px] text-red-600 border border-red-100 font-mono font-bold uppercase tracking-wider shadow-sm">
+                    <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-sm text-[9px] text-red-600 border border-red-100 font-mono font-bold uppercase tracking-wider shadow-sm">
                       {drink.category}
                     </div>
                   </div>
 
-                  {/* Drink details */}
-                  <div className="flex flex-col justify-between flex-grow">
+                  {/* Drink details (Under the image) */}
+                  <div className="p-4 flex flex-col justify-between flex-grow">
                     <div>
-                      <div className="flex justify-between items-start gap-2">
-                        <h4 className="text-base font-bold text-neutral-900 tracking-wide uppercase italic group-hover:text-red-600 transition-colors">
-                          {drink.name}
-                        </h4>
-                        <span className="text-base font-mono font-bold text-red-600">
-                          {drink.price} €
+                      <h4 className="text-sm font-extrabold text-neutral-900 tracking-wide uppercase italic group-hover:text-red-600 transition-colors line-clamp-2 min-h-[2.5rem] flex items-center">
+                        {drink.name}
+                      </h4>
+                      <div className="mt-1.5">
+                        <span className="text-base font-mono font-black text-red-600">
+                          {drink.price.toLocaleString('fr-FR')} F CFA
                         </span>
                       </div>
-                      <p className="text-xs text-neutral-600 mt-2 leading-relaxed line-clamp-2">
+                      <p className="text-xs text-neutral-600 mt-2.5 leading-relaxed line-clamp-2 min-h-[2.5rem]">
                         {drink.description}
                       </p>
                     </div>
@@ -120,7 +120,7 @@ export default function DrinksMenu({ onClose, onSelectDrinkDirectly }: DrinksMen
                     {onSelectDrinkDirectly && (
                       <button
                         onClick={() => onSelectDrinkDirectly(drink)}
-                        className="mt-3 text-[10px] font-black uppercase tracking-widest text-red-600 hover:text-red-500 flex items-center gap-1 self-start transition-colors cursor-pointer"
+                        className="mt-4 w-full py-2 bg-neutral-100 hover:bg-red-600 hover:text-white text-neutral-800 border border-neutral-200 hover:border-red-600 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 transition-all duration-300 cursor-pointer"
                       >
                         Ajouter à ma réservation →
                       </button>

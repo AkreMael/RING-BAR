@@ -304,43 +304,57 @@ export default function BookingFlow({
                 </div>
 
                 {/* Beverage Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-none md:max-h-[450px] overflow-y-visible md:overflow-y-auto pr-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto pr-1">
                   {DRINKS.map((drink) => {
                     const qty = currentDrinkQty(drink.id);
                     return (
                       <div
                         key={drink.id}
-                        className="p-3 bg-neutral-50 border border-neutral-200 rounded-2xl flex gap-3 hover:border-neutral-300 hover:bg-white transition-all duration-300"
+                        className="bg-neutral-50/60 border border-neutral-200 rounded-2xl overflow-hidden hover:border-red-600/30 transition-all duration-300 flex flex-col h-full group"
                       >
-                        <img
-                          src={drink.image}
-                          alt={drink.name}
-                          referrerPolicy="no-referrer"
-                          className="w-16 h-16 rounded-xl object-cover bg-white border border-neutral-200 flex-shrink-0"
-                        />
-                        <div className="flex flex-col justify-between flex-grow">
+                        {/* Image at top */}
+                        <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-100 relative border-b border-neutral-100">
+                          <img
+                            src={drink.image}
+                            alt={drink.name}
+                            referrerPolicy="no-referrer"
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
+                          <div className="absolute top-2 right-2 px-2 py-0.5 rounded bg-white/90 text-[8px] text-red-600 border border-red-100 font-mono font-bold uppercase tracking-wider shadow-sm">
+                            {drink.category}
+                          </div>
+                        </div>
+
+                        {/* Details and quantity directly under image */}
+                        <div className="p-3 flex flex-col justify-between flex-grow">
                           <div>
-                            <div className="flex justify-between items-start gap-1">
-                              <h5 className="text-sm font-bold text-neutral-900 tracking-wide uppercase italic line-clamp-1">{drink.name}</h5>
-                              <span className="text-sm font-mono font-bold text-red-600 flex-shrink-0">{drink.price}€</span>
+                            <h5 className="text-[11px] font-black text-neutral-900 tracking-wide uppercase italic line-clamp-2 min-h-[2.2rem] flex items-center">
+                              {drink.name}
+                            </h5>
+                            <div className="mt-1">
+                              <span className="text-xs font-mono font-black text-red-600">
+                                {drink.price.toLocaleString('fr-FR')} F CFA
+                              </span>
                             </div>
-                            <p className="text-[11px] text-neutral-600 line-clamp-1 leading-relaxed">{drink.description}</p>
+                            <p className="text-[10px] text-neutral-500 mt-2 line-clamp-2 min-h-[2.25rem] leading-normal">
+                              {drink.description}
+                            </p>
                           </div>
 
                           {/* Qty selector */}
-                          <div className="flex justify-between items-center mt-2">
-                            <span className="text-[9px] text-neutral-500 font-mono uppercase tracking-wider">{drink.category}</span>
-                            <div className="flex items-center gap-2">
+                          <div className="flex justify-between items-center mt-3 pt-3 border-t border-neutral-200">
+                            <span className="text-[8px] text-neutral-400 font-mono uppercase tracking-wider font-semibold">Qté</span>
+                            <div className="flex items-center gap-1.5">
                               <button
                                 onClick={() => handleUpdateDrinkQuantity(drink, qty - 1)}
-                                className="w-6 h-6 rounded bg-neutral-200 text-neutral-600 hover:bg-neutral-300 hover:text-neutral-900 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
+                                className="w-5 h-5 rounded bg-neutral-200 text-neutral-600 hover:bg-neutral-300 hover:text-neutral-900 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
                               >
                                 -
                               </button>
-                              <span className="w-6 text-center text-xs font-mono font-bold text-neutral-900">{qty}</span>
+                              <span className="w-4 text-center text-xs font-mono font-bold text-neutral-900">{qty}</span>
                               <button
                                 onClick={() => handleUpdateDrinkQuantity(drink, qty + 1)}
-                                className="w-6 h-6 rounded bg-red-600 text-white hover:bg-red-500 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
+                                className="w-5 h-5 rounded bg-red-600 text-white hover:bg-red-500 flex items-center justify-center text-xs font-bold transition-colors cursor-pointer"
                               >
                                 +
                               </button>
@@ -371,7 +385,7 @@ export default function BookingFlow({
                           <span className="text-red-600 font-bold font-mono">{item.quantity}x</span>
                           <span className="text-neutral-700 line-clamp-1">{item.drink.name}</span>
                         </div>
-                        <span className="text-neutral-900 font-mono font-semibold">{item.drink.price * item.quantity} €</span>
+                        <span className="text-neutral-900 font-mono font-semibold">{(item.drink.price * item.quantity).toLocaleString('fr-FR')} F CFA</span>
                       </div>
                     ))
                   )}
@@ -381,12 +395,12 @@ export default function BookingFlow({
                   {/* Minimum spend details */}
                   <div className="flex justify-between items-center text-xs">
                     <span className="text-neutral-500 font-medium">Consommation min. requise :</span>
-                    <span className="font-semibold text-neutral-900 font-mono">{selectedSalon.priceMin} €</span>
+                    <span className="font-semibold text-neutral-900 font-mono">{selectedSalon.priceMin.toLocaleString('fr-FR')} F CFA</span>
                   </div>
 
                   <div className="flex justify-between items-center text-xs">
                     <span className="text-neutral-500 font-medium">Total boissons actuel :</span>
-                    <span className="font-semibold text-neutral-900 font-mono">{drinksTotal} €</span>
+                    <span className="font-semibold text-neutral-900 font-mono">{drinksTotal.toLocaleString('fr-FR')} F CFA</span>
                   </div>
 
                   {/* Warning if minimum spend is not satisfied */}
@@ -394,14 +408,14 @@ export default function BookingFlow({
                     <div className="mt-3 p-3 rounded-xl bg-red-50 border border-red-100 text-[10px] text-red-600 leading-relaxed flex gap-2 font-medium">
                       <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0" />
                       <div>
-                        Note : Il vous reste <strong className="text-neutral-900 font-bold">{differenceToMinSpend} €</strong> de boissons à commander pour atteindre le minimum requis. La différence sera facturée sur place.
+                        Note : Il vous reste <strong className="text-neutral-900 font-bold">{differenceToMinSpend.toLocaleString('fr-FR')} F CFA</strong> de boissons à commander pour atteindre le minimum requis. La différence sera facturée sur place.
                       </div>
                     </div>
                   )}
 
                   <div className="pt-3 border-t border-neutral-200 flex justify-between items-center">
                     <span className="text-xs font-bold text-neutral-700">Sous-total Réservation :</span>
-                    <span className="text-lg font-black font-mono text-red-600">{finalTotalPrice} €</span>
+                    <span className="text-lg font-black font-mono text-red-600">{finalTotalPrice.toLocaleString('fr-FR')} F CFA</span>
                   </div>
                 </div>
               </div>
@@ -538,7 +552,7 @@ export default function BookingFlow({
                           <span className="text-neutral-700 font-medium">
                             <strong className="text-red-600 font-mono">{item.quantity}x</strong> {item.drink.name}
                           </span>
-                          <span className="text-neutral-600 font-mono">{item.drink.price * item.quantity} €</span>
+                          <span className="text-neutral-600 font-mono">{(item.drink.price * item.quantity).toLocaleString('fr-FR')} F CFA</span>
                         </div>
                       ))}
                     </div>
@@ -569,23 +583,23 @@ export default function BookingFlow({
                 <div className="p-5 bg-neutral-100 space-y-3">
                   <div className="flex justify-between items-center text-xs">
                     <span className="text-neutral-500 font-medium">Consommation minimum salon :</span>
-                    <span className="font-semibold text-neutral-900 font-mono">{selectedSalon.priceMin} €</span>
+                    <span className="font-semibold text-neutral-900 font-mono">{selectedSalon.priceMin.toLocaleString('fr-FR')} F CFA</span>
                   </div>
                   <div className="flex justify-between items-center text-xs">
                     <span className="text-neutral-500 font-medium">Total consommations :</span>
-                    <span className="font-semibold text-neutral-900 font-mono">{drinksTotal} €</span>
+                    <span className="font-semibold text-neutral-900 font-mono">{drinksTotal.toLocaleString('fr-FR')} F CFA</span>
                   </div>
                   
                   {!isMinSpendSatisfied && (
                     <div className="p-2.5 rounded-lg bg-red-50 border border-red-100 text-[10px] text-red-600 font-semibold">
-                      Rappel : Le minimum de {selectedSalon.priceMin} € n'est pas atteint. La différence de {differenceToMinSpend} € sera régularisée sur place.
+                      Rappel : Le minimum de {selectedSalon.priceMin.toLocaleString('fr-FR')} F CFA n'est pas atteint. La différence de {differenceToMinSpend.toLocaleString('fr-FR')} F CFA sera régularisée sur place.
                     </div>
                   )}
 
                   <div className="pt-3 border-t border-neutral-200 flex justify-between items-center">
                     <span className="text-xs font-bold text-neutral-900 uppercase tracking-widest">Montant Total :</span>
                     <span className="text-xl font-black font-mono text-red-600">
-                      {finalTotalPrice} €
+                      {finalTotalPrice.toLocaleString('fr-FR')} F CFA
                     </span>
                   </div>
                 </div>
@@ -622,7 +636,7 @@ export default function BookingFlow({
                 </div>
                 <div className="flex justify-between pb-1">
                   <span className="text-neutral-500">Montant :</span>
-                  <span className="font-bold font-mono text-red-600">{finalTotalPrice} €</span>
+                  <span className="font-bold font-mono text-red-600">{finalTotalPrice.toLocaleString('fr-FR')} F CFA</span>
                 </div>
               </div>
 

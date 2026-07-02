@@ -329,7 +329,7 @@ export default function InteractiveMap({
                 {/* Minimum spend reminder */}
                 <div className="mt-4 pt-3 border-t border-neutral-200 pl-2 flex justify-between items-center text-xs font-semibold">
                   <span className="text-neutral-500 uppercase tracking-wider text-[10px]">Consommation minimum :</span>
-                  <span className="text-neutral-900 font-mono">{salon.priceMin} €</span>
+                  <span className="text-neutral-900 font-mono">{salon.priceMin.toLocaleString('fr-FR')} F CFA</span>
                 </div>
               </button>
             );

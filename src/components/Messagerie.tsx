@@ -307,7 +307,7 @@ export default function Messagerie({
                                     {item.drink.name}
                                   </span>
                                   <span className="text-neutral-600 font-mono">
-                                    {item.drink.price * item.quantity} €
+                                    {(item.drink.price * item.quantity).toLocaleString('fr-FR')} F CFA
                                   </span>
                                 </div>
                               ))}
@@ -337,7 +337,7 @@ export default function Messagerie({
                           </div>
                           <div className="text-right">
                             <span className="text-xs font-mono font-black text-red-600 bg-red-50 px-3 py-1 border border-red-100 rounded-xl">
-                              {msg.reservation.totalPrice} €
+                              {msg.reservation.totalPrice.toLocaleString('fr-FR')} F CFA
                             </span>
                           </div>
                         </div>

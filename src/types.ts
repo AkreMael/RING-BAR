@@ -11,7 +11,7 @@ export interface Salon {
 export interface Drink {
   id: string;
   name: string;
-  category: 'Champagne' | 'Whisky' | 'Cognac' | 'Cocktail' | 'Soft';
+  category: string;
   price: number;
   description: string;
   image: string;

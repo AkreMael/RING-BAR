@@ -78,7 +78,7 @@ export async function findOrCreateSpreadsheet(accessToken: string): Promise<stri
             'Téléphone',
             'Nombre de personnes',
             'Boissons commandées',
-            'Prix Total (€)',
+            'Prix Total (F CFA)',
             'Commentaire',
             'Date Création',
             'Statut'
@@ -111,7 +111,7 @@ export async function appendReservation(
 
     // Format drinks into a readable string
     const drinksStr = reservation.drinks
-      .map((d) => `${d.quantity}x ${d.drink.name} (${d.drink.price}€/u)`)
+      .map((d) => `${d.quantity}x ${d.drink.name} (${d.drink.price} F CFA/u)`)
       .join(', ') || 'Aucune boisson';
 
     const rowValue = [
@@ -197,7 +197,7 @@ export async function fetchReservationsFromSheet(
       if (drinksStr && drinksStr !== 'Aucune boisson') {
         const parts = drinksStr.split(', ');
         parts.forEach((part, index) => {
-          const match = part.match(/^(\d+)x (.+?) \((.+?)€\/u\)$/);
+          const match = part.match(/^(\d+)x (.+?) \((.+?)(?:€|F\s*CFA|FCFA)\/u\)$/i);
           if (match) {
             reconstructedDrinks.push({
               drink: {

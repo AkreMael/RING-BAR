@@ -11,7 +11,7 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
     {
       name: 'PACK CHALLENGER',
       icon: <Award className="w-8 h-8 text-neutral-400" />,
-      price: 180,
+      price: 120000,
       description: 'Idéal pour s\'échauffer et lancer sa soirée entre amis dans une ambiance festive.',
       features: [
         '1 Bouteille de Champagne Moët & Chandon Brut',
@@ -26,7 +26,7 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
     {
       name: 'PACK CHAMPION',
       icon: <Trophy className="w-8 h-8 text-red-500" />,
-      price: 350,
+      price: 230000,
       description: 'Le choix royal de nos habitués. Pour célébrer une grande occasion ou faire la fête en grand.',
       features: [
         '1 Bouteille de Ruinart Blanc de Blancs',
@@ -43,7 +43,7 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
     {
       name: 'PACK KNOCKOUT (K.O.)',
       icon: <Crown className="w-8 h-8 text-red-500" />,
-      price: 600,
+      price: 395000,
       description: 'L\'expérience ultime VIP Le Ring Bar. Pour ceux qui veulent marquer les esprits et régner sur le bar.',
       features: [
         '1 Bouteille de Dom Pérignon Luminous (Lumineuse)',
@@ -105,8 +105,8 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
                   <h4 className="text-lg font-black text-neutral-900 tracking-wide uppercase italic">{pack.name}</h4>
                   
                   <div className="flex items-baseline gap-1 mt-3">
-                    <span className="text-3xl font-mono font-black text-neutral-900">{pack.price}</span>
-                    <span className="text-lg font-bold text-red-500">€</span>
+                    <span className="text-2xl font-mono font-black text-neutral-900">{pack.price.toLocaleString('fr-FR')}</span>
+                    <span className="text-xs font-bold text-red-600">F CFA</span>
                   </div>
 
                   <p className="text-xs text-neutral-600 mt-2 leading-relaxed">
