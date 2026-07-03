@@ -74,100 +74,112 @@ const COLOR_MAPS = {
     footerBg: 'bg-neutral-50 border-t border-neutral-100',
     footerText: 'text-neutral-500',
     footerTitle: 'text-neutral-900',
+    cardBg: 'bg-white',
+    borderPrimary: 'border-neutral-200',
+    textPrimary: 'text-neutral-900',
+    textSecondary: 'text-neutral-600',
   },
   ofun: {
     name: "O'fun Bar",
     abbreviation: 'OFB',
-    accentText: 'text-rose-600',
-    accentTextLight: 'text-rose-500',
-    accentBg: 'bg-rose-600',
-    accentBgHover: 'hover:bg-rose-500',
-    accentBorder: 'border-rose-600',
-    accentBorderMuted: 'border-rose-100',
-    accentBgLight: 'bg-rose-50',
-    glow: 'from-rose-600/10 via-rose-50/5',
-    accentBorderHover: 'hover:border-rose-600',
-    badge: 'bg-rose-600',
-    shadowBadge: 'shadow-[0_2px_10px_rgba(244,63,94,0.4)]',
-    shadowBento: 'shadow-lg shadow-rose-900/20',
-    accentBgBento: 'bg-rose-600 text-white hover:bg-rose-500',
-    textBento: 'text-rose-100',
-    textBentoBadge: 'text-rose-200',
-    mapLink: 'https://maps.app.goo.gl/YFN6d7YkKjfGpcB56', // Keeps same localization
+    accentText: 'text-amber-600',
+    accentTextLight: 'text-amber-500',
+    accentBg: 'bg-amber-600',
+    accentBgHover: 'hover:bg-amber-500',
+    accentBorder: 'border-amber-600',
+    accentBorderMuted: 'border-amber-200',
+    accentBgLight: 'bg-amber-50',
+    glow: 'from-amber-600/15 via-amber-100/5',
+    accentBorderHover: 'hover:border-amber-600',
+    badge: 'bg-amber-600',
+    shadowBadge: 'shadow-[0_2px_10px_rgba(217,119,6,0.4)]',
+    shadowBento: 'shadow-lg shadow-amber-900/20',
+    accentBgBento: 'bg-amber-600 text-white hover:bg-amber-500',
+    textBento: 'text-amber-100',
+    textBentoBadge: 'text-amber-200',
+    mapLink: 'https://maps.app.goo.gl/YFN6d7YkKjfGpcB56',
     // Dynamic theme classes for entire interface
-    pageBg: 'bg-rose-50/40 text-rose-950',
-    headerBg: 'bg-rose-100/90 border-b border-rose-200/60',
-    headerText: 'text-rose-950',
-    galerieBtn: 'bg-rose-100/50 text-rose-950 border-rose-200 hover:bg-rose-600 hover:text-white hover:border-rose-600',
-    sectionBg: 'bg-rose-100/30 border border-rose-200/60',
-    sectionTitle: 'text-rose-700',
-    sectionSub: 'text-rose-950',
-    bentoBg: 'bg-white border border-rose-200/80 shadow-2xl shadow-rose-100/40',
-    bentoBox1: 'bg-rose-50/60 border border-rose-200/70 hover:bg-white/80',
-    bentoBox2: 'bg-rose-50/60 border border-rose-200/70 hover:border-rose-600 hover:bg-white/80',
-    bentoBox1Text: 'text-rose-950',
-    bentoBox1Desc: 'text-rose-800',
-    bentoBox2Text: 'text-rose-950',
-    bentoBox2Desc: 'text-rose-800',
-    syncWrapper: 'bg-rose-100/30 border border-rose-200/60',
-    syncTextTitle: 'text-rose-950',
-    syncTextDesc: 'text-rose-800',
-    syncBtnSheets: 'bg-rose-100/50 border border-rose-200 text-rose-800 hover:text-rose-950 hover:bg-rose-200',
-    syncBtnManual: 'bg-rose-50 border border-rose-100 text-rose-600 hover:bg-rose-600 hover:text-white',
-    galleryCardBg: 'bg-rose-50/60 border border-rose-200/70 hover:bg-white/80',
-    galleryTextTitle: 'text-rose-950',
-    galleryTextDesc: 'text-rose-800',
-    locationBtn: 'bg-white border border-rose-200 text-rose-950 hover:text-rose-900 hover:border-rose-400 hover:bg-rose-50',
-    footerBg: 'bg-rose-100/30 border-t border-rose-200/40',
-    footerText: 'text-rose-700',
-    footerTitle: 'text-rose-950',
+    pageBg: 'bg-amber-50 text-amber-950',
+    headerBg: 'bg-amber-100/90 border-b border-amber-200/60',
+    headerText: 'text-amber-950',
+    galerieBtn: 'bg-amber-100/50 text-amber-950 border-amber-200 hover:bg-amber-600 hover:text-white hover:border-amber-600',
+    sectionBg: 'bg-amber-100/30 border border-amber-200/60',
+    sectionTitle: 'text-amber-700',
+    sectionSub: 'text-amber-950',
+    bentoBg: 'bg-white border border-amber-200/80 shadow-2xl shadow-amber-100/40',
+    bentoBox1: 'bg-amber-100/40 border border-amber-200/70 hover:bg-white/80',
+    bentoBox2: 'bg-amber-100/40 border border-amber-200/70 hover:border-amber-600 hover:bg-white/80',
+    bentoBox1Text: 'text-amber-950',
+    bentoBox1Desc: 'text-amber-800',
+    bentoBox2Text: 'text-amber-950',
+    bentoBox2Desc: 'text-amber-800',
+    syncWrapper: 'bg-amber-100/30 border border-amber-200/60',
+    syncTextTitle: 'text-amber-950',
+    syncTextDesc: 'text-amber-800',
+    syncBtnSheets: 'bg-amber-100/50 border border-amber-200 text-amber-800 hover:text-amber-950 hover:bg-amber-200',
+    syncBtnManual: 'bg-amber-50 border border-amber-100 text-amber-600 hover:bg-amber-600 hover:text-white',
+    galleryCardBg: 'bg-amber-100/40 border border-amber-200/70 hover:bg-white/80',
+    galleryTextTitle: 'text-amber-950',
+    galleryTextDesc: 'text-amber-800',
+    locationBtn: 'bg-white border border-amber-200 text-amber-950 hover:text-amber-900 hover:border-amber-400 hover:bg-amber-50',
+    footerBg: 'bg-amber-100/30 border-t border-amber-200/40',
+    footerText: 'text-amber-700',
+    footerTitle: 'text-amber-950',
+    cardBg: 'bg-amber-50',
+    borderPrimary: 'border-amber-200',
+    textPrimary: 'text-amber-950',
+    textSecondary: 'text-amber-800',
   },
   tecno: {
     name: 'Tecno Bar',
     abbreviation: 'TCB',
-    accentText: 'text-blue-600',
-    accentTextLight: 'text-blue-500',
-    accentBg: 'bg-blue-600',
-    accentBgHover: 'hover:bg-blue-500',
-    accentBorder: 'border-blue-600',
-    accentBorderMuted: 'border-blue-100',
-    accentBgLight: 'bg-blue-50',
-    glow: 'from-blue-600/10 via-blue-50/5',
-    accentBorderHover: 'hover:border-blue-600',
-    badge: 'bg-blue-600',
-    shadowBadge: 'shadow-[0_2px_10px_rgba(37,99,235,0.4)]',
-    shadowBento: 'shadow-lg shadow-blue-900/20',
-    accentBgBento: 'bg-blue-600 text-white hover:bg-blue-500',
-    textBento: 'text-blue-100',
-    textBentoBadge: 'text-blue-200',
-    mapLink: 'https://maps.app.goo.gl/YFN6d7YkKjfGpcB56', // Keeps same localization
+    accentText: 'text-emerald-600',
+    accentTextLight: 'text-emerald-500',
+    accentBg: 'bg-emerald-600',
+    accentBgHover: 'hover:bg-emerald-500',
+    accentBorder: 'border-emerald-600',
+    accentBorderMuted: 'border-emerald-200',
+    accentBgLight: 'bg-emerald-50',
+    glow: 'from-emerald-600/15 via-emerald-100/5',
+    accentBorderHover: 'hover:border-emerald-600',
+    badge: 'bg-emerald-600',
+    shadowBadge: 'shadow-[0_2px_10px_rgba(16,185,129,0.4)]',
+    shadowBento: 'shadow-lg shadow-emerald-900/20',
+    accentBgBento: 'bg-emerald-600 text-white hover:bg-emerald-500',
+    textBento: 'text-emerald-100',
+    textBentoBadge: 'text-emerald-200',
+    mapLink: 'https://maps.app.goo.gl/YFN6d7YkKjfGpcB56',
     // Dynamic theme classes for entire interface
-    pageBg: 'bg-blue-50/40 text-blue-950',
-    headerBg: 'bg-blue-100/90 border-b border-blue-200/60',
-    headerText: 'text-blue-950',
-    galerieBtn: 'bg-blue-100/50 text-blue-950 border-blue-200 hover:bg-blue-600 hover:text-white hover:border-blue-600',
-    sectionBg: 'bg-blue-100/30 border border-blue-200/60',
-    sectionTitle: 'text-blue-700',
-    sectionSub: 'text-blue-950',
-    bentoBg: 'bg-white border border-blue-200/80 shadow-2xl shadow-blue-100/40',
-    bentoBox1: 'bg-blue-50/60 border border-blue-200/70 hover:bg-white/80',
-    bentoBox2: 'bg-blue-50/60 border border-blue-200/70 hover:border-blue-600 hover:bg-white/80',
-    bentoBox1Text: 'text-blue-950',
-    bentoBox1Desc: 'text-blue-800',
-    bentoBox2Text: 'text-blue-950',
-    bentoBox2Desc: 'text-blue-800',
-    syncWrapper: 'bg-blue-100/30 border border-blue-200/60',
-    syncTextTitle: 'text-blue-950',
-    syncTextDesc: 'text-blue-800',
-    syncBtnSheets: 'bg-blue-100/50 border border-blue-200 text-blue-800 hover:text-blue-950 hover:bg-blue-200',
-    syncBtnManual: 'bg-blue-50 border border-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white',
-    galleryCardBg: 'bg-blue-50/60 border border-blue-200/70 hover:bg-white/80',
-    galleryTextTitle: 'text-blue-950',
-    galleryTextDesc: 'text-blue-800',
-    locationBtn: 'bg-white border border-blue-200 text-blue-950 hover:text-blue-900 hover:border-blue-400 hover:bg-blue-50',
-    footerBg: 'bg-blue-100/30 border-t border-blue-200/40',
-    footerText: 'text-blue-700',
-    footerTitle: 'text-blue-950',
+    pageBg: 'bg-emerald-50 text-emerald-950',
+    headerBg: 'bg-emerald-100/90 border-b border-emerald-200/60',
+    headerText: 'text-emerald-950',
+    galerieBtn: 'bg-emerald-100/50 text-emerald-950 border-emerald-200 hover:bg-emerald-600 hover:text-white hover:border-emerald-600',
+    sectionBg: 'bg-emerald-100/30 border border-emerald-200/60',
+    sectionTitle: 'text-emerald-700',
+    sectionSub: 'text-emerald-950',
+    bentoBg: 'bg-white border border-emerald-200/80 shadow-2xl shadow-emerald-100/40',
+    bentoBox1: 'bg-emerald-100/40 border border-emerald-200/70 hover:bg-white/80',
+    bentoBox2: 'bg-emerald-100/40 border border-emerald-200/70 hover:border-emerald-600 hover:bg-white/80',
+    bentoBox1Text: 'text-emerald-950',
+    bentoBox1Desc: 'text-emerald-800',
+    bentoBox2Text: 'text-emerald-950',
+    bentoBox2Desc: 'text-emerald-800',
+    syncWrapper: 'bg-emerald-100/30 border border-emerald-200/60',
+    syncTextTitle: 'text-emerald-950',
+    syncTextDesc: 'text-emerald-800',
+    syncBtnSheets: 'bg-emerald-100/50 border border-emerald-200 text-emerald-800 hover:text-emerald-950 hover:bg-emerald-200',
+    syncBtnManual: 'bg-emerald-50 border border-emerald-100 text-emerald-600 hover:bg-emerald-600 hover:text-white',
+    galleryCardBg: 'bg-emerald-100/40 border border-emerald-200/70 hover:bg-white/80',
+    galleryTextTitle: 'text-emerald-950',
+    galleryTextDesc: 'text-emerald-800',
+    locationBtn: 'bg-white border border-emerald-200 text-emerald-950 hover:text-emerald-900 hover:border-emerald-400 hover:bg-emerald-50',
+    footerBg: 'bg-emerald-100/30 border-t border-emerald-200/40',
+    footerText: 'text-emerald-700',
+    footerTitle: 'text-emerald-950',
+    cardBg: 'bg-emerald-50',
+    borderPrimary: 'border-emerald-200',
+    textPrimary: 'text-emerald-950',
+    textSecondary: 'text-emerald-800',
   },
 };
 
@@ -175,6 +187,14 @@ export default function App() {
   // Dynamic Bar Selection State
   const [selectedBar, setSelectedBar] = useState<'ring' | 'ofun' | 'tecno'>(() => {
     return (localStorage.getItem('selected_bar') as 'ring' | 'ofun' | 'tecno') || 'ring';
+  });
+
+  const [transitionState, setTransitionState] = useState<{
+    isTransitioning: boolean;
+    bar: 'ring' | 'ofun' | 'tecno' | null;
+  }>({
+    isTransitioning: false,
+    bar: null,
   });
 
   const bColors = COLOR_MAPS[selectedBar];
@@ -420,8 +440,26 @@ export default function App() {
   };
 
   const handleSelectBar = (bar: 'ring' | 'ofun' | 'tecno') => {
-    setSelectedBar(bar);
-    localStorage.setItem('selected_bar', bar);
+    if (bar === selectedBar || transitionState.isTransitioning) return;
+
+    setTransitionState({
+      isTransitioning: true,
+      bar,
+    });
+
+    // Change the active interface under the cover at 1000ms
+    setTimeout(() => {
+      setSelectedBar(bar);
+      localStorage.setItem('selected_bar', bar);
+    }, 1000);
+
+    // End the transition at 2100ms to allow animations to fully complete
+    setTimeout(() => {
+      setTransitionState({
+        isTransitioning: false,
+        bar: null,
+      });
+    }, 2100);
   };
 
   // Check if current user is owner
@@ -523,7 +561,7 @@ export default function App() {
 
           {/* Content Wrapper */}
           <div className="relative z-10 text-center space-y-6 px-4 max-w-4xl">
-            <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${selectedBar === 'ofun' ? 'bg-rose-600/10 border-rose-600/30 text-rose-500' : selectedBar === 'tecno' ? 'bg-blue-600/10 border-blue-600/30 text-blue-500' : 'bg-red-600/10 border-red-600/30 text-red-500'} border text-xs font-bold uppercase tracking-widest animate-pulse bg-black/30 backdrop-blur-sm`}>
+            <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${selectedBar === 'ofun' ? 'bg-amber-600/10 border-amber-600/30 text-amber-500' : selectedBar === 'tecno' ? 'bg-emerald-600/10 border-emerald-600/30 text-emerald-500' : 'bg-red-600/10 border-red-600/30 text-red-500'} border text-xs font-bold uppercase tracking-widest animate-pulse bg-black/30 backdrop-blur-sm`}>
               <Sparkles className="w-3.5 h-3.5" /> Club Privé & Bar à Cocktails
             </div>
 
@@ -588,19 +626,19 @@ export default function App() {
                 onClick={() => handleSelectBar('ofun')}
                 className={`p-3 sm:p-5 rounded-2xl border text-left transition-all duration-[800ms] flex flex-col justify-between min-h-[105px] sm:min-h-[115px] cursor-pointer group select-none ${
                   selectedBar === 'ofun'
-                    ? 'border-rose-600 bg-rose-600 text-white shadow-[0_4px_25px_rgba(236,72,153,0.3)] scale-[1.02]'
-                    : `${bColors.cardBg} ${bColors.borderPrimary} ${bColors.textPrimary} hover:border-rose-400 hover:bg-white/80`
+                    ? 'border-amber-600 bg-amber-600 text-white shadow-[0_4px_25px_rgba(217,119,6,0.3)] scale-[1.02]'
+                    : `${bColors.cardBg} ${bColors.borderPrimary} ${bColors.textPrimary} hover:border-amber-400 hover:bg-white/80`
                 }`}
               >
                 <div className="flex justify-between items-center w-full gap-1">
                   <span className={`text-[8px] sm:text-[10px] font-black uppercase tracking-widest transition-colors duration-500 ${selectedBar === 'ofun' ? 'text-white/95' : 'text-neutral-400'}`}>O'fun Bar</span>
-                  <span className={`w-2 h-2 rounded-full transition-all duration-500 ${selectedBar === 'ofun' ? 'bg-white shadow-[0_0_8px_#ffffff] animate-pulse' : 'bg-rose-600'}`} />
+                  <span className={`w-2 h-2 rounded-full transition-all duration-500 ${selectedBar === 'ofun' ? 'bg-white shadow-[0_0_8px_#ffffff] animate-pulse' : 'bg-amber-600'}`} />
                 </div>
                 <div>
-                  <h4 className={`text-xs sm:text-base font-black uppercase italic tracking-wide transition-colors duration-500 ${selectedBar === 'ofun' ? 'text-white' : `${bColors.textPrimary} group-hover:text-rose-600`}`}>
-                    O'fun Bar <span className={selectedBar === 'ofun' ? 'text-white' : 'text-rose-600'}>.</span>
+                  <h4 className={`text-xs sm:text-base font-black uppercase italic tracking-wide transition-colors duration-500 ${selectedBar === 'ofun' ? 'text-white' : `${bColors.textPrimary} group-hover:text-amber-600`}`}>
+                    O'fun Bar <span className={selectedBar === 'ofun' ? 'text-white' : 'text-amber-600'}>.</span>
                   </h4>
-                  <p className={`text-[8px] sm:text-[10px] uppercase tracking-widest mt-0.5 transition-colors duration-500 ${selectedBar === 'ofun' ? 'text-white/80' : `${bColors.textSecondary}`}`}>Thème Rose Festif</p>
+                  <p className={`text-[8px] sm:text-[10px] uppercase tracking-widest mt-0.5 transition-colors duration-500 ${selectedBar === 'ofun' ? 'text-white/80' : `${bColors.textSecondary}`}`}>Thème Jaune Doré</p>
                 </div>
               </button>
 
@@ -609,19 +647,19 @@ export default function App() {
                 onClick={() => handleSelectBar('tecno')}
                 className={`p-3 sm:p-5 rounded-2xl border text-left transition-all duration-[800ms] flex flex-col justify-between min-h-[105px] sm:min-h-[115px] cursor-pointer group select-none ${
                   selectedBar === 'tecno'
-                    ? 'border-blue-600 bg-blue-600 text-white shadow-[0_4px_25px_rgba(37,99,235,0.3)] scale-[1.02]'
-                    : `${bColors.cardBg} ${bColors.borderPrimary} ${bColors.textPrimary} hover:border-blue-400 hover:bg-white/80`
+                    ? 'border-emerald-600 bg-emerald-600 text-white shadow-[0_4px_25px_rgba(16,185,129,0.3)] scale-[1.02]'
+                    : `${bColors.cardBg} ${bColors.borderPrimary} ${bColors.textPrimary} hover:border-emerald-400 hover:bg-white/80`
                 }`}
               >
                 <div className="flex justify-between items-center w-full gap-1">
                   <span className={`text-[8px] sm:text-[10px] font-black uppercase tracking-widest transition-colors duration-500 ${selectedBar === 'tecno' ? 'text-white/95' : 'text-neutral-400'}`}>Tecno Bar</span>
-                  <span className={`w-2 h-2 rounded-full transition-all duration-500 ${selectedBar === 'tecno' ? 'bg-white shadow-[0_0_8px_#ffffff] animate-pulse' : 'bg-blue-600'}`} />
+                  <span className={`w-2 h-2 rounded-full transition-all duration-500 ${selectedBar === 'tecno' ? 'bg-white shadow-[0_0_8px_#ffffff] animate-pulse' : 'bg-emerald-600'}`} />
                 </div>
                 <div>
-                  <h4 className={`text-xs sm:text-base font-black uppercase italic tracking-wide transition-colors duration-500 ${selectedBar === 'tecno' ? 'text-white' : `${bColors.textPrimary} group-hover:text-blue-600`}`}>
-                    Tecno Bar <span className={selectedBar === 'tecno' ? 'text-white' : 'text-blue-600'}>.</span>
+                  <h4 className={`text-xs sm:text-base font-black uppercase italic tracking-wide transition-colors duration-500 ${selectedBar === 'tecno' ? 'text-white' : `${bColors.textPrimary} group-hover:text-emerald-600`}`}>
+                    Tecno Bar <span className={selectedBar === 'tecno' ? 'text-white' : 'text-emerald-600'}>.</span>
                   </h4>
-                  <p className={`text-[8px] sm:text-[10px] uppercase tracking-widest mt-0.5 transition-colors duration-500 ${selectedBar === 'tecno' ? 'text-white/80' : `${bColors.textSecondary}`}`}>Thème Bleu Futuriste</p>
+                  <p className={`text-[8px] sm:text-[10px] uppercase tracking-widest mt-0.5 transition-colors duration-500 ${selectedBar === 'tecno' ? 'text-white/80' : `${bColors.textSecondary}`}`}>Thème Vert Moderne</p>
                 </div>
               </button>
             </div>
@@ -895,6 +933,117 @@ export default function App() {
           isOwnerMode={isOwner}
           selectedBar={selectedBar}
         />
+      )}
+
+      {/* Dynamic Wave Transition Overlay */}
+      {transitionState.isTransitioning && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          animate={{ opacity: [1, 1, 1, 0] }}
+          transition={{ duration: 2.1, times: [0, 0.45, 0.85, 1.0], ease: 'easeInOut' }}
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black/10 pointer-events-auto"
+        >
+          {/* Luminous Ambient Flame/Glow Behind */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5, rotate: 0 }}
+            animate={{ 
+              opacity: [0, 0.7, 0.8, 0],
+              scale: [0.5, 1.8, 2.4, 3],
+              rotate: [0, 45, 90, 135],
+              borderRadius: ["30% 70% 70% 30% / 30% 40% 60% 70%", "50% 50% 50% 50%"]
+            }}
+            transition={{ duration: 2.1, ease: "easeInOut" }}
+            className={`absolute w-[500px] h-[500px] blur-3xl mix-blend-screen ${
+              transitionState.bar === 'ring' 
+                ? 'bg-red-500/40' 
+                : transitionState.bar === 'ofun' 
+                  ? 'bg-amber-400/40' 
+                  : 'bg-emerald-500/40'
+            }`}
+          />
+
+          {/* Main Wave Expander */}
+          <motion.div
+            initial={{ clipPath: "circle(0% at 50% 50%)" }}
+            animate={{ clipPath: "circle(150% at 50% 50%)" }}
+            transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+            className={`absolute inset-0 flex flex-col items-center justify-center ${
+              transitionState.bar === 'ring' 
+                ? 'bg-red-600 text-white' 
+                : transitionState.bar === 'ofun' 
+                  ? 'bg-amber-500 text-amber-950' 
+                  : 'bg-emerald-600 text-white'
+            }`}
+          >
+            {/* Ambient Background Grid Pattern */}
+            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px]" />
+
+            {/* Glowing flame gradient wave */}
+            <motion.div
+              animate={{
+                y: [-15, 15, -15],
+                opacity: [0.2, 0.4, 0.2],
+              }}
+              transition={{
+                duration: 2.0,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className={`absolute w-full h-full opacity-20 bg-gradient-to-t ${
+                transitionState.bar === 'ring' 
+                  ? 'from-red-800 via-transparent to-red-400/30' 
+                  : transitionState.bar === 'ofun' 
+                    ? 'from-amber-700 via-transparent to-yellow-300/30' 
+                    : 'from-emerald-800 via-transparent to-emerald-400/30'
+              }`}
+            />
+
+            {/* Content Container */}
+            <div className="relative z-10 text-center px-6">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.85, y: 35 }}
+                animate={{ 
+                  opacity: [0, 1, 1, 0],
+                  scale: [0.85, 1.05, 1.0, 0.9],
+                  y: [35, 0, 0, -25]
+                }}
+                transition={{ 
+                  duration: 2.1, 
+                  times: [0, 0.35, 0.75, 1.0],
+                  ease: "easeInOut" 
+                }}
+                className="space-y-4"
+              >
+                <span className={`text-[10px] sm:text-xs font-black tracking-[0.4em] uppercase block opacity-80 ${
+                  transitionState.bar === 'ofun' ? 'text-amber-950/80' : 'text-white/80'
+                }`}>
+                  ACCÈS À L'ÉTABLISSEMENT
+                </span>
+                
+                <h2 className="text-4xl sm:text-7xl font-black italic uppercase tracking-tighter drop-shadow-xl font-sans">
+                  {transitionState.bar === 'ring' 
+                    ? 'RING BAR' 
+                    : transitionState.bar === 'ofun' 
+                      ? "O'FUN BAR" 
+                      : 'TECNO BAR'}
+                </h2>
+
+                <div className={`w-32 h-1.5 mx-auto rounded-full ${
+                  transitionState.bar === 'ofun' ? 'bg-amber-950/20' : 'bg-white/20'
+                } overflow-hidden`}>
+                  <motion.div 
+                    initial={{ x: "-100%" }}
+                    animate={{ x: "100%" }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                    className={`w-1/2 h-full ${
+                      transitionState.bar === 'ofun' ? 'bg-amber-950' : 'bg-white'
+                    }`}
+                  />
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </motion.div>
       )}
 
     </div>
