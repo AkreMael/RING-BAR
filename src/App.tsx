@@ -587,7 +587,7 @@ export default function App() {
           {/* Banner Image (Positioned below the texts, with width 1250px and height 450px) */}
           <div className="w-full max-w-[1250px] flex justify-center mt-6">
             <div 
-              className="w-full h-[280px] sm:h-[380px] lg:h-[450px] relative bg-cover bg-center bg-no-repeat bg-[url('https://i.supaimg.com/0543a7e5-673b-44b9-9668-8152c5aea01b/caf9d2c4-6903-432d-8d5b-223bdfa70f1f.png')]"
+              className="w-full h-[280px] sm:h-[380px] lg:h-[450px] relative bg-cover bg-center bg-no-repeat bg-[url('https://i.supaimg.com/0543a7e5-673b-44b9-9668-8152c5aea01b/106ba484-6870-45f5-99d8-42d95d4b4279.png')]"
               style={{ 
                 maxWidth: '1250px',
               }}
