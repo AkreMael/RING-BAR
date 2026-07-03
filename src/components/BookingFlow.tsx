@@ -157,9 +157,9 @@ export default function BookingFlow({
   };
 
   return (
-    <div className="fixed inset-0 z-40 bg-neutral-50 flex flex-col items-center justify-center p-0 md:p-6 h-screen overflow-hidden">
-      {/* Central Booking Container (styled as a standalone elegant page) */}
-      <div className="w-full max-w-6xl h-full md:h-[90vh] md:max-h-[850px] flex flex-col bg-white md:rounded-3xl md:shadow-2xl md:border md:border-neutral-200 overflow-hidden relative">
+    <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden">
+      {/* Central Booking Container (styled as a centered elegant modal) */}
+      <div className="w-full max-w-5xl h-full max-h-[92vh] sm:max-h-[90vh] md:max-h-[85vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-neutral-200 overflow-hidden relative">
         
         {/* Title Header */}
         <div className="px-6 py-5 border-b border-neutral-100 bg-neutral-50/50 flex justify-between items-center">
