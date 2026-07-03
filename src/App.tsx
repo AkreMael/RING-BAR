@@ -553,14 +553,10 @@ export default function App() {
         </header>
 
         {/* --- HERO BANNER & BACKGROUND --- */}
-        <section className="relative w-full h-[380px] md:h-[460px] flex flex-col justify-center items-center overflow-hidden border-b border-neutral-100">
+        <section className="w-full flex flex-col items-center py-10 sm:py-14 bg-zinc-950 border-b border-zinc-900 transition-all duration-[1200ms] ease-in-out">
           
-          {/* Background Image of a luxury cocktail lounge with dynamic overlay */}
-          <div className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-[url('https://i.supaimg.com/0543a7e5-673b-44b9-9668-8152c5aea01b/caf9d2c4-6903-432d-8d5b-223bdfa70f1f.png')]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-0" />
-
-          {/* Content Wrapper */}
-          <div className="relative z-10 text-center space-y-6 px-4 max-w-4xl">
+          {/* Content Wrapper (Text moved above the image, keeping the exact same fonts, colors, and layout) */}
+          <div className="relative z-10 text-center space-y-6 px-4 max-w-4xl mb-10">
             <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${selectedBar === 'ofun' ? 'bg-amber-600/10 border-amber-600/30 text-amber-500' : selectedBar === 'tecno' ? 'bg-emerald-600/10 border-emerald-600/30 text-emerald-500' : 'bg-red-600/10 border-red-600/30 text-red-500'} border text-xs font-bold uppercase tracking-widest animate-pulse bg-black/30 backdrop-blur-sm`}>
               <Sparkles className="w-3.5 h-3.5" /> Club Privé & Bar à Cocktails
             </div>
@@ -585,6 +581,19 @@ export default function App() {
                 <MapPin className={`w-4 h-4 ${bColors.accentText}`} />
                 LOCALISATION DU {selectedBar === 'ring' ? 'RING BAR' : selectedBar === 'ofun' ? "O'FUN BAR" : 'TECNO BAR'}
               </a>
+            </div>
+          </div>
+
+          {/* Banner Image (Positioned below the texts, with width 1250px and height 550px) */}
+          <div className="w-full max-w-[1250px] px-4 flex justify-center mt-2">
+            <div 
+              className="w-full h-[250px] sm:h-[380px] md:h-[480px] lg:h-[550px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative bg-cover bg-center bg-no-repeat bg-[url('https://i.supaimg.com/0543a7e5-673b-44b9-9668-8152c5aea01b/caf9d2c4-6903-432d-8d5b-223bdfa70f1f.png')]"
+              style={{ 
+                maxWidth: '1250px',
+              }}
+            >
+              {/* Subtle dark gradient overlay on the image */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
             </div>
           </div>
         </section>
