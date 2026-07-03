@@ -9,6 +9,7 @@ interface MessagerieProps {
   isLoadingFromSheet: boolean;
   onRefreshFromSheet: () => Promise<void>;
   isOwnerMode: boolean;
+  selectedBar?: 'ring' | 'ofun' | 'tecno';
 }
 
 export default function Messagerie({
@@ -18,11 +19,28 @@ export default function Messagerie({
   isLoadingFromSheet,
   onRefreshFromSheet,
   isOwnerMode,
+  selectedBar = 'ring',
 }: MessagerieProps) {
   const [filter, setFilter] = useState<'all' | 'pending' | 'confirmed' | 'cancelled'>('all');
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [localMessages, setLocalMessages] = useState<Message[]>([]);
   const [confirmDialog, setConfirmDialog] = useState<{ id: string; targetStatus: 'pending' | 'confirmed' | 'cancelled'; label: string } | null>(null);
+
+  const barName = selectedBar === 'ofun' ? "O'fun Bar" : selectedBar === 'tecno' ? "Tecno Bar" : "Ring Bar";
+  
+  // Dynamic design tokens
+  const textTheme = selectedBar === 'ofun' ? 'text-rose-600' : selectedBar === 'tecno' ? 'text-blue-600' : 'text-red-600';
+  const bgTheme = selectedBar === 'ofun' ? 'bg-rose-600' : selectedBar === 'tecno' ? 'bg-blue-600' : 'bg-red-600';
+  const bgHoverTheme = selectedBar === 'ofun' ? 'hover:bg-rose-500' : selectedBar === 'tecno' ? 'hover:bg-blue-500' : 'hover:bg-red-500';
+  const borderTheme = selectedBar === 'ofun' ? 'border-rose-600' : selectedBar === 'tecno' ? 'border-blue-600' : 'border-red-600';
+  const borderHoverTheme = selectedBar === 'ofun' ? 'hover:border-rose-500' : selectedBar === 'tecno' ? 'hover:border-blue-500' : 'hover:border-red-500';
+  const bgLightTheme = selectedBar === 'ofun' ? 'bg-rose-50' : selectedBar === 'tecno' ? 'bg-blue-50' : 'bg-red-50';
+  const bg10Theme = selectedBar === 'ofun' ? 'bg-rose-600/10' : selectedBar === 'tecno' ? 'bg-blue-600/10' : 'bg-red-600/10';
+  const borderMutedTheme = selectedBar === 'ofun' ? 'border-rose-100' : selectedBar === 'tecno' ? 'border-blue-100' : 'border-red-100';
+  const shadowTheme = selectedBar === 'ofun' ? 'shadow-[0_4px_15px_rgba(236,72,153,0.3)] hover:shadow-[0_4px_20px_rgba(236,72,153,0.5)]' : selectedBar === 'tecno' ? 'shadow-[0_4px_15px_rgba(59,130,246,0.3)] hover:shadow-[0_4px_20px_rgba(59,130,246,0.5)]' : 'shadow-[0_4px_15px_rgba(220,38,38,0.3)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.5)]';
+  const shadowFilterTheme = selectedBar === 'ofun' ? 'shadow-[0_2px_8px_rgba(236,72,153,0.3)]' : selectedBar === 'tecno' ? 'shadow-[0_2px_8px_rgba(59,130,246,0.3)]' : 'shadow-[0_2px_8px_rgba(220,38,38,0.3)]';
+  const shadowBtnTheme = selectedBar === 'ofun' ? 'shadow-[0_2px_10px_rgba(236,72,153,0.3)]' : selectedBar === 'tecno' ? 'shadow-[0_2px_10px_rgba(59,130,246,0.3)]' : 'shadow-[0_2px_10px_rgba(220,38,38,0.3)]';
+  const shadowConfirmTheme = selectedBar === 'ofun' ? 'shadow-[0_4px_12px_rgba(236,72,153,0.3)]' : selectedBar === 'tecno' ? 'shadow-[0_4px_12px_rgba(59,130,246,0.3)]' : 'shadow-[0_4px_12px_rgba(220,38,38,0.3)]';
 
   // Sound effect for notifications
   const playNotificationSound = () => {
@@ -132,14 +150,14 @@ export default function Messagerie({
         {/* Top Header */}
         <div className="p-4 md:p-6 border-b border-neutral-100 flex justify-between items-center bg-neutral-50">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-600/10 border border-red-600/20 rounded-xl">
-              <Inbox className="w-5 h-5 text-red-600" />
+            <div className={`p-2 ${bg10Theme} border border-neutral-200/50 rounded-xl`}>
+              <Inbox className={`w-5 h-5 ${textTheme}`} />
             </div>
             <div>
               <h3 className="text-base font-black text-neutral-900 tracking-wider uppercase italic flex items-center gap-2">
-                Historique des réservations
+                Historique Le {barName}
                 {isOwnerMode && (
-                  <span className="text-[9px] bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded-full font-sans uppercase font-black">
+                  <span className={`text-[9px] ${bgLightTheme} ${textTheme} border ${borderMutedTheme} px-2 py-0.5 rounded-full font-sans uppercase font-black`}>
                     Propriétaire Connecté
                   </span>
                 )}
@@ -160,7 +178,7 @@ export default function Messagerie({
               title={soundEnabled ? 'Désactiver le son de notification' : 'Activer le son de notification'}
               className={`p-2 rounded-xl border transition-colors cursor-pointer ${
                 soundEnabled
-                  ? 'bg-red-50 border-red-100 text-red-600'
+                  ? `${bgLightTheme} ${borderMutedTheme} ${textTheme}`
                   : 'bg-neutral-100 border-neutral-200 text-neutral-500 hover:text-neutral-900'
               }`}
             >
@@ -170,7 +188,7 @@ export default function Messagerie({
             {/* Fermer */}
             <button
               onClick={onClose}
-              className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white border border-red-600 hover:border-red-500 text-[10px] font-black uppercase tracking-widest transition-all shadow-[0_4px_15px_rgba(220,38,38,0.3)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.5)] cursor-pointer flex items-center gap-1.5"
+              className={`px-4 py-2 rounded-xl ${bgTheme} ${bgHoverTheme} text-white border ${borderTheme} ${borderHoverTheme} text-[10px] font-black uppercase tracking-widest transition-all ${shadowTheme} cursor-pointer flex items-center gap-1.5`}
             >
               <X className="w-3.5 h-3.5" /> Fermer
             </button>
@@ -189,7 +207,7 @@ export default function Messagerie({
                   onClick={() => setFilter(s)}
                   className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer whitespace-nowrap ${
                     filter === s
-                      ? 'bg-red-600 text-white shadow-[0_2px_8px_rgba(220,38,38,0.3)]'
+                      ? `${bgTheme} text-white ${shadowFilterTheme}`
                       : 'text-neutral-600 hover:text-neutral-900 bg-neutral-100 border border-neutral-200'
                   }`}
                 >
@@ -230,7 +248,7 @@ export default function Messagerie({
                         </div>
 
                         <div className="flex items-center gap-2 text-neutral-900">
-                          <Coffee className="w-4 h-4 text-red-600 shrink-0" />
+                          <Coffee className={`w-4 h-4 ${textTheme} shrink-0`} />
                           <span className="text-sm font-bold uppercase italic tracking-wide">
                             {msg.reservation.salonName || `Salon ${msg.reservation.salonId}`}
                           </span>
@@ -303,7 +321,7 @@ export default function Messagerie({
                               {msg.reservation.drinks.map((item, idx) => (
                                 <div key={idx} className="flex justify-between items-center text-[11px]">
                                   <span className="text-neutral-700 font-medium">
-                                    <strong className="text-red-600 font-mono mr-1.5">{item.quantity}x</strong> 
+                                    <strong className={`${textTheme} font-mono mr-1.5`}>{item.quantity}x</strong> 
                                     {item.drink.name}
                                   </span>
                                   <span className="text-neutral-600 font-mono">
@@ -317,8 +335,8 @@ export default function Messagerie({
 
                         {/* Comment */}
                         {msg.reservation.comment && (
-                          <div className="p-3 rounded-xl bg-red-50 border border-red-100">
-                            <span className="text-[9px] font-black text-red-600 uppercase tracking-widest block mb-1 flex items-center gap-1.5">
+                          <div className={`p-3 rounded-xl ${bgLightTheme} border ${borderMutedTheme}`}>
+                            <span className={`text-[9px] font-black ${textTheme} uppercase tracking-widest block mb-1 flex items-center gap-1.5`}>
                               <MessageSquare className="w-3 h-3" /> Commentaire :
                             </span>
                             <p className="text-[11px] text-neutral-700 italic leading-relaxed">
@@ -336,7 +354,7 @@ export default function Messagerie({
                             {getStatusBadge(msg.reservation.status)}
                           </div>
                           <div className="text-right">
-                            <span className="text-xs font-mono font-black text-red-600 bg-red-50 px-3 py-1 border border-red-100 rounded-xl">
+                            <span className={`text-xs font-mono font-black ${textTheme} ${bgLightTheme} px-3 py-1 border ${borderMutedTheme} rounded-xl`}>
                               {msg.reservation.totalPrice.toLocaleString('fr-FR')} F CFA
                             </span>
                           </div>
@@ -355,7 +373,7 @@ export default function Messagerie({
                                       label: 'Voulez-vous annuler cette réservation ? Cette action sera synchronisée.'
                                     });
                                   }}
-                                  className="flex-1 py-2 rounded-xl bg-red-50 border border-red-100 text-red-600 hover:bg-red-100 transition-all text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 cursor-pointer"
+                                  className={`flex-1 py-2 rounded-xl ${bgLightTheme} border ${borderMutedTheme} ${textTheme} hover:bg-neutral-100 transition-all text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 cursor-pointer`}
                                 >
                                   <X className="w-3.5 h-3.5" /> Annuler
                                 </button>
@@ -367,7 +385,7 @@ export default function Messagerie({
                                       label: 'Voulez-vous confirmer cette réservation ? Le client et l\'équipe seront notifiés.'
                                     });
                                   }}
-                                  className="flex-1 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white shadow-[0_2px_10px_rgba(220,38,38,0.3)] transition-all text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 cursor-pointer"
+                                  className={`flex-1 py-2 rounded-xl ${bgTheme} hover:${bgHoverTheme} text-white ${shadowBtnTheme} transition-all text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-1.5 cursor-pointer`}
                                 >
                                   <Check className="w-3.5 h-3.5" /> Confirmer
                                 </button>
@@ -420,7 +438,7 @@ export default function Messagerie({
         {confirmDialog && (
           <div className="absolute inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center p-4 z-[110] animate-fade-in">
             <div className="bg-white border border-neutral-200 p-8 rounded-3xl max-w-sm text-center space-y-6 shadow-2xl">
-              <ShieldAlert className="w-12 h-12 text-red-600 mx-auto animate-bounce" />
+              <ShieldAlert className={`w-12 h-12 ${textTheme} mx-auto animate-bounce`} />
               <div className="space-y-2">
                 <h4 className="text-lg font-black text-neutral-900 uppercase italic">Confirmation</h4>
                 <p className="text-xs text-neutral-600 leading-relaxed uppercase tracking-wider font-semibold">{confirmDialog.label}</p>
@@ -434,7 +452,7 @@ export default function Messagerie({
                 </button>
                 <button
                   onClick={handleConfirmAction}
-                  className="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white shadow-[0_4px_12px_rgba(220,38,38,0.3)] transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer"
+                  className={`flex-1 py-2.5 rounded-xl ${bgTheme} hover:${bgHoverTheme} text-white ${shadowConfirmTheme} transition-all text-[10px] font-black uppercase tracking-widest cursor-pointer`}
                 >
                   Confirmer
                 </button>

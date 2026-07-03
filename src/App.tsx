@@ -26,7 +26,77 @@ import Gallery from './components/Gallery';
 import Messagerie from './components/Messagerie';
 import { MapPin, Inbox, LogOut, Sparkles, Phone, Calendar, Clock, LogIn, ChevronRight, HelpCircle, FileSpreadsheet } from 'lucide-react';
 
+const COLOR_MAPS = {
+  ring: {
+    name: 'Ring Bar',
+    abbreviation: 'LRB',
+    accentText: 'text-red-600',
+    accentTextLight: 'text-red-500',
+    accentBg: 'bg-red-600',
+    accentBgHover: 'hover:bg-red-500',
+    accentBorder: 'border-red-600',
+    accentBorderMuted: 'border-red-100',
+    accentBgLight: 'bg-red-50',
+    glow: 'from-red-600/5 via-red-50/2',
+    accentBorderHover: 'hover:border-red-600',
+    badge: 'bg-red-600',
+    shadowBadge: 'shadow-[0_2px_10px_rgba(220,38,38,0.4)]',
+    shadowBento: 'shadow-lg shadow-red-900/20',
+    accentBgBento: 'bg-red-600 text-white hover:bg-red-500',
+    textBento: 'text-red-100',
+    textBentoBadge: 'text-red-200',
+    mapLink: 'https://maps.app.goo.gl/YFN6d7YkKjfGpcB56',
+  },
+  ofun: {
+    name: "O'fun Bar",
+    abbreviation: 'OFB',
+    accentText: 'text-rose-600',
+    accentTextLight: 'text-rose-500',
+    accentBg: 'bg-rose-600',
+    accentBgHover: 'hover:bg-rose-500',
+    accentBorder: 'border-rose-600',
+    accentBorderMuted: 'border-rose-100',
+    accentBgLight: 'bg-rose-50',
+    glow: 'from-rose-600/5 via-rose-50/2',
+    accentBorderHover: 'hover:border-rose-600',
+    badge: 'bg-rose-600',
+    shadowBadge: 'shadow-[0_2px_10px_rgba(244,63,94,0.4)]',
+    shadowBento: 'shadow-lg shadow-rose-900/20',
+    accentBgBento: 'bg-rose-600 text-white hover:bg-rose-500',
+    textBento: 'text-rose-100',
+    textBentoBadge: 'text-rose-200',
+    mapLink: 'https://maps.app.goo.gl/YFN6d7YkKjfGpcB56', // Keeps same localization
+  },
+  tecno: {
+    name: 'Tecno Bar',
+    abbreviation: 'TCB',
+    accentText: 'text-blue-600',
+    accentTextLight: 'text-blue-500',
+    accentBg: 'bg-blue-600',
+    accentBgHover: 'hover:bg-blue-500',
+    accentBorder: 'border-blue-600',
+    accentBorderMuted: 'border-blue-100',
+    accentBgLight: 'bg-blue-50',
+    glow: 'from-blue-600/5 via-blue-50/2',
+    accentBorderHover: 'hover:border-blue-600',
+    badge: 'bg-blue-600',
+    shadowBadge: 'shadow-[0_2px_10px_rgba(37,99,235,0.4)]',
+    shadowBento: 'shadow-lg shadow-blue-900/20',
+    accentBgBento: 'bg-blue-600 text-white hover:bg-blue-500',
+    textBento: 'text-blue-100',
+    textBentoBadge: 'text-blue-200',
+    mapLink: 'https://maps.app.goo.gl/YFN6d7YkKjfGpcB56', // Keeps same localization
+  },
+};
+
 export default function App() {
+  // Dynamic Bar Selection State
+  const [selectedBar, setSelectedBar] = useState<'ring' | 'ofun' | 'tecno'>(() => {
+    return (localStorage.getItem('selected_bar') as 'ring' | 'ofun' | 'tecno') || 'ring';
+  });
+
+  const bColors = COLOR_MAPS[selectedBar];
+
   // Navigation & Popups state
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isDrinksOpen, setIsDrinksOpen] = useState(false);
@@ -265,42 +335,48 @@ export default function App() {
   const handleSelectPackDirectly = (packageName: string, price: number) => {
     setIsOffersOpen(false);
     setIsBookingOpen(true);
-    // This will open the flow. We let the user choose date/time, and they can select the drinks at Step 3
   };
 
-  // Check if current user is owner (filantmael225@gmail.com or any logged-in administrator)
+  const handleSelectBar = (bar: 'ring' | 'ofun' | 'tecno') => {
+    setSelectedBar(bar);
+    localStorage.setItem('selected_bar', bar);
+  };
+
+  // Check if current user is owner
   const isOwner = user !== null;
+
+  const barGalleryLabel = selectedBar === 'ring' ? 'GALERIE DU RING' : selectedBar === 'ofun' ? "GALERIE O'FUN" : 'GALERIE TECNO';
 
   return (
     <div id="ring-bar-layout" className="min-h-screen bg-white text-neutral-900 flex flex-col font-sans relative overflow-x-hidden antialiased">
       
-      {/* Dynamic Glowing Red Background Accent */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-gradient-to-b from-red-600/5 via-red-50/2 to-transparent blur-3xl pointer-events-none" />
+      {/* Dynamic Glowing Background Accent */}
+      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[400px] bg-gradient-to-b ${bColors.glow} to-transparent blur-3xl pointer-events-none`} />
 
       {/* --- TOP HEADER --- */}
       <header className="sticky top-0 z-30 bg-white/95 border-b border-neutral-100 backdrop-blur-md px-3 sm:px-6 md:px-8 py-4 sm:py-5 flex justify-between items-center gap-2 shadow-sm">
         
-        {/* Left Side: GALERIE DU RING */}
+        {/* Left Side: GALERIE */}
         <button
           onClick={() => setIsGalleryOpen(true)}
           className="px-2.5 sm:px-4 py-1.5 sm:py-2 text-[9px] sm:text-[11px] font-black tracking-widest text-neutral-900 uppercase border border-neutral-200 rounded-xl bg-neutral-50 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all duration-300 shadow-[0_0_15px_rgba(0,0,0,0.02)] select-none cursor-pointer whitespace-nowrap"
         >
-          <span className="sm:inline hidden">GALERIE DU RING</span>
+          <span className="sm:inline hidden">{barGalleryLabel}</span>
           <span className="inline sm:hidden">GALERIE</span>
         </button>
 
-        {/* Center Logo: LE RING BAR VIP */}
+        {/* Center Logo */}
         <div className="flex items-center gap-2 sm:gap-3 select-none">
           <div
             onDoubleClick={handleLogin}
             title="Action administrateur (double-clic)"
-            className="w-8 h-8 sm:w-10 sm:h-10 bg-red-600 rounded-full flex items-center justify-center font-black text-base sm:text-xl italic tracking-tighter text-white select-none cursor-pointer transition-transform hover:scale-105 active:scale-95"
+            className={`w-8 h-8 sm:w-10 sm:h-10 ${bColors.accentBg} rounded-full flex items-center justify-center font-black text-base sm:text-xl italic tracking-tighter text-white select-none cursor-pointer transition-transform hover:scale-105 active:scale-95`}
           >
-            LRB
+            {bColors.abbreviation}
           </div>
           <div className="text-left">
             <h1 className="text-xs sm:text-sm md:text-2xl font-black uppercase tracking-wider italic text-neutral-900 flex items-center gap-1 sm:gap-2 leading-none">
-              Le Ring Bar <span className="text-[8px] sm:text-xs not-italic font-bold tracking-widest px-1 sm:px-1.5 py-0.5 rounded bg-red-600 text-white font-sans">VIP</span>
+              Le {bColors.name} <span className={`text-[8px] sm:text-xs not-italic font-bold tracking-widest px-1 sm:px-1.5 py-0.5 rounded ${bColors.accentBg} text-white font-sans`}>VIP</span>
             </h1>
             <p className="hidden sm:block text-[8px] md:text-[9px] text-neutral-500 font-medium tracking-[0.2em] uppercase mt-0.5">RÉSERVATION DE SALON PREMIUM</p>
           </div>
@@ -312,19 +388,19 @@ export default function App() {
           {/* Historique des réservations */}
           <button
             onClick={() => setIsMessagerieOpen(true)}
-            className="relative p-1.5 sm:p-2 rounded-xl bg-red-50 border border-red-100 text-red-600 hover:bg-red-600 hover:text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(220,38,38,0.1)] flex items-center gap-1"
+            className={`relative p-1.5 sm:p-2 rounded-xl ${bColors.accentBgLight} border ${bColors.accentBorderMuted} ${bColors.accentText} hover:${bColors.accentBg} hover:text-white transition-all cursor-pointer shadow-[0_0_15px_rgba(220,38,38,0.1)] flex items-center gap-1`}
             title="Historique des réservations"
           >
             <Inbox className="w-4 h-4 sm:w-5 sm:h-5" />
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 sm:-top-1.5 sm:-right-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-red-600 text-white font-mono font-bold text-[9px] sm:text-[10px] flex items-center justify-center animate-pulse">
+              <span className={`absolute -top-1 -right-1 sm:-top-1.5 sm:-right-1.5 w-4 h-4 sm:w-5 sm:h-5 rounded-full ${bColors.badge} text-white font-mono font-bold text-[9px] sm:text-[10px] flex items-center justify-center animate-pulse`}>
                 {unreadCount}
               </span>
             )}
             <span className="hidden lg:inline text-xs font-bold uppercase tracking-wider pl-0.5">Historique des réservations</span>
           </button>
 
-          {/* User profile (only visible if logged in - "Se connecter" button is removed completely) */}
+          {/* User profile */}
           {user && (
             <div className="flex items-center gap-1.5 sm:gap-2">
               <div className="hidden xl:flex flex-col items-end">
@@ -334,7 +410,7 @@ export default function App() {
               <img
                 src={user.photoURL || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100'}
                 alt={user.displayName || 'Google Profile'}
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-red-600/40 object-cover"
+                className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border ${bColors.accentBorder}/40 object-cover`}
                 referrerPolicy="no-referrer"
               />
               <button
@@ -352,56 +428,133 @@ export default function App() {
       {/* --- HERO BANNER & BACKGROUND --- */}
       <section className="relative w-full h-[380px] md:h-[460px] flex flex-col justify-center items-center overflow-hidden border-b border-neutral-100">
         
-        {/* Background Image of a luxury cocktail lounge with dark red overlay */}
+        {/* Background Image of a luxury cocktail lounge with dynamic overlay */}
         <div className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat bg-[url('https://i.supaimg.com/0543a7e5-673b-44b9-9668-8152c5aea01b/caf9d2c4-6903-432d-8d5b-223bdfa70f1f.png')]" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-0" />
 
         {/* Content Wrapper */}
         <div className="relative z-10 text-center space-y-6 px-4 max-w-4xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/30 text-red-500 text-xs font-bold uppercase tracking-widest animate-pulse bg-black/30 backdrop-blur-sm">
+          <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${selectedBar === 'ofun' ? 'bg-rose-600/10 border-rose-600/30 text-rose-500' : selectedBar === 'tecno' ? 'bg-blue-600/10 border-blue-600/30 text-blue-500' : 'bg-red-600/10 border-red-600/30 text-red-500'} border text-xs font-bold uppercase tracking-widest animate-pulse bg-black/30 backdrop-blur-sm`}>
             <Sparkles className="w-3.5 h-3.5" /> Club Privé & Bar à Cocktails
           </div>
 
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-white uppercase leading-none font-sans drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] italic">
             RÉSERVEZ VOTRE SALON <br className="hidden md:inline" />
-            <span className="text-red-600">D'EXCEPTION.</span>
+            <span className={bColors.accentText}>D'EXCEPTION.</span>
           </h2>
           
           <p className="text-xs md:text-sm text-neutral-200 max-w-xl mx-auto leading-relaxed drop-shadow-[0_1px_5px_rgba(0,0,0,0.6)] font-medium">
-            Bienvenue au Ring Bar VIP. Sélectionnez votre salon numéroté, précommandez vos boissons prestigieuses et vivez une expérience mémorable avec un service personnalisé de premier ordre.
+            Bienvenue au {bColors.name} VIP. Sélectionnez votre salon numéroté, précommandez vos boissons prestigieuses et vivez une expérience mémorable avec un service personnalisé de premier ordre.
           </p>
 
-          {/* Location link as shown in screenshot */}
+          {/* Location link */}
           <div className="flex justify-center pt-2">
             <a
-              href="https://maps.app.goo.gl/YFN6d7YkKjfGpcB56"
+              href={bColors.mapLink}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-neutral-200 text-neutral-900 hover:text-black hover:border-neutral-400 hover:bg-neutral-50 transition-all hover:scale-105 duration-300 text-xs font-bold tracking-widest uppercase shadow-lg"
             >
-              <MapPin className="w-4 h-4 text-red-600" />
-              LOCALISATION DU RING BAR
+              <MapPin className={`w-4 h-4 ${bColors.accentText}`} />
+              LOCALISATION DU {selectedBar === 'ring' ? 'RING BAR' : selectedBar === 'ofun' ? "O'FUN BAR" : 'TECNO BAR'}
             </a>
           </div>
         </div>
       </section>
 
-      {/* --- BENTO NAVIGATION GRID (Theme: Red-accented Bento) --- */}
-      <section className="relative z-20 max-w-5xl mx-auto w-full px-4 -mt-10 md:-mt-12">
+      {/* --- BAR SELECTOR SECTION --- */}
+      <section className="relative z-20 max-w-5xl mx-auto w-full px-4 mt-6">
+        <div className="bg-neutral-50/60 border border-neutral-200 p-6 rounded-3xl shadow-lg space-y-4">
+          <div className="text-center md:text-left space-y-1">
+            <h3 className="text-[10px] font-black uppercase tracking-widest text-neutral-500">SÉLECTION DE L'ÉTABLISSEMENT</h3>
+            <p className="text-xs font-bold uppercase italic text-neutral-900 tracking-wide">
+              Basculez entre nos trois ambiances exclusives :
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Ring Bar Button */}
+            <button
+              onClick={() => handleSelectBar('ring')}
+              className={`p-5 rounded-2xl border text-left transition-all duration-300 flex flex-col justify-between min-h-[110px] cursor-pointer group ${
+                selectedBar === 'ring'
+                  ? 'border-red-600 bg-white shadow-[0_4px_25px_rgba(220,38,38,0.1)]'
+                  : 'border-neutral-200 bg-white hover:border-neutral-300'
+              }`}
+            >
+              <div className="flex justify-between items-center w-full">
+                <span className={`text-[10px] font-black uppercase tracking-widest ${selectedBar === 'ring' ? 'text-red-600' : 'text-neutral-400'}`}>Ring Bar</span>
+                <span className={`w-2.5 h-2.5 rounded-full ${selectedBar === 'ring' ? 'bg-red-600 animate-pulse' : 'bg-neutral-200'}`} />
+              </div>
+              <div>
+                <h4 className="text-base font-black uppercase italic tracking-wide text-neutral-900 group-hover:text-red-600 transition-colors">
+                  Ring Bar <span className="text-red-600">.</span>
+                </h4>
+                <p className="text-[10px] text-neutral-500 uppercase tracking-widest mt-0.5">Thème Blanc & Rouge</p>
+              </div>
+            </button>
+
+            {/* O'fun Bar Button */}
+            <button
+              onClick={() => handleSelectBar('ofun')}
+              className={`p-5 rounded-2xl border text-left transition-all duration-300 flex flex-col justify-between min-h-[110px] cursor-pointer group ${
+                selectedBar === 'ofun'
+                  ? 'border-rose-600 bg-white shadow-[0_4px_25px_rgba(236,72,153,0.1)]'
+                  : 'border-neutral-200 bg-white hover:border-neutral-300'
+              }`}
+            >
+              <div className="flex justify-between items-center w-full">
+                <span className={`text-[10px] font-black uppercase tracking-widest ${selectedBar === 'ofun' ? 'text-rose-600' : 'text-neutral-400'}`}>O'fun Bar</span>
+                <span className={`w-2.5 h-2.5 rounded-full ${selectedBar === 'ofun' ? 'bg-rose-600 animate-pulse' : 'bg-neutral-200'}`} />
+              </div>
+              <div>
+                <h4 className="text-base font-black uppercase italic tracking-wide text-neutral-900 group-hover:text-rose-600 transition-colors">
+                  O'fun Bar <span className="text-rose-600">.</span>
+                </h4>
+                <p className="text-[10px] text-neutral-500 uppercase tracking-widest mt-0.5">Thème Rose Festif</p>
+              </div>
+            </button>
+
+            {/* Tecno Bar Button */}
+            <button
+              onClick={() => handleSelectBar('tecno')}
+              className={`p-5 rounded-2xl border text-left transition-all duration-300 flex flex-col justify-between min-h-[110px] cursor-pointer group ${
+                selectedBar === 'tecno'
+                  ? 'border-blue-600 bg-white shadow-[0_4px_25px_rgba(59,130,246,0.1)]'
+                  : 'border-neutral-200 bg-white hover:border-neutral-300'
+              }`}
+            >
+              <div className="flex justify-between items-center w-full">
+                <span className={`text-[10px] font-black uppercase tracking-widest ${selectedBar === 'tecno' ? 'text-blue-600' : 'text-neutral-400'}`}>Tecno Bar</span>
+                <span className={`w-2.5 h-2.5 rounded-full ${selectedBar === 'tecno' ? 'bg-blue-600 animate-pulse' : 'bg-neutral-200'}`} />
+              </div>
+              <div>
+                <h4 className="text-base font-black uppercase italic tracking-wide text-neutral-900 group-hover:text-blue-600 transition-colors">
+                  Tecno Bar <span className="text-blue-600">.</span>
+                </h4>
+                <p className="text-[10px] text-neutral-500 uppercase tracking-widest mt-0.5">Thème Bleu Futuriste</p>
+              </div>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* --- BENTO NAVIGATION GRID --- */}
+      <section className="relative z-20 max-w-5xl mx-auto w-full px-4 mt-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 bg-white border border-neutral-200 p-6 rounded-3xl shadow-2xl">
           
           {/* Bento Box 1: Réservation ✅ */}
           <button
             onClick={() => setIsBookingOpen(true)}
-            className="w-full text-left p-6 rounded-2xl bg-neutral-50 border border-neutral-200 hover:border-red-600 hover:bg-white transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[140px]"
+            className={`w-full text-left p-6 rounded-2xl bg-neutral-50 border border-neutral-200 ${bColors.accentBorderHover} hover:bg-white transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[140px]`}
           >
             <div className="flex justify-between items-start w-full">
-              <span className="text-[10px] font-bold text-red-600 uppercase tracking-widest">Étape 1 . l'Arène</span>
-              <span className="px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[9px] font-bold uppercase tracking-wider">Actif</span>
+              <span className={`text-[10px] font-bold ${bColors.accentText} uppercase tracking-widest`}>Étape 1 . l'Arène</span>
+              <span className={`px-2.5 py-0.5 rounded-full ${bColors.accentBg} text-white text-[9px] font-bold uppercase tracking-wider`}>Actif</span>
             </div>
             <div>
-              <h3 className="text-xl font-black uppercase tracking-wide italic text-neutral-900 group-hover:text-red-600 transition-colors">
-                RÉSERVATION <span className="text-red-600">.</span>
+              <h3 className={`text-xl font-black uppercase tracking-wide italic text-neutral-900 group-hover:${bColors.accentText} transition-colors`}>
+                RÉSERVATION <span className={bColors.accentText}>.</span>
               </h3>
               <p className="text-[11px] text-neutral-600 mt-1 font-medium">Choisissez votre salon numéroté en temps réel.</p>
             </div>
@@ -417,7 +570,7 @@ export default function App() {
               <span className="px-2.5 py-0.5 rounded-full bg-neutral-200 text-neutral-600 text-[9px] font-bold uppercase tracking-wider">Consulter</span>
             </div>
             <div>
-              <h3 className="text-xl font-black uppercase tracking-wide italic text-neutral-900 group-hover:text-red-600 transition-colors">
+              <h3 className={`text-xl font-black uppercase tracking-wide italic text-neutral-900 group-hover:${bColors.accentText} transition-colors`}>
                 TARIF DES BOISSONS 🥂
               </h3>
               <p className="text-[11px] text-neutral-600 mt-1 font-medium">Parcourez nos bouteilles prestigieuses et cocktails signatures.</p>
@@ -427,17 +580,17 @@ export default function App() {
           {/* Bento Box 3: Voir les offres ➔ */}
           <button
             onClick={() => setIsOffersOpen(true)}
-            className="w-full text-left p-6 rounded-2xl bg-red-600 text-white hover:bg-red-500 transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[140px] shadow-lg shadow-red-900/20"
+            className={`w-full text-left p-6 rounded-2xl ${bColors.accentBgBento} transition-all duration-300 group cursor-pointer flex flex-col justify-between min-h-[140px] ${bColors.shadowBento}`}
           >
             <div className="flex justify-between items-start w-full">
-              <span className="text-[10px] font-bold text-red-200 uppercase tracking-widest">Offres Spéciales</span>
+              <span className={`text-[10px] font-bold ${bColors.textBentoBadge} uppercase tracking-widest`}>Offres Spéciales</span>
               <span className="px-2.5 py-0.5 rounded-full bg-white text-black text-[9px] font-black uppercase tracking-wider">Offres</span>
             </div>
             <div>
               <h3 className="text-xl font-black uppercase tracking-wide italic text-white flex items-center gap-1">
                 NOS PACKS ACCUEIL ➔
               </h3>
-              <p className="text-[11px] text-red-100 mt-1">Découvrez nos formules bouteilles + salons avantageux.</p>
+              <p className={`text-[11px] ${bColors.textBento} mt-1`}>Découvrez nos formules bouteilles + salons avantageux.</p>
             </div>
           </button>
 
@@ -450,7 +603,7 @@ export default function App() {
           <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
             
             <div className="flex items-center gap-2.5">
-              <FileSpreadsheet className={`w-5 h-5 ${token ? 'text-red-500 animate-pulse' : 'text-neutral-500'}`} />
+              <FileSpreadsheet className={`w-5 h-5 ${token ? `${bColors.accentTextLight} animate-pulse` : 'text-neutral-500'}`} />
               <div>
                 <p className="font-bold text-neutral-900">
                   {token ? '✓ Connecté à Google Sheets' : 'ℹ Google Sheets non connecté'}
@@ -485,7 +638,7 @@ export default function App() {
                 <button
                   onClick={syncAllToGoogleSheets}
                   disabled={isLoadingSheet}
-                  className="px-3 py-1.5 rounded-xl bg-red-600/10 border border-red-600/20 text-red-500 hover:bg-red-600/20 transition-all font-mono text-[11px] uppercase tracking-wider font-bold cursor-pointer"
+                  className={`px-3 py-1.5 rounded-xl ${bColors.accentBgLight} border ${bColors.accentBorderMuted} ${bColors.accentText} hover:${bColors.accentBgBento} transition-all font-mono text-[11px] uppercase tracking-wider font-bold cursor-pointer`}
                 >
                   {isLoadingSheet ? 'Synchronisation...' : 'Synchroniser les réservations'}
                 </button>
@@ -500,13 +653,13 @@ export default function App() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h3 className="text-xl font-bold text-neutral-900 tracking-wide uppercase italic">
-              L'Univers Du Ring Bar <span className="text-red-600">.</span>
+              L'Univers Du {bColors.name} <span className={bColors.accentText}>.</span>
             </h3>
             <p className="text-xs text-neutral-500 mt-0.5 uppercase tracking-wider">Vivez l'expérience ultime de notre club lounge d'exception.</p>
           </div>
           <button
             onClick={() => setIsGalleryOpen(true)}
-            className="text-xs text-red-600 font-bold hover:text-red-500 transition-colors uppercase tracking-widest"
+            className={`text-xs ${bColors.accentText} font-bold hover:${bColors.accentTextLight} transition-colors uppercase tracking-widest`}
           >
             Voir tout →
           </button>
@@ -516,7 +669,7 @@ export default function App() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
           {/* Card 1: Experience & Connect */}
-          <div className="bg-neutral-50 border border-neutral-200 rounded-3xl overflow-hidden group hover:border-red-600 transition-all duration-300 flex flex-col shadow-sm">
+          <div className={`bg-neutral-50 border border-neutral-200 rounded-3xl overflow-hidden group ${bColors.accentBorderHover} transition-all duration-300 flex flex-col shadow-sm`}>
             <div className="h-56 overflow-hidden relative">
               <img
                 src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&q=80&w=600"
@@ -528,7 +681,7 @@ export default function App() {
             </div>
             <div className="p-6 space-y-2 flex-grow flex flex-col justify-between bg-white">
               <div>
-                <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest block mb-1">Le Salon VIP</span>
+                <span className={`text-[10px] font-bold ${bColors.accentTextLight} uppercase tracking-widest block mb-1`}>Le Salon VIP</span>
                 <h4 className="text-lg font-bold text-neutral-900 uppercase italic">Ambiance Salon Miroir</h4>
                 <p className="text-xs text-neutral-600 leading-relaxed mt-2 font-medium">
                   Notre Salon 4 - VIP se dresse en face du miroir avec un cadre feutré exclusif, d'immenses canapés et un service personnalisé de luxe.
@@ -538,7 +691,7 @@ export default function App() {
           </div>
 
           {/* Card 2: Luxury Champagnes */}
-          <div className="bg-neutral-50 border border-neutral-200 rounded-3xl overflow-hidden group hover:border-red-600 transition-all duration-300 flex flex-col shadow-sm">
+          <div className={`bg-neutral-50 border border-neutral-200 rounded-3xl overflow-hidden group ${bColors.accentBorderHover} transition-all duration-300 flex flex-col shadow-sm`}>
             <div className="h-56 overflow-hidden relative">
               <img
                 src="https://images.unsplash.com/photo-1594460528456-a3dec7245072?auto=format&fit=crop&q=80&w=600"
@@ -550,7 +703,7 @@ export default function App() {
             </div>
             <div className="p-6 space-y-2 flex-grow flex flex-col justify-between bg-white">
               <div>
-                <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest block mb-1">Célébrations</span>
+                <span className={`text-[10px] font-bold ${bColors.accentTextLight} uppercase tracking-widest block mb-1`}>Célébrations</span>
                 <h4 className="text-lg font-bold text-neutral-900 uppercase italic font-sans">Bouteilles Prestiges</h4>
                 <p className="text-xs text-neutral-600 leading-relaxed mt-2 font-medium">
                   Savourez notre sélection de champagnes d'exception. De Dom Pérignon Luminous à Ruinart Blanc de Blancs, illuminez votre table de salon.
@@ -560,7 +713,7 @@ export default function App() {
           </div>
 
           {/* Card 3: DJ & Dancefloor */}
-          <div className="bg-neutral-50 border border-neutral-200 rounded-3xl overflow-hidden group hover:border-red-600 transition-all duration-300 flex flex-col shadow-sm">
+          <div className={`bg-neutral-50 border border-neutral-200 rounded-3xl overflow-hidden group ${bColors.accentBorderHover} transition-all duration-300 flex flex-col shadow-sm`}>
             <div className="h-56 overflow-hidden relative">
               <img
                 src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=600"
@@ -572,7 +725,7 @@ export default function App() {
             </div>
             <div className="p-6 space-y-2 flex-grow flex flex-col justify-between bg-white">
               <div>
-                <span className="text-[10px] font-bold text-red-500 uppercase tracking-widest block mb-1">DJ Set Live</span>
+                <span className={`text-[10px] font-bold ${bColors.accentTextLight} uppercase tracking-widest block mb-1`}>DJ Set Live</span>
                 <h4 className="text-lg font-bold text-neutral-900 uppercase italic">Vibrations & Rythmes</h4>
                 <p className="text-xs text-neutral-600 leading-relaxed mt-2 font-medium">
                   Le Salon 2 se dresse à proximité directe de la cabine DJ pour vibrer toute la soirée sous le son de nos artistes et résidents internationaux.
@@ -591,10 +744,10 @@ export default function App() {
           title="Action administrateur (double-clic)"
           className="font-black text-neutral-900 cursor-pointer select-none transition-transform active:scale-95 inline-block"
         >
-          LE RING BAR VIP
+          LE {selectedBar === 'ring' ? 'RING BAR' : selectedBar === 'ofun' ? "O'FUN BAR" : 'TECNO BAR'} VIP
         </p>
         <p>L'abus d'alcool est dangereux pour la santé, à consommer avec modération.</p>
-        <p>© 2026 Le Ring Bar • Tous droits réservés.</p>
+        <p>© 2026 Le {bColors.name} • Tous droits réservés.</p>
       </footer>
 
       {/* --- MODAL WIZARDS / POPUPS --- */}
@@ -607,6 +760,7 @@ export default function App() {
           existingReservations={reservations}
           isSubmitting={isSubmitting}
           prefilledName={user?.displayName || ''}
+          selectedBar={selectedBar}
         />
       )}
 
@@ -615,10 +769,10 @@ export default function App() {
         <DrinksMenu
           onClose={() => setIsDrinksOpen(false)}
           onSelectDrinkDirectly={(drink) => {
-            // Closes menu and opens Booking Flow, adding this drink will be handled in booking
             setIsDrinksOpen(false);
             setIsBookingOpen(true);
           }}
+          selectedBar={selectedBar}
         />
       )}
 
@@ -627,6 +781,7 @@ export default function App() {
         <Offers
           onClose={() => setIsOffersOpen(false)}
           onSelectPack={handleSelectPackDirectly}
+          selectedBar={selectedBar}
         />
       )}
 
@@ -635,6 +790,7 @@ export default function App() {
         <Gallery
           onClose={() => setIsGalleryOpen(false)}
           isModal={true}
+          selectedBar={selectedBar}
         />
       )}
 
@@ -647,6 +803,7 @@ export default function App() {
           isLoadingFromSheet={isLoadingSheet}
           onRefreshFromSheet={handleRefreshFromSheet}
           isOwnerMode={isOwner}
+          selectedBar={selectedBar}
         />
       )}
 

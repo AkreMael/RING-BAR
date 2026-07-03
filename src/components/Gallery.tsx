@@ -4,19 +4,35 @@ import { X, ZoomIn, Heart, Share2, Sparkles, Check } from 'lucide-react';
 interface GalleryProps {
   onClose?: () => void;
   isModal?: boolean;
+  selectedBar?: 'ring' | 'ofun' | 'tecno';
 }
 
-export default function Gallery({ onClose, isModal = false }: GalleryProps) {
+export default function Gallery({ onClose, isModal = false, selectedBar = 'ring' }: GalleryProps) {
   const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
   const [likedImages, setLikedImages] = useState<{ [key: number]: boolean }>({});
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const barName = selectedBar === 'ofun' ? "O'fun Bar" : selectedBar === 'tecno' ? "Tecno Bar" : "Ring Bar";
+  const textTheme = selectedBar === 'ofun' ? 'text-rose-600' : selectedBar === 'tecno' ? 'text-blue-600' : 'text-red-600';
+  const text500Theme = selectedBar === 'ofun' ? 'text-rose-500' : selectedBar === 'tecno' ? 'text-blue-500' : 'text-red-500';
+  const bg50Theme = selectedBar === 'ofun' ? 'bg-rose-50 border-rose-100' : selectedBar === 'tecno' ? 'bg-blue-50 border-blue-100' : 'bg-red-50 border-red-100';
+  const hoverBorderTheme = selectedBar === 'ofun' 
+    ? 'hover:border-rose-600/40 hover:shadow-[0_4px_25px_rgba(236,72,153,0.1)]' 
+    : selectedBar === 'tecno' 
+    ? 'hover:border-blue-600/40 hover:shadow-[0_4px_25px_rgba(37,99,235,0.1)]' 
+    : 'hover:border-red-600/40 hover:shadow-[0_4px_25px_rgba(220,38,38,0.1)]';
+  const likedTheme = selectedBar === 'ofun' 
+    ? 'bg-rose-50 text-rose-500 border border-rose-100' 
+    : selectedBar === 'tecno' 
+    ? 'bg-blue-50 text-blue-500 border border-blue-100' 
+    : 'bg-red-50 text-red-500 border border-red-100';
 
   const galleryItems = [
     {
       url: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&q=80&w=800',
       title: 'Le Comptoir & Ambiance Néon',
       category: 'Bar',
-      description: 'Notre comptoir principal illuminé de rouge et de nuances chaudes, où nos barmans créent des cocktails signatures d\'exception.'
+      description: `Notre comptoir principal illuminé de couleurs et de nuances chaudes, où nos barmans créent des cocktails signatures d'exception.`
     },
     {
       url: 'https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&q=80&w=800',
@@ -34,7 +50,7 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
       url: 'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&q=80&w=800',
       title: 'Nos Cocktails Signatures',
       category: 'Boissons',
-      description: 'Découvrez notre fameux "Ring Punch" et notre "Golden Gloves" élaborés avec des spiritueux d\'exception.'
+      description: 'Découvrez notre fameux cocktail et nos créations élaborés avec des spiritueux d\'exception.'
     },
     {
       url: 'https://images.unsplash.com/photo-1594460528456-a3dec7245072?auto=format&fit=crop&q=80&w=800',
@@ -69,7 +85,6 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
         url: window.location.href,
       }).catch(console.error);
     } else {
-      // Sleek native toast fallback to prevent window.alert in iframe
       showToast(`Lien de partage copié pour : ${item.title}`);
     }
   };
@@ -78,16 +93,16 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
     <div className="space-y-6">
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-[120] bg-white border border-neutral-200 text-neutral-900 text-xs font-black uppercase tracking-widest px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 animate-fade-in">
-          <Check className="w-4 h-4 text-red-500" />
+          <Check className={`w-4 h-4 ${text500Theme}`} />
           {toastMessage}
         </div>
       )}
 
       {!isModal && (
         <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="w-5 h-5 text-red-600" />
+          <Sparkles className={`w-5 h-5 ${textTheme}`} />
           <h3 className="text-base font-black text-neutral-900 tracking-wider uppercase italic font-sans">
-            Galerie Le Ring Bar VIP
+            Galerie {barName} VIP
           </h3>
         </div>
       )}
@@ -98,7 +113,7 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
           <div
             key={index}
             onClick={() => setActiveImageIndex(index)}
-            className="group relative aspect-[4/3] rounded-3xl overflow-hidden bg-white border border-neutral-200 cursor-pointer transition-all duration-300 hover:border-red-600/40 hover:shadow-[0_4px_25px_rgba(220,38,38,0.1)]"
+            className={`group relative aspect-[4/3] rounded-3xl overflow-hidden bg-white border border-neutral-200 cursor-pointer transition-all duration-300 ${hoverBorderTheme}`}
           >
             {/* Image */}
             <img
@@ -114,7 +129,7 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
             {/* Hover details */}
             <div className="absolute inset-0 p-5 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <div className="flex justify-between items-center">
-                <span className="text-[9px] font-black tracking-widest text-red-600 bg-red-50 border border-red-100 px-2.5 py-1 rounded-full uppercase">
+                <span className={`text-[9px] font-black tracking-widest ${textTheme} ${bg50Theme} px-2.5 py-1 rounded-full uppercase`}>
                   {item.category}
                 </span>
 
@@ -122,7 +137,7 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
                   <button
                     onClick={(e) => handleLike(index, e)}
                     className={`p-1.5 rounded-full backdrop-blur-sm transition-colors cursor-pointer ${
-                      likedImages[index] ? 'bg-red-50 text-red-500 border border-red-100' : 'bg-white/80 text-neutral-500 hover:text-neutral-900'
+                      likedImages[index] ? likedTheme : 'bg-white/80 text-neutral-500 hover:text-neutral-900'
                     }`}
                   >
                     <Heart className="w-3.5 h-3.5" fill={likedImages[index] ? 'currentColor' : 'none'} />
@@ -143,7 +158,7 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
                 <p className="text-[11px] text-neutral-700 mt-1 line-clamp-2 leading-relaxed font-medium">
                   {item.description}
                 </p>
-                <span className="text-[10px] text-red-600 font-black tracking-widest uppercase mt-3 inline-flex items-center gap-1">
+                <span className={`text-[10px] ${textTheme} font-black tracking-widest uppercase mt-3 inline-flex items-center gap-1`}>
                   <ZoomIn className="w-3.5 h-3.5" /> Agrandir
                 </span>
               </div>
@@ -181,7 +196,7 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
 
             {/* Image text detail */}
             <div className="w-full max-w-2xl text-center mt-6 space-y-2 px-4">
-              <span className="text-[9px] font-black tracking-widest text-red-600 bg-red-50 border border-red-100 px-3 py-1.5 rounded-full uppercase">
+              <span className={`text-[9px] font-black tracking-widest ${textTheme} ${bg50Theme} px-3 py-1.5 rounded-full uppercase`}>
                 {galleryItems[activeImageIndex].category}
               </span>
               <h3 className="text-lg font-black text-neutral-900 uppercase italic mt-2">
@@ -223,9 +238,9 @@ export default function Gallery({ onClose, isModal = false }: GalleryProps) {
           {/* Header */}
           <div className="p-6 border-b border-neutral-100 flex justify-between items-center bg-neutral-55">
             <div className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-red-600 animate-pulse" />
+              <Sparkles className={`w-5 h-5 ${textTheme} animate-pulse`} />
               <h3 className="text-lg font-black text-neutral-900 tracking-wider uppercase italic font-sans">
-                Galerie Du Ring
+                Galerie Le {barName}
               </h3>
             </div>
             {onClose && (

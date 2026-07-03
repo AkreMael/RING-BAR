@@ -9,6 +9,7 @@ interface InteractiveMapProps {
   existingReservations: Reservation[];
   selectedDate: string;
   selectedTime: string;
+  selectedBar?: 'ring' | 'ofun' | 'tecno';
 }
 
 export default function InteractiveMap({
@@ -17,7 +18,18 @@ export default function InteractiveMap({
   existingReservations,
   selectedDate,
   selectedTime,
+  selectedBar = 'ring',
 }: InteractiveMapProps) {
+  const bColor = selectedBar === 'ofun' ? '#ec4899' : selectedBar === 'tecno' ? '#3b82f6' : '#dc2626';
+  const accentText = selectedBar === 'ofun' ? 'text-rose-500' : selectedBar === 'tecno' ? 'text-blue-500' : 'text-red-500';
+  const accentBg = selectedBar === 'ofun' ? 'bg-rose-600' : selectedBar === 'tecno' ? 'bg-blue-600' : 'bg-red-600';
+  const accentBorder = selectedBar === 'ofun' ? 'border-rose-600' : selectedBar === 'tecno' ? 'border-blue-600' : 'border-red-600';
+  const shadowMap = selectedBar === 'ofun' ? 'shadow-[0_4px_20px_rgba(244,63,94,0.1)]' : selectedBar === 'tecno' ? 'shadow-[0_4px_20px_rgba(37,99,235,0.1)]' : 'shadow-[0_4px_20px_rgba(220,38,38,0.1)]';
+  const bgGlow = selectedBar === 'ofun' ? 'bg-rose-600/5' : selectedBar === 'tecno' ? 'bg-blue-600/5' : 'bg-red-600/5';
+  const selectGlow = selectedBar === 'ofun' ? 'rgba(236, 72, 153, 0.15)' : selectedBar === 'tecno' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(220, 38, 38, 0.15)';
+  const pulseShadow = selectedBar === 'ofun' ? 'shadow-[0_0_8px_rgba(236,72,153,0.5)]' : selectedBar === 'tecno' ? 'shadow-[0_0_8px_rgba(59,130,246,0.5)]' : 'shadow-[0_0_8px_rgba(220,38,38,0.5)]';
+  const barName = selectedBar === 'ofun' ? "O'fun Bar" : selectedBar === 'tecno' ? "Tecno Bar" : "Ring Bar";
+
   // Check if a salon is reserved for the selected date and hour (within a reasonable window, say same evening)
   const isSalonReserved = (salonId: number) => {
     return existingReservations.some(
@@ -33,13 +45,13 @@ export default function InteractiveMap({
       {/* Visual SVG Map (7 cols on large screens) */}
       <div className="lg:col-span-7 bg-white border border-neutral-200 p-6 shadow-xl relative overflow-hidden rounded-3xl">
         {/* Ambient red decorative background */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 ${bgGlow} rounded-full blur-3xl pointer-events-none`} />
 
         <div className="flex justify-between items-center mb-6 relative z-10">
           <div>
-            <h3 className="text-lg font-bold text-neutral-900 tracking-wide uppercase italic">Plan du Ring Bar</h3>
+            <h3 className="text-lg font-bold text-neutral-900 tracking-wide uppercase italic">Plan du {barName}</h3>
             <p className="text-xs text-neutral-600 mt-1 uppercase tracking-widest">
-              Vue interactive . <span className="text-red-500 font-bold">{selectedDate}</span>
+              Vue interactive . <span className={`${accentText} font-bold`}>{selectedDate}</span>
             </p>
           </div>
           <div className="flex gap-4 text-[10px] font-bold uppercase tracking-wider">
@@ -47,8 +59,8 @@ export default function InteractiveMap({
               <span className="w-2.5 h-2.5 rounded-full bg-neutral-200 border border-neutral-300" />
               Libre
             </span>
-            <span className="flex items-center gap-1.5 text-red-500">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.5)] animate-pulse" />
+            <span className={`flex items-center gap-1.5 ${accentText}`}>
+              <span className={`w-2.5 h-2.5 rounded-full`} style={{ backgroundColor: bColor, boxShadow: selectedBar === 'ofun' ? '0 0 8px rgba(236,72,153,0.5)' : selectedBar === 'tecno' ? '0 0 8px rgba(59,130,246,0.5)' : '0 0 8px rgba(220,38,38,0.5)' }} />
               Occupé
             </span>
           </div>
@@ -74,14 +86,14 @@ export default function InteractiveMap({
 
             {/* DJ BOOTH Zone */}
             <g transform="translate(620, 40)">
-              <rect x="0" y="0" width="140" height="70" rx="8" fill="#f5f5f5" stroke="#dc2626" strokeWidth="1" />
-              <text x="70" y="32" textAnchor="middle" fill="#dc2626" className="text-[10px] font-black tracking-widest font-mono italic">
+              <rect x="0" y="0" width="140" height="70" rx="8" fill="#f5f5f5" stroke={bColor} strokeWidth="1" />
+              <text x="70" y="32" textAnchor="middle" fill={bColor} className="text-[10px] font-black tracking-widest font-mono italic">
                 CABINE DJ
               </text>
               <path d="M 30,45 L 110,45" stroke="#e5e5e5" strokeWidth="2" strokeDasharray="2 2" />
               {/* Turntables */}
-              <circle cx="45" cy="52" r="10" fill="#e5e5e5" stroke="#dc2626" />
-              <circle cx="95" cy="52" r="10" fill="#e5e5e5" stroke="#dc2626" />
+              <circle cx="45" cy="52" r="10" fill="#e5e5e5" stroke={bColor} />
+              <circle cx="95" cy="52" r="10" fill="#e5e5e5" stroke={bColor} />
             </g>
 
             {/* COMPTOIR (The main bar counter) */}
@@ -90,7 +102,7 @@ export default function InteractiveMap({
               <text x="110" y="32" textAnchor="middle" fill="#111111" className="text-[10px] font-black tracking-widest font-mono">
                 LE COMPTOIR (BAR)
               </text>
-              <rect x="15" y="45" width="190" height="15" rx="4" fill="#dc2626" fillOpacity="0.1" />
+              <rect x="15" y="45" width="190" height="15" rx="4" fill={bColor} fillOpacity="0.1" />
             </g>
 
             {/* PISTE DE DANSE (Central Dancefloor) */}
@@ -104,7 +116,7 @@ export default function InteractiveMap({
 
             {/* GRAND MIROIR (On the wall opposite Salon 4) */}
             <g transform="translate(770, 180)">
-              <rect x="0" y="0" width="10" height="180" rx="2" fill="#dc2626" className="animate-pulse" />
+              <rect x="0" y="0" width="10" height="180" rx="2" fill={bColor} className="animate-pulse" />
               <text x="-90" y="18" transform="rotate(-90)" fill="#404040" className="text-[10px] font-black tracking-widest font-mono">
                 GRAND MIROIR
               </text>
@@ -161,13 +173,13 @@ export default function InteractiveMap({
               // Color determination
               let strokeColor = '#e5e5e5';
               let fillColor = selected
-                ? 'rgba(220, 38, 38, 0.15)' // selected red glow
+                ? selectGlow // selected glow
                 : reserved
                 ? 'rgba(239, 68, 68, 0.05)' // reserved dim red
                 : 'rgba(245, 245, 245, 0.9)'; // normal light
 
               if (reserved) strokeColor = '#fca5a5';
-              else if (selected) strokeColor = '#dc2626';
+              else if (selected) strokeColor = bColor;
 
               return (
                 <g
@@ -186,7 +198,7 @@ export default function InteractiveMap({
                       height={h + 8}
                       rx={12}
                       fill="none"
-                      stroke="#dc2626"
+                      stroke={bColor}
                       strokeWidth="2"
                       strokeOpacity="0.4"
                       className="animate-pulse"
@@ -211,7 +223,7 @@ export default function InteractiveMap({
                     x={x + w / 2}
                     y={y + 35}
                     textAnchor="middle"
-                    fill={selected ? '#dc2626' : reserved ? '#f87171' : '#111111'}
+                    fill={selected ? bColor : reserved ? '#f87171' : '#111111'}
                     className="text-xs font-black font-sans uppercase tracking-wider"
                   >
                     {salon.name === 'Dernier salon' ? 'Salon 7' : salon.name}
@@ -222,7 +234,7 @@ export default function InteractiveMap({
                     x={x + w / 2}
                     y={y + 55}
                     textAnchor="middle"
-                    fill={selected ? '#ef4444' : reserved ? '#ef4444' : '#525252'}
+                    fill={selected ? bColor : reserved ? '#ef4444' : '#525252'}
                     className="text-[9px] font-mono uppercase tracking-widest font-semibold"
                     fillOpacity="0.8"
                   >
@@ -233,7 +245,7 @@ export default function InteractiveMap({
                     x={x + w / 2}
                     y={y + 75}
                     textAnchor="middle"
-                    fill={reserved ? '#ef4444' : selected ? '#dc2626' : '#737373'}
+                    fill={reserved ? '#ef4444' : selected ? bColor : '#737373'}
                     className="text-[8px] font-black font-mono tracking-widest"
                   >
                     {reserved ? 'OCCUPÉ' : selected ? 'SÉLECTIONNÉ' : 'DISPO'}
@@ -248,7 +260,7 @@ export default function InteractiveMap({
       {/* Salon Selection Details Panel (5 cols on large screens) */}
       <div className="lg:col-span-5 space-y-4">
         <h4 className="text-neutral-900 font-bold text-xs uppercase tracking-widest px-1 flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-red-500" />
+          <Sparkles className={`w-4 h-4 ${accentText}`} />
           Sélectionnez votre Salon
         </h4>
 
@@ -266,19 +278,19 @@ export default function InteractiveMap({
                   reserved
                     ? 'bg-neutral-50/20 border-neutral-100 opacity-40 cursor-not-allowed'
                     : selected
-                    ? 'bg-white border-red-600 shadow-[0_4px_20px_rgba(220,38,38,0.1)]'
+                    ? `bg-white ${accentBorder} ${shadowMap}`
                     : 'bg-neutral-50 border-neutral-200 hover:border-neutral-300 hover:bg-white'
                 }`}
               >
                 {/* Visual indicator bar */}
                 <div
                   className="absolute left-0 top-0 bottom-0 w-1"
-                  style={{ backgroundColor: reserved ? '#ef4444' : selected ? '#dc2626' : '#e5e5e5' }}
+                  style={{ backgroundColor: reserved ? '#ef4444' : selected ? bColor : '#e5e5e5' }}
                 />
 
                 <div className="flex justify-between items-start pl-2">
                   <div>
-                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase block" style={{ color: reserved ? '#ef4444' : selected ? '#ef4444' : '#737373' }}>
+                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase block" style={{ color: reserved ? '#ef4444' : selected ? bColor : '#737373' }}>
                       {salon.id === 4 ? '★ SALON EXCLUSIF VIP ★' : `EMPLACEMENT N°${salon.id}`}
                     </span>
                     <h5 className="text-base font-black text-neutral-900 mt-1 uppercase italic">

@@ -4,9 +4,29 @@ import { X, Sparkles, Trophy, Award, Crown } from 'lucide-react';
 interface OffersProps {
   onClose: () => void;
   onSelectPack?: (packageName: string, price: number) => void;
+  selectedBar?: 'ring' | 'ofun' | 'tecno';
 }
 
-export default function Offers({ onClose, onSelectPack }: OffersProps) {
+export default function Offers({ onClose, onSelectPack, selectedBar = 'ring' }: OffersProps) {
+  const barName = selectedBar === 'ofun' ? "O'fun Bar" : selectedBar === 'tecno' ? "Tecno Bar" : "Ring Bar";
+  const themeColor = selectedBar === 'ofun' ? 'rose' : selectedBar === 'tecno' ? 'blue' : 'red';
+
+  // Dynamic colors
+  const textTheme = selectedBar === 'ofun' ? 'text-rose-600' : selectedBar === 'tecno' ? 'text-blue-600' : 'text-red-600';
+  const text500Theme = selectedBar === 'ofun' ? 'text-rose-500' : selectedBar === 'tecno' ? 'text-blue-500' : 'text-red-500';
+  const bgTheme = selectedBar === 'ofun' ? 'bg-rose-600' : selectedBar === 'tecno' ? 'bg-blue-600' : 'bg-red-600';
+  const bgHoverTheme = selectedBar === 'ofun' ? 'hover:bg-rose-500' : selectedBar === 'tecno' ? 'hover:bg-blue-500' : 'hover:bg-red-500';
+  const shadowTheme = selectedBar === 'ofun' ? 'shadow-[0_4px_15px_rgba(236,72,153,0.3)]' : selectedBar === 'tecno' ? 'shadow-[0_4px_15px_rgba(59,130,246,0.3)]' : 'shadow-[0_4px_15px_rgba(220,38,38,0.3)]';
+  const badgeShadowTheme = selectedBar === 'ofun' ? 'shadow-[0_2px_10px_rgba(236,72,153,0.4)]' : selectedBar === 'tecno' ? 'shadow-[0_2px_10px_rgba(59,130,246,0.4)]' : 'shadow-[0_2px_10px_rgba(220,38,38,0.4)]';
+
+  const popularCardClasses = selectedBar === 'ofun'
+    ? 'border-rose-600 bg-white shadow-[0_4px_25px_rgba(236,72,153,0.1)] hover:border-rose-500'
+    : selectedBar === 'tecno'
+    ? 'border-blue-600 bg-white shadow-[0_4px_25px_rgba(59,130,246,0.1)] hover:border-blue-500'
+    : 'border-red-600 bg-white shadow-[0_4px_25px_rgba(220,38,38,0.1)] hover:border-red-500';
+
+  const popularBadgeColor = selectedBar === 'ofun' ? 'bg-rose-600 text-white' : selectedBar === 'tecno' ? 'bg-blue-600 text-white' : 'bg-red-600 text-white';
+
   const packs = [
     {
       name: 'PACK CHALLENGER',
@@ -25,9 +45,9 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
     },
     {
       name: 'PACK CHAMPION',
-      icon: <Trophy className="w-8 h-8 text-red-500" />,
+      icon: <Trophy className={`w-8 h-8 ${text500Theme}`} />,
       price: 230000,
-      description: 'Le choix royal de nos habitués. Pour célébrer une grande occasion ou faire la fête en grand.',
+      description: `Le choix royal de nos habitués. Pour célébrer une grande occasion ou faire la fête en grand au ${barName}.`,
       features: [
         '1 Bouteille de Ruinart Blanc de Blancs',
         '1 Bouteille de Jack Daniel\'s Single Barrel',
@@ -36,15 +56,15 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
         'Salon premium (Salon 2 ou 3)',
         'Accès pour 6 à 8 personnes'
       ],
-      color: 'border-red-600 bg-white shadow-[0_4px_25px_rgba(220,38,38,0.1)] hover:border-red-500',
-      badgeColor: 'bg-red-600 text-white',
+      color: popularCardClasses,
+      badgeColor: popularBadgeColor,
       popular: true
     },
     {
       name: 'PACK KNOCKOUT (K.O.)',
-      icon: <Crown className="w-8 h-8 text-red-500" />,
+      icon: <Crown className={`w-8 h-8 ${text500Theme}`} />,
       price: 395000,
-      description: 'L\'expérience ultime VIP Le Ring Bar. Pour ceux qui veulent marquer les esprits et régner sur le bar.',
+      description: `L'expérience ultime VIP ${barName}. Pour ceux qui veulent marquer les esprits et régner sur le bar.`,
       features: [
         '1 Bouteille de Dom Pérignon Luminous (Lumineuse)',
         '1 Bouteille de Chivas Regal 18 Ans',
@@ -66,9 +86,9 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
         {/* Header */}
         <div className="p-6 border-b border-neutral-100 flex justify-between items-center bg-neutral-55">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-red-600 animate-pulse" />
+            <Sparkles className={`w-5 h-5 ${textTheme} animate-pulse`} />
             <h3 className="text-lg font-black text-neutral-900 tracking-wider uppercase italic font-sans">
-              Formules & Packs VIP <span className="text-red-600">—</span> Le Ring Bar
+              Formules & Packs VIP <span className={textTheme}>—</span> Le {barName}
             </h3>
           </div>
           <button
@@ -92,7 +112,7 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
                 className={`border rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden transition-all duration-300 group ${pack.color}`}
               >
                 {pack.popular && (
-                  <div className="absolute top-4 right-4 bg-red-600 text-white text-[9px] font-black tracking-widest px-2.5 py-1 rounded-full uppercase shadow-[0_2px_10px_rgba(220,38,38,0.4)]">
+                  <div className={`absolute top-4 right-4 ${popularBadgeColor} text-[9px] font-black tracking-widest px-2.5 py-1 rounded-full uppercase ${badgeShadowTheme}`}>
                     Recommandé
                   </div>
                 )}
@@ -106,7 +126,7 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
                   
                   <div className="flex items-baseline gap-1 mt-3">
                     <span className="text-2xl font-mono font-black text-neutral-900">{pack.price.toLocaleString('fr-FR')}</span>
-                    <span className="text-xs font-bold text-red-600">F CFA</span>
+                    <span className={`text-xs font-bold ${textTheme}`}>F CFA</span>
                   </div>
 
                   <p className="text-xs text-neutral-600 mt-2 leading-relaxed">
@@ -116,7 +136,7 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
                   <div className="mt-5 space-y-2.5">
                     {pack.features.map((feat, i) => (
                       <div key={i} className="flex items-start gap-2 text-xs text-neutral-700">
-                        <span className="text-red-500 mt-0.5">•</span>
+                        <span className={`${text500Theme} mt-0.5`}>•</span>
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -128,7 +148,7 @@ export default function Offers({ onClose, onSelectPack }: OffersProps) {
                     onClick={() => onSelectPack(pack.name, pack.price)}
                     className={`w-full py-2.5 rounded-xl font-black text-[10px] tracking-widest uppercase mt-6 transition-all cursor-pointer ${
                       pack.popular
-                        ? 'bg-red-600 hover:bg-red-500 text-white shadow-[0_4px_15px_rgba(220,38,38,0.3)]'
+                        ? `${bgTheme} ${bgHoverTheme} text-white ${shadowTheme}`
                         : 'bg-neutral-100 border border-neutral-200 text-neutral-700 hover:bg-neutral-200 hover:text-neutral-900'
                     }`}
                   >
